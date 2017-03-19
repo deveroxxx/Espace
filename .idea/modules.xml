@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Espace.iml" filepath="$PROJECT_DIR$/Espace.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Espace-ejb/Espace-ejb.iml" filepath="$PROJECT_DIR$/Espace-ejb/Espace-ejb.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Espace-web/Espace-web.iml" filepath="$PROJECT_DIR$/Espace-web/Espace-web.iml" />
+    </modules>
+  </component>
+</project>

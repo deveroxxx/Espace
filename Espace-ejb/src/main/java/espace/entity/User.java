@@ -9,9 +9,15 @@ public class User extends BaseEntity {
     private String loginName;
     private String userName;
 
+    private String password;
 
+    public String getPassword() {
+        return password;
+    }
 
-
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public String getRealName() {
         return realName;

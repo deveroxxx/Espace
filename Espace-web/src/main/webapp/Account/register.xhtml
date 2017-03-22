@@ -1,0 +1,63 @@
+<ui:composition template="/Shared/commonLayout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+
+        <h2>Create new account</h2>
+        <hr />
+
+        <h:form id="glob" styleClass="form-horizontal">
+
+            <div class="form-group">
+                <label class ="col-md-2 control-label">User Name</label>
+                <div class="col-md-5">
+                    <h:inputText id="name" required="true" requiredMessage="Username is required!"
+                                 styleClass="form-control" value="#{userController.user.userName}"/>
+                </div>
+                <div class="col-md-5">
+                    <p:message for="name" display="text"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class ="col-md-2 control-label">Password</label>
+                <div class="col-md-5">
+                    <h:inputSecret id="pass" required="true" requiredMessage="Password is required!"
+                                   styleClass="form-control" value="#{userController.password1}" />
+                </div>
+                <div class="col-md-5">
+                    <p:message for="pass" display="text"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class ="col-md-2 control-label">Confirm Password</label>
+                <div class="col-md-5">
+                    <h:inputSecret  id="pass2" required="true" requiredMessage="Password confirmation is required!"
+                                    styleClass="form-control" value="#{userController.password2}" />
+                </div>
+                <div class="col-md-5">
+                    <p:message for="pass2" display="text"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <p:commandButton update="glob" validateClient="true" styleClass="btn btn-default"
+                                     value="Register" type="submit"
+                                     action="#{userController.registerUser()}"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <h:link value="Already has account?" outcome="login" />
+                </div>
+            </div>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

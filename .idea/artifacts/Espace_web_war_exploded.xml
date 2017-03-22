@@ -6,6 +6,16 @@
         <element id="directory" name="classes">
           <element id="module-output" name="Espace-web" />
         </element>
+        <element id="directory" name="lib">
+          <element id="archive" name="Espace-ejb-1.0-SNAPSHOT.jar">
+            <element id="module-output" name="Espace-ejb" />
+          </element>
+          <element id="library" level="project" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final" />
+          <element id="library" level="project" name="Maven: javax:javaee-api:7.0" />
+          <element id="library" level="project" name="Maven: com.sun.mail:javax.mail:1.5.0" />
+          <element id="library" level="project" name="Maven: javax.activation:activation:1.1" />
+          <element id="library" level="project" name="Maven: org.primefaces:primefaces:6.0" />
+        </element>
       </element>
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/Espace-web/target/Espace-web-1.0-SNAPSHOT/META-INF/MANIFEST.MF" />

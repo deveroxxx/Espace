@@ -2,14 +2,32 @@ package espace.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.Date;
 
 @Entity
 @Table(name = "USERTABLE")
 public class User extends BaseEntity {
 
     private String realName;
-    private String loginName;
     private String userName;
+    private Date dateOfBirth;
+    private String picture;
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
 
     private String password;
 
@@ -27,14 +45,6 @@ public class User extends BaseEntity {
 
     public void setRealName(String realName) {
         this.realName = realName;
-    }
-
-    public String getLoginName() {
-        return loginName;
-    }
-
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
     }
 
     public String getUserName() {

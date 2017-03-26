@@ -2,13 +2,16 @@ package espace.controllers;
 
 
 import espace.entity.User;
-import espace.service.UserService;
+import espace.exceptions.EntityAlreadyExistException;
+import espace.service.UserManager;
+import espace.utils.Messages;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import java.io.Serializable;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @ManagedBean(name = "userController", eager = true)
@@ -18,7 +21,7 @@ public class UserController implements Serializable {
     private static final Logger log = Logger.getLogger(UserController.class.getName());
 
     @Inject
-    private UserService userService;
+    private UserManager userManager;
 
     private User user;
 
@@ -64,8 +67,20 @@ public class UserController implements Serializable {
     }
 
     public String registerUser() {
-        System.out.println("Registering user starting...");
-            userService.addUser(user);
+        // 1. password match check
+        if (!password1.equals(password2)) {
+            Messages.warn("Password mismatch!", "The passwords do not match.");
+
+            return null;
+        }
+        // 2. create user
+        try {
+            userManager.addUser(user);
+        } catch (EntityAlreadyExistException e) {
+            Messages.warn("Invalid name!", "Username is already used.");
+        } catch (Exception e) {
+            Messages.error("We are sorry!", "Unexpected error happened. Please try again.");
+        }
         return "/Account/login.xhtml?faces-redirect=true&success=true";
     }
 

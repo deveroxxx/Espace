@@ -16,6 +16,7 @@ public class UserService {
 
     public void addUser(User user) {
         System.out.println("Trying to create a fucking user");
+
         userFacade.create(user);
     }
 

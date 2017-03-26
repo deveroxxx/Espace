@@ -64,6 +64,7 @@ public class UserController implements Serializable {
     }
 
     public String registerUser() {
+        System.out.println("Registering user starting...");
             userService.addUser(user);
         return "/Account/login.xhtml?faces-redirect=true&success=true";
     }

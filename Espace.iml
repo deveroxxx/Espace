@@ -11,5 +11,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="Espace-ejb" />
+    <orderEntry type="module" module-name="Espace-web" />
   </component>
 </module>

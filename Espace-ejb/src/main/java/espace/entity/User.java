@@ -1,8 +1,10 @@
 package espace.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "USERTABLE")
 public class User extends BaseEntity {
 
     private String realName;

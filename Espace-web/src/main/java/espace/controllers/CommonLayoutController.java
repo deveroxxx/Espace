@@ -32,6 +32,8 @@ public class CommonLayoutController {
 
         routes.add(new Route("/Account/login", "Login", false, Role.GUEST));
         routes.add(new Route("/Account/register", "Register", false, Role.GUEST));
+
+        routes.add(new Route("/Utils/utilLinks", "Util Links", false,Role.ADMIN, Role.USER, Role.GUEST));
     }
 
     /**

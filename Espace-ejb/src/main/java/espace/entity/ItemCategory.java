@@ -16,6 +16,13 @@ public class ItemCategory extends BaseEntity {
     @OneToMany(mappedBy = "category")
     private List<Item> items;
 
+    public ItemCategory() {
+    }
+
+    public ItemCategory(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }

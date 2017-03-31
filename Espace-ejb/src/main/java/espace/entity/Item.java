@@ -1,9 +1,6 @@
 package espace.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -17,10 +14,13 @@ public class Item extends BaseEntity {
     private String description;
 
     @NotNull
+    @OneToOne
+    private User user;
+
+    @NotNull
     @Min(0)
     private Double price;
 
-    @NotNull
     @ManyToOne
     private ItemCategory category;
 
@@ -54,5 +54,13 @@ public class Item extends BaseEntity {
 
     public void setCategory(ItemCategory category) {
         this.category = category;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

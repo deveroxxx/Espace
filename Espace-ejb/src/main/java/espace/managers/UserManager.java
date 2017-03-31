@@ -1,5 +1,6 @@
 package espace.managers;
 
+import espace.entity.GroupRole;
 import espace.entity.User;
 import espace.enums.Role;
 import espace.exceptions.EntityAlreadyExistException;
@@ -8,12 +9,16 @@ import espace.utils.SHA256Hash;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.List;
 
 @Stateless
 @LocalBean
 public class UserManager extends TemplateManager {
+
+    @Inject
+    GroupRoleManager groupRoleManager;
 
     public UserManager() {
     }
@@ -33,11 +38,16 @@ public class UserManager extends TemplateManager {
                 user.setPicture("/Content/images/defaultUser.jpg");
             }
 
-
             super.add(user);
             return user;
         } else {
             throw new EntityAlreadyExistException("User is already exist");
+        }
+    }
+
+    public void addUserRole(User user, Role role) {
+        if (!getRoles(user.getUserName()).contains(role)) {
+            groupRoleManager.addRole(new GroupRole(role, user.getUserName()));
         }
     }
 

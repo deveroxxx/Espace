@@ -28,7 +28,7 @@ public class ItemCategoryManager extends TemplateManager {
     public ItemCategory getByName(String name) {
         String hql = "select ic from ItemCategory ic where ic.name = :name";
         HashMap<String, Object> params = new HashMap<String, Object>();
-        params.put(":name", name);
+        params.put("name", name);
         return (ItemCategory) getUniqueItemByFilter(hql, params);
     }
 

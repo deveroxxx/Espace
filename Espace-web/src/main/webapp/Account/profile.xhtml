@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+<h:body>
+    <ui:composition template="/Shared/commonLayout.xhtml">
+        <ui:define name="content">
+
+            #{dtProfileView.updatePage()}
+            <h3>Welcome #{not empty dtProfileView.user.realName ?  dtProfileView.user.realName : dtProfileView.user.userName}"</h3>
+            <p:tabView id="tabview1" orientation="left" activeIndex="#{dtProfileView.page}">
+                <p:ajax event="tabChange"   listener="#{dtProfileView.changeActiveTab}" />
+                <p:tab title="My Profile" id="tab0" >
+                    <h:panelGrid columns="2" cellpadding="10">
+
+                        <p:panelGrid columns="2">
+                            <f:facet name="header">
+                                <h:graphicImage value="#{dtProfileView.user.picture}" width="200" height="171" />
+                            </f:facet>
+
+                            <h:outputText value="Login Name:" />
+                            <h:outputText value="#{dtProfileView.user.userName}" />
+
+                            <h:outputText value="Real Name:" />
+                            <h:outputText value="#{dtProfileView.user.realName}" />
+
+                            <h:outputText value="Id:" />
+                            <h:outputText value="#{dtProfileView.user.id}" />
+
+                            <h:outputText value="Date of birth" />
+                            <h:outputText value="#{not empty dtProfileView.user.dateOfBirth ?  dtProfileView.user.dateOfBirth : 'Unknown'}" />
+
+                            <h:outputText value="Roles: " />
+                            <ui:repeat value="#{dtProfileView.userRoles}" var="role">
+                                <h:outputText value="#{role}, " />
+                            </ui:repeat>
+
+                        </p:panelGrid>
+
+                    </h:panelGrid>
+                </p:tab>
+                <p:tab title="Edit profile" id="tab1" >
+                    <h:panelGrid>
+
+                        <h3>Chnage profile picture</h3>
+                        <h:form enctype="multipart/form-data">
+                            <div class="form-horizontal">
+                                <p:fileUpload value="#{fileUploadView.file}" mode="simple" skinSimple="true"/>
+                            </div>
+                            <div class="form-horizontal">
+                                <p:commandButton value="Uploade image" ajax="false" actionListener="#{fileUploadView.upload(dtProfileView.user)}"  >
+                                    <!--   <f:actionListener binding="# {fileUploadView.upload(dtProfileView.user)}" />   /-->
+                                </p:commandButton>
+                            </div>
+                        </h:form>
+
+                        <h:graphicImage value="#{dtProfileView.user.picture}" width="200" height="171" />
+
+                        <h:form id="glob">
+
+                            <div class="form-group">
+                                <label class ="col-md-2 control-label">User Name:</label>
+                                <div class="col-md-10">
+                                    <h:inputText id="name" styleClass="form-control" value="#{dtProfileView.user.userName}"></h:inputText>
+                                    <p:message for="name" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class ="col-md-12 control-label">DateOfBirth:</label>
+                                <div class="col-md-10">
+                                    <h:inputText id="date" styleClass="form-control" value="#{dtProfileView.user.dateOfBirth}">
+                                        <f:convertDateTime pattern="yyyy-MM-dd" />
+                                    </h:inputText>
+                                    <p:message for="date" />
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <p:commandButton ajax="false" validateClient="true" value="Save Changes" type="submit" action="#{dtProfileView.saveChanges()}"></p:commandButton>
+                                </div>
+                            </div>
+
+                        </h:form>
+
+
+                    </h:panelGrid>
+                </p:tab>
+
+                <p:tab title="My requests" id="tab2" >
+
+                    <p:accordionPanel dynamic="true" cache="true" id="accPanel1">
+                        <p:tab title="Obtain Requests">
+
+                            <p:dataTable  id="datatable1" var="oRequest" value="#{dtProfileView.obtainmentRequestList}">
+                                <f:facet name="header">
+                                    ObtainementRequests
+                                </f:facet>
+                                <p:column style="width:16px">
+                                    <p:rowToggler />
+                                </p:column>
+                                <p:column headerText="Id">
+                                    <h:outputText value="#{oRequest.id}" />
+                                </p:column>
+                                <p:column headerText="Product Id">
+                                    <h:outputText value="#{oRequest.product.id}" />
+                                </p:column>
+                                <p:column headerText="Product Id">
+                                    <h:outputText value="#{oRequest.status}" />
+                                </p:column>
+
+                                <p:rowExpansion id="extension1" >
+                                    <h:form id="form1">
+                                        <h:panelGrid columns="2" cellpadding="5">
+                                            <h:outputText value="Description: " style="font-weight: bold" />
+                                            <h:outputText value="#{oRequest.description}" />
+                                        </h:panelGrid>
+                                        <div class="form-group">
+
+                                            <p:inputTextarea id="rcomment" value="#{commentController.requestCommentMessage}" rows="6" cols="50" />
+                                            <br/>
+
+                                            <p:commandButton update="@form" value="Add comment" type="submit" action="#{commentController.addCommentToRequest(oRequest)}"></p:commandButton>
+                                            <p:commandButton
+                                                    style="display: none"
+                                                    widgetVar="updateButton1"
+                                                    update="@form"
+                                            />
+
+                                        </div>
+                                        <br/>
+                                        <h5>Comments: </h5>
+                                        <br/>
+                                        <p:outputPanel style="display:block" id="outpanel1">
+                                            <ui:repeat value="#{oRequest.comments}" var="singleComment">
+
+                                                <a class="pull-left">
+                                                    <h:graphicImage value="#{singleComment.user.picture}" width="60" height="60" />
+                                                </a>
+                                                <h:outputText rendered="#{not empty singleComment.previous.comment}" value="Replayed to: #{singleComment.previous.comment} " style="font-weight: bold" />
+                                                <br/>
+                                                <h:outputText value="Author: #{singleComment.user.name} " style="font-weight: bold" />
+                                                <p:commandLink style="color: blue"
+                                                               value="reply"
+                                                               onclick="PF('dlg').show();">
+                                                    reply
+                                                    <f:ajax  listener="#{commentController.setParentComment(singleComment)}" />
+                                                </p:commandLink>
+                                                <br/>
+                                                <h:outputText value="#{singleComment.comment}" />
+                                                <br/>
+
+                                            </ui:repeat>
+                                        </p:outputPanel>
+                                    </h:form>
+                                </p:rowExpansion>
+
+                            </p:dataTable>
+
+                        </p:tab>
+
+
+                        <p:tab title="Repleace Requests" >
+                            <p:dataTable var="oRequest" value="#{dtProfileView.replacementRequestsList}">
+                                <f:facet name="header">
+                                    replacementRequestsList
+                                </f:facet>
+                                <p:column style="width:16px">
+                                    <p:rowToggler />
+                                </p:column>
+                                <p:column headerText="Id">
+                                    <h:outputText value="#{oRequest.id}" />
+                                </p:column>
+                                <p:column headerText="Product Id">
+                                    <h:outputText value="#{oRequest.product.id}" />
+                                </p:column>
+                                <p:column headerText="Product Id">
+                                    <h:outputText value="#{oRequest.status}" />
+                                </p:column>
+
+                                <p:rowExpansion>
+                                    <h:form id="form2">
+                                        <h:panelGrid columns="2" cellpadding="5">
+                                            <h:outputText value="Description: " style="font-weight: bold" />
+                                            <h:outputText value="#{oRequest.reason}" />
+                                        </h:panelGrid>
+                                        <div class="form-group">
+
+                                            <p:inputTextarea id="comment" value="#{commentController.requestCommentMessage}" rows="6" cols="50" />
+                                            <br/>
+
+                                            <p:commandButton update="@form"  value="Add comment" actionListener ="#{commentController.addCommentToRequest(oRequest)}"></p:commandButton>
+                                            <p:commandButton
+                                                    style="display: none"
+                                                    widgetVar="updateButton2"
+                                                    update="@form"
+                                            />
+
+                                        </div>
+                                        <br/>
+                                        <h5>Comments: </h5>
+                                        <br/>
+                                        <p:outputPanel style="display:block" id="outpanel2">
+                                            <ui:repeat value="#{oRequest.comments}" var="singleComment">
+
+                                                <a class="pull-left">
+                                                    <h:graphicImage value="#{singleComment.user.picture}" width="60" height="60" />
+                                                </a>
+                                                <h:outputText rendered="#{not empty singleComment.previous.comment}" value="Replayed to: #{singleComment.previous.comment} " style="font-weight: bold" />
+                                                <br/>
+                                                <h:outputText value="Author: #{singleComment.user.name} " style="font-weight: bold" />
+                                                <p:commandLink style="color: blue"
+                                                               value="reply"
+                                                               onclick="PF('dlg2').show();">
+                                                    <f:ajax  listener="#{commentController.setParentComment(singleComment)}" />
+                                                    reply
+                                                </p:commandLink>
+                                                <br/>
+                                                <h:outputText value="#{singleComment.comment}" />
+                                                <br/>
+
+                                            </ui:repeat>
+                                        </p:outputPanel>
+                                    </h:form>
+                                </p:rowExpansion>
+                            </p:dataTable>
+
+                        </p:tab>
+                    </p:accordionPanel>
+
+                </p:tab>
+
+                <p:tab title="My items" id="tab3" >
+                    <h:form>
+
+                        <p:dataTable var="product" value="#{dtProfileView.user.ownedProducts}">
+                            <p:column headerText="Id">
+                                <h:outputText value="#{product.id}" />
+                            </p:column>
+                            <p:column headerText="Product name">
+                                <h:outputText value="#{product.productContainer.name}" />
+                            </p:column>
+                            <p:column headerText="Pickup date">
+                                <h:outputText value="#{product.startOfOwnership}" />
+                            </p:column>
+                            <p:column headerText="Detalis">
+                                <h:commandButton  value="View" action="#{SelectedProductView.initialization(product.productContainer.id)}" />
+                            </p:column>
+                            <p:column headerText="Return product">
+                                <h:commandButton  value="Return" action="#{dtProfileView.returnProduct(product)}" />
+                            </p:column>
+                            <p:column headerText="Replacement Request">
+                                <p:commandButton  actionListener="#{dtProfileView.selectedOwnerDetails(product)}" rendered="#{dtProfileView.isReplacementRequest(product)}" value="Replacement request" onclick="PF('replaceDlg').show();"></p:commandButton>
+                                <h:outputText value="Pending" rendered="#{dtProfileView.isReplacementRequestPending(product)}"/>
+                                <h:outputText value="Rejected" rendered="#{dtProfileView.isReplacementRequestRejected(product)}"/>
+
+                                <p:dialog header="Comment dialog" widgetVar="replaceDlg" showEffect="fade" hideEffect="fade">
+                                    <p:inputTextarea value="#{dtProfileView.reason}" rows="6" cols="33" />
+                                    <br/>
+                                    <p:commandButton ajax="false" value="Submit" action="#{dtProfileView.createReplacementRequest(product.productContainer)}" type="submit"/>
+                                    <p:commandButton value="Discard" onclick="PF('replaceDlg').hide();"/>
+                                </p:dialog>
+
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+
+                </p:tab>
+
+            </p:tabView>
+
+            <h:form>
+                <p:dialog header="Comment dialog" widgetVar="dlg" showEffect="fade" hideEffect="fade">
+                    <p:inputTextarea value="#{commentController.commentMessage}" rows="6" cols="33" />
+                    <br/>
+                    <p:commandButton
+                            onclick="PF('dlg').hide();"
+                            action="#{dtProfileView.click1()}"
+                            value="Submit"
+                            actionListener="#{commentController.addCommentToComment(commentController.parentComment)}"
+                            type="submit"/>
+                    <p:commandButton value="Discard" onclick="PF('dlg').hide();"/>
+                </p:dialog>
+            </h:form>
+            <h:form>
+                <p:dialog header="Comment dialog" widgetVar="dlg2" showEffect="fade" hideEffect="fade">
+                    <p:inputTextarea value="#{commentController.commentMessage}" rows="6" cols="33" />
+                    <br/>
+                    <p:commandButton
+                            onclick="PF('dlg2').hide();"
+                            action="#{dtProfileView.click2()}"
+                            value="Submit"
+                            actionListener="#{commentController.addCommentToComment(commentController.parentComment)}"
+                            type="submit"/>
+                    <p:commandButton value="Discard" onclick="PF('dlg2').hide();"/>
+                </p:dialog>
+            </h:form>
+
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>

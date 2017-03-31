@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:body>
+
+
+
+    <ui:composition template="/Shared/commonLayout.xhtml">
+
+
+
+        <ui:define name="content">
+            #{dtItemList.init()}
+            #{compareController.refresh()}
+            <div class="col-md-2">
+                <div class="container body-content">
+                    <h2>List Of Tools</h2>
+                    <h:form>
+
+                        <p:toolbar>
+                            <f:facet name="right">
+                                <p:commandButton rendered="#{request.isUserInRole('ADMIN')}" type="button" value="New" icon="ui-icon-document" />
+
+                                <p:commandButton oncomplete="PF('dlg1').hide();"
+                                                 style="display: none"
+                                                 widgetVar="confirmButton"
+                                                 onclick="PF('dlg1').show();"
+                                                 value="Delete"
+                                                 update="@form"
+                                                 action="#{edititem.delete(dtItemList.selectedItem)}" >
+
+                                    <p:confirm header="Confirmation" message="Do you want to continue?" icon="ui-icon-alert" />
+                                </p:commandButton>
+
+                                <p:commandButton value="Delete"
+                                                 rendered="#{request.isUserInRole('admin')}"
+                                                 actionListener="#{edititem.isRecordSelectedForDelete(dtItemList.selectedItem)}" />
+
+                                <h:commandButton  value="Edit"
+                                                  rendered="#{request.isUserInRole('admin')}"
+                                                  action="#{edititem.initialization(dtItemList.selectedItem.id)}" />
+                                <h:commandButton  value="View" action="#{SelecteditemView.initialization(dtItemList.selectedItem.id)}" />
+
+                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                </p:confirmDialog>
+
+                            </f:facet>
+
+
+
+                            <f:facet name="left">
+                                <h:commandButton value="Request for item" action="#{SelecteditemView.initialization(dtItemList.selectedItem.id)}"/>
+                            </f:facet>
+                        </p:toolbar>
+
+                        <p:dataTable var="item" value="#{dtItemList.lazyModel}" rows="10"
+                                     widgetVar="itemTable"
+                                     styleClass="table"
+                                     selectionMode="single" selection="#{dtItemList.selectedItem}" rowKey="#{item.id}"
+                                     lazy="true"
+                                     resizableColumns="true"
+                                     paginator="true"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="1,3,5,10,15,50">
+                            <p:column id="item_id" headerText="Id" sortBy="#{item.id}" filterBy="#{item.id}">
+                                <h:outputText value="#{item.id}" />
+                            </p:column>
+
+                            <p:column headerText="Name" sortBy="#{item.name}" filterBy="#{item.name}">
+                                <h:outputText value="#{item.name}" />
+                            </p:column>
+
+                            <p:column headerText="Price" sortBy="#{item.price}">
+                                <h:outputText value="#{item.price}" />
+                            </p:column>
+
+                            <p:column headerText="Description" filterBy="#{item.description}">
+                                <h:outputText value="#{item.description}"/>
+                            </p:column>
+
+                            <p:column headerText="Category" filterBy="#{item.category}" filterMatchMode="exact">
+                                <f:facet name="filter">
+                                    <p:selectOneMenu onchange="PF('itemTable').filter()">
+                                        <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true" />
+                                        <f:selectItems value="#{dtItemList.itemCategoryList}" var="category" itemLabel="#{category.name}" itemValue="#{category.id}"/>
+                                    </p:selectOneMenu>
+                                </f:facet>
+                                <h:outputText value="#{item.category}" converter="#{itemCategoryConverter}"/>
+                            </p:column>
+
+                        </p:dataTable>
+
+
+                        <p:toolbar>
+                            <f:facet name="right">
+                                <h:panelGrid columns="1" cellpadding="5">
+                                    <h:commandButton value="Compare" action="#{compareController.navigate()}" />
+                                </h:panelGrid>
+                            </f:facet>
+                        </p:toolbar>
+                    </h:form>
+
+                </div>
+            </div>
+            <p:dialog header="Info:" widgetVar="dlg1" minHeight="40">
+                <h:outputText value="Please wait for JMS response..." />
+                <h:graphicImage value="/faces/Content/images/loading.gif" width="200" height="171" />
+            </p:dialog>
+
+
+
+        </ui:define>
+
+    </ui:composition>
+
+
+
+
+
+</h:body>
+
+
+</html>

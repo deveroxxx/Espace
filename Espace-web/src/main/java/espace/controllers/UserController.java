@@ -3,7 +3,7 @@ package espace.controllers;
 
 import espace.entity.User;
 import espace.exceptions.EntityAlreadyExistException;
-import espace.service.UserManager;
+import espace.managers.UserManager;
 import espace.utils.Messages;
 
 import javax.annotation.PostConstruct;
@@ -11,7 +11,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import java.io.Serializable;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @ManagedBean(name = "userController", eager = true)

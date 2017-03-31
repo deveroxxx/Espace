@@ -1,13 +1,12 @@
-package espace.service;
+package espace.managers;
 
+import espace.data.ItemQueryData;
 import espace.entity.Item;
 import espace.exceptions.EntityNotFoundException;
 import espace.template.TemplateManager;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 @Stateless
 @LocalBean
@@ -24,6 +23,16 @@ public class ItemManager extends TemplateManager {
     public void delete(Item item) throws EntityNotFoundException {
         super.deleteById(item.getId());
     }
+
+
+    public void refreshListData(ItemQueryData data) {
+        //TODO: filteres query lekérdezést megcsinálni
+        String hql = "select item from Item item";
+        data.setResult(list(hql));
+        data.setTotalResultCount(data.getResult().size());
+    }
+
+
 
     protected Class getMyClass() {
         return Item.class;

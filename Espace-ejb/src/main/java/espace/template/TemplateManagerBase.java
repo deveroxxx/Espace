@@ -2,10 +2,7 @@ package espace.template;
 
 import espace.exceptions.EntityNotFoundException;
 
-import javax.persistence.EntityManager;
-import javax.persistence.LockModeType;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -56,7 +53,6 @@ public abstract class TemplateManagerBase<T> {
     }
 
     protected List<T> listByFilter(String query, Map<String, Object> params) {
-       // logger.trace("Listing records by filter.");
         TypedQuery<T> qry = getEntityManager().createQuery(query, getMyClass());
         setParameters(qry, params);
         List<T> objList = qry.getResultList();
@@ -64,7 +60,6 @@ public abstract class TemplateManagerBase<T> {
     }
 
     protected List<T> listByFilter(String query, Map<String, Object> params, int maxResult) {
-        //logger.trace("Listing records by filter (maxResult=" + maxResult + ").");
         TypedQuery<T> qry = getEntityManager().createQuery(query, getMyClass());
         qry.setMaxResults(maxResult);
         setParameters(qry, params);
@@ -78,8 +73,11 @@ public abstract class TemplateManagerBase<T> {
     protected T getUniqueItemByFilter(String query, Map<String, Object> params) {
         TypedQuery<T> qry = getEntityManager().createQuery(query, getMyClass());
         setParameters(qry, params);
-        List<T> objList = qry.getResultList();
-        return objList.size() == 1 ? objList.get(0) : null;
+        try {
+            return qry.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     protected Long getCountResultByFilter(String countQuery, Map<String, Object> params) {

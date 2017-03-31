@@ -53,7 +53,7 @@ public class LoginController implements Serializable {
             return null;
         }
 
-        return "/Product/listProducts.xhtml?faces-redirect=true";
+        return "/Items/listItems.xhtml?faces-redirect=true";
     }
 
     public String getUsername() {

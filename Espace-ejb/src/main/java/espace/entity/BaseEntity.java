@@ -38,6 +38,6 @@ public class BaseEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "BaseEntity{" + "id=" + id + '}';
+        return "ID: " + id;
     }
 }

@@ -3,6 +3,7 @@ package espace.service;
 import espace.entity.User;
 import espace.exceptions.EntityAlreadyExistException;
 import espace.template.TemplateManager;
+import espace.utils.SHA256Hash;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -21,6 +22,9 @@ public class UserManager extends TemplateManager {
         params.put("userName", user.getUserName());
         List<User> users = listByFilter(querry, params);
         if (users.isEmpty()) {
+            // Hashing password
+            String password = user.getPassword();
+            user.setPassword(SHA256Hash.sha256(password));
             // set default profile picture
             if (user.getPicture() == null || user.getPicture() == "") {
                 user.setPicture("/Content/images/defaultUser.jpg");

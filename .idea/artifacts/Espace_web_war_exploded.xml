@@ -1,18 +1,24 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="Espace-web:war exploded">
-    <output-path>$PROJECT_DIR$/out/artifacts/Espace_web_war_exploded</output-path>
+    <output-path>$PROJECT_DIR$/Espace-web/target/Espace-web-1.0-SNAPSHOT</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="Espace-web" />
-          <element id="module-output" name="Espace-ejb" />
         </element>
         <element id="directory" name="lib">
+          <element id="archive" name="Espace-ejb-1.0-SNAPSHOT.jar">
+            <element id="module-output" name="Espace-ejb" />
+          </element>
           <element id="library" level="project" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final" />
+          <element id="library" level="project" name="Maven: javax:javaee-api:7.0" />
           <element id="library" level="project" name="Maven: com.sun.mail:javax.mail:1.5.0" />
           <element id="library" level="project" name="Maven: javax.activation:activation:1.1" />
           <element id="library" level="project" name="Maven: org.primefaces:primefaces:6.0" />
         </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/Espace-web/target/Espace-web-1.0-SNAPSHOT/META-INF/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="Espace-web/web/Web" />
     </root>

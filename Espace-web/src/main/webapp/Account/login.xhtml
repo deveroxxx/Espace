@@ -26,7 +26,7 @@
                     <div class="form-group">
                         <label class ="col-md-2 control-label">User Name</label>
                         <div class="col-md-5">
-                            <h:inputText id="user" styleClass="form-control" value="#{loginBean.username}"
+                            <h:inputText id="user" styleClass="form-control" value="#{loginController.username}"
                                          required="true" requiredMessage="Username is required!"/>
                         </div>
                         <div class="col-md-5">
@@ -38,7 +38,7 @@
                     <div class="form-group">
                         <label class ="col-md-2 control-label">Password</label>
                         <div class="col-md-5">
-                            <h:inputSecret id="password" styleClass="form-control" value="#{loginBean.password}"
+                            <h:inputSecret id="password" styleClass="form-control" value="#{loginController.password}"
                                            required="true" requiredMessage="Password is required!"/>
                         </div>
                         <div class="col-md-5">
@@ -49,7 +49,7 @@
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-2">
                             <p:commandButton styleClass="btn btn-success" value="Log in"
-                                             action="#{loginBean.login()}" update="@form"/>
+                                             action="#{loginController.login()}" update="@form"/>
                         </div>
 
                         <div class="col-md-3 checkbox">

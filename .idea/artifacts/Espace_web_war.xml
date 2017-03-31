@@ -3,11 +3,6 @@
     <output-path>$PROJECT_DIR$/Espace-web/target</output-path>
     <root id="archive" name="Espace-web-1.0-SNAPSHOT.war">
       <element id="artifact" artifact-name="Espace-web:war exploded" />
-      <element id="directory" name="WEB-INF">
-        <element id="directory" name="classes">
-          <element id="module-output" name="Espace-ejb" />
-        </element>
-      </element>
     </root>
   </artifact>
 </component>

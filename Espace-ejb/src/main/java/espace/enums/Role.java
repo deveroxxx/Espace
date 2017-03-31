@@ -1,5 +1,5 @@
 package espace.enums;
 
-public enum UserRole {
+public enum Role {
     GUEST, USER, ADMIN
 }

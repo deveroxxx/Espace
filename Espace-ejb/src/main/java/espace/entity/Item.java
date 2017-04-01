@@ -14,8 +14,11 @@ public class Item extends BaseEntity {
     private String description;
 
     @NotNull
-    @OneToOne
+    @ManyToOne
     private User user;
+
+    @OneToOne
+    private Auction auction;
 
     @NotNull
     @Min(0)
@@ -23,6 +26,9 @@ public class Item extends BaseEntity {
 
     @ManyToOne
     private ItemCategory category;
+
+    private String picture; // Termékkép elérési url
+
 
     public String getName() {
         return name;
@@ -62,5 +68,21 @@ public class Item extends BaseEntity {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Auction getAuction() {
+        return auction;
+    }
+
+    public void setAuction(Auction auction) {
+        this.auction = auction;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 }

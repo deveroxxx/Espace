@@ -1,9 +1,6 @@
 package espace.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
@@ -28,8 +25,8 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user")
     private List<Item> items; // A felhasználó tárgyai
 
-    @OneToMany(mappedBy = "topBidder")
-    private List<Auction> topBids; // A felhasználó licitjei ahol ő vezet
+    @OneToMany(mappedBy = "user")
+    private List<Bid> myBids; // A felhasználó licitjei
 
     @OneToMany(mappedBy = "owner")
     private List<Auction> myAuctions; //A felhasználó aukciói
@@ -85,19 +82,19 @@ public class User extends BaseEntity {
         this.items = items;
     }
 
-    public List<Auction> getTopBids() {
-        return topBids;
-    }
-
-    public void setTopBids(List<Auction> topBids) {
-        this.topBids = topBids;
-    }
-
     public List<Auction> getMyAuctions() {
         return myAuctions;
     }
 
     public void setMyAuctions(List<Auction> myAuctions) {
         this.myAuctions = myAuctions;
+    }
+
+    public List<Bid> getMyBids() {
+        return myBids;
+    }
+
+    public void setMyBids(List<Bid> myBids) {
+        this.myBids = myBids;
     }
 }

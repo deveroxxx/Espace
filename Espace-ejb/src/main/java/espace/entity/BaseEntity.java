@@ -3,7 +3,10 @@ package espace.entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
 
 @MappedSuperclass
 public class BaseEntity implements Serializable {
@@ -12,7 +15,11 @@ public class BaseEntity implements Serializable {
     @GeneratedValue
     private Long id;
 
-    private Boolean closed = false;
+    @NotNull
+    private Boolean deleted = false;
+
+    @NotNull
+    private Date createdOn = Calendar.getInstance().getTime();
 
     public Long getId() {
         return id;
@@ -22,12 +29,20 @@ public class BaseEntity implements Serializable {
         this.id = id;
     }
 
-    public Boolean getClosed() {
-        return closed;
+    public Boolean getDeleted() {
+        return deleted;
     }
 
-    public void setClosed(Boolean closed) {
-        this.closed = closed;
+    public void setDeleted(Boolean closed) {
+        this.deleted = closed;
+    }
+
+    public Date getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
     }
 
     @Override

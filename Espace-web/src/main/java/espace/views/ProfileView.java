@@ -1,5 +1,6 @@
 package espace.views;
 
+import espace.entity.Auction;
 import espace.entity.User;
 import espace.enums.Role;
 import espace.managers.ItemManager;
@@ -30,6 +31,9 @@ public class ProfileView implements Serializable {
 
     private User user;
     private List<Role> userRoles;
+    private List<Auction> myAuctions;
+    private List<Auction> myTopBids;
+
 
     private int page = 0;
     private User tempUser;

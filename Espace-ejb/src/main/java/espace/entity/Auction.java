@@ -1,11 +1,9 @@
 package espace.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Auction extends BaseEntity {
@@ -17,8 +15,8 @@ public class Auction extends BaseEntity {
     @ManyToOne
     private User owner;
 
-    @ManyToOne
-    private User topBidder;
+    @OneToMany(mappedBy = "auction")
+    private List<Bid> bids;
 
     @OneToOne
     private Item item;
@@ -29,6 +27,25 @@ public class Auction extends BaseEntity {
 
     @NotNull
     private Date expirationDate;
+
+    /**
+     * Visszaadja a legtöbbet licitáló user-t, vagy null-t
+     * @return User or Null
+     */
+    @Transient
+    private User getTopBidder() {
+        double maxBid = -1;
+        User maxBidUser = null;
+        if (bids != null && !bids.isEmpty()) {
+            for (Bid bid : bids) {
+                if (bid.getBid() > maxBid) {
+                    maxBidUser = bid.getUser();
+                    maxBid = bid.getBid();
+                }
+            }
+        }
+        return maxBidUser;
+    }
 
 
     public String getHeader() {
@@ -45,14 +62,6 @@ public class Auction extends BaseEntity {
 
     public void setOwner(User owner) {
         this.owner = owner;
-    }
-
-    public User getTopBidder() {
-        return topBidder;
-    }
-
-    public void setTopBidder(User topBidder) {
-        this.topBidder = topBidder;
     }
 
     public Item getItem() {
@@ -86,5 +95,6 @@ public class Auction extends BaseEntity {
     public void setExpirationDate(Date expirationDate) {
         this.expirationDate = expirationDate;
     }
+
 }
 

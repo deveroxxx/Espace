@@ -7,6 +7,7 @@ import espace.template.TemplateManager;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import java.util.HashMap;
+import java.util.List;
 
 @Stateless
 @LocalBean
@@ -30,6 +31,12 @@ public class ItemCategoryManager extends TemplateManager {
         HashMap<String, Object> params = new HashMap<String, Object>();
         params.put("name", name);
         return (ItemCategory) getUniqueItemByFilter(hql, params);
+    }
+
+    @Override
+    public List<ItemCategory> listAll() {
+        String hql = "select ic from ItemCategory ic where ic.deleted = false";
+        return list(hql);
     }
 
 

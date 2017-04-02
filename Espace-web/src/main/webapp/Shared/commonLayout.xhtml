@@ -35,7 +35,7 @@
 
                         <ui:repeat value="#{commonLayoutController.routes}" var="route">
                             <li class="#{route.isActive()}">
-                                <h:link value="#{route.name}" outcome="#{route.path}" rendered="#{route.isRendered(true)}" />
+                                <h:link value="#{route.name}" outcome="#{route.path}" rendered="#{route.isRenderAble(true)}" />
                             </li>
                         </ui:repeat>
 
@@ -48,7 +48,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         <ui:repeat value="#{commonLayoutController.routes}" var="route">
                             <li class="#{route.isActive()}">
-                                <h:link value="#{route.name}" outcome="#{route.path}" rendered="#{route.isRendered(false)}" />
+                                <h:link value="#{route.name}" outcome="#{route.path}" rendered="#{route.isRenderAble(false)}" />
                             </li>
                         </ui:repeat>
                     </ul>
@@ -73,8 +73,6 @@
                 <h:outputText value="&#160;&#160;" />
                 Espace coop (Bakos János)
             </p>
-            <h:outputText value="Logged in users number:  " />
-            #{loginBean.loggedInUsersNumber()}
         </footer>
     </div>
 

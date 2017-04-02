@@ -13,7 +13,12 @@ public class LoggingInterceptor {
 
     @AroundInvoke
     public Object logMethodEntry(InvocationContext ctx) throws Exception {
-        LOGGER.log(Level.INFO, "Entering method: " + ctx.getMethod().getName());
-        return ctx.proceed();
+        try {
+            LOGGER.log(Level.INFO, "Entering method: " + ctx.getMethod().getName());
+            return ctx.proceed();
+        } finally {
+            LOGGER.log(Level.INFO, "Leaving method: " + ctx.getMethod().getName());
+        }
+
     }
 }

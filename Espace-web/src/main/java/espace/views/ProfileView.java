@@ -1,10 +1,13 @@
 package espace.views;
 
 import espace.entity.Auction;
+import espace.entity.Item;
 import espace.entity.User;
 import espace.enums.Role;
+import espace.managers.AuctionManager;
 import espace.managers.ItemManager;
 import espace.managers.UserManager;
+import espace.utils.Messages;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.TabChangeEvent;
 
@@ -22,17 +25,22 @@ import java.util.List;
 public class ProfileView implements Serializable {
 
     @Inject
-    UserManager userManager;
+    private UserManager userManager;
 
     @Inject
-    ItemManager itemManager;
+    private ItemManager itemManager;
+
+    @Inject
+    private AuctionManager auctionManager;
 
 
 
     private User user;
     private List<Role> userRoles;
-    private List<Auction> myAuctions;
-    private List<Auction> myTopBids;
+    private List<Auction> myActiveAuctions;
+    private List<Auction> myClosedAuctions;
+    private List<Auction> myBids;
+    private List<Item> myItems;
 
 
     private int page = 0;
@@ -46,6 +54,11 @@ public class ProfileView implements Serializable {
         userRoles = userManager.getRoles(user.getUserName());
         page = 0;
         tempUser = new User();
+
+        myActiveAuctions = auctionManager.listAuctionsByUser(user, false);
+        myBids = auctionManager.listAuctionByUserBids(user);
+        myItems = itemManager.listItemsByUser(user);
+        
     }
 
     public void updatePage() {
@@ -53,52 +66,11 @@ public class ProfileView implements Serializable {
         userRoles = userManager.getRoles(user.getUserName());
         tempUser = new User();
     }
-
-    public String getReason() {
-        return reason;
-    }
-
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
-
-    public User getTempUser() {
-        return tempUser;
-    }
-
-    public void setTempUser(User tempUser) {
-        this.tempUser = tempUser;
-    }
-
-    public int getPage() {
-        return page;
-    }
-
-    public void setPage(int page) {
-        this.page = page;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public List<Role> getUserRoles() {
-        return userRoles;
-    }
-
-    public void setUserRoles(List<Role> userRoles) {
-        this.userRoles = userRoles;
-    }
-
+    
     public String saveChanges() {
         try {
             userManager.update(user);
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Info:", "Operation was successful!");
-            RequestContext.getCurrentInstance().showMessageInDialog(message);
+            Messages.info("Save", "Operation was successful!");
             return null;
         } catch (Exception e) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Warning:", "Unexpeced error!");
@@ -134,8 +106,7 @@ public class ProfileView implements Serializable {
             //System.out.println(page);
         }
     }
-
-
+    
     public void click1() {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('updateButton1').jq.click();");
@@ -146,4 +117,78 @@ public class ProfileView implements Serializable {
         context.execute("PF('updateButton2').jq.click();");
     }
 
+
+
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Role> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(List<Role> userRoles) {
+        this.userRoles = userRoles;
+    }
+
+    public List<Auction> getMyActiveAuctions() {
+        return myActiveAuctions;
+    }
+
+    public void setMyActiveAuctions(List<Auction> myActiveAuctions) {
+        this.myActiveAuctions = myActiveAuctions;
+    }
+
+    public List<Auction> getMyClosedAuctions() {
+        return myClosedAuctions;
+    }
+
+    public void setMyClosedAuctions(List<Auction> myClosedAuctions) {
+        this.myClosedAuctions = myClosedAuctions;
+    }
+
+    public List<Item> getMyItems() {
+        return myItems;
+    }
+
+    public void setMyItems(List<Item> myItems) {
+        this.myItems = myItems;
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public User getTempUser() {
+        return tempUser;
+    }
+
+    public void setTempUser(User tempUser) {
+        this.tempUser = tempUser;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public List<Auction> getMyBids() {
+        return myBids;
+    }
+
+    public void setMyBids(List<Auction> myBids) {
+        this.myBids = myBids;
+    }
 }

@@ -28,6 +28,9 @@ public class Auction extends BaseEntity {
     @NotNull
     private Date expirationDate;
 
+    @NotNull
+    private Boolean closed = false;
+
     /**
      * Visszaadja a legtöbbet licitáló user-t, vagy null-t
      * @return User or Null
@@ -96,5 +99,20 @@ public class Auction extends BaseEntity {
         this.expirationDate = expirationDate;
     }
 
+    public List<Bid> getBids() {
+        return bids;
+    }
+
+    public void setBids(List<Bid> bids) {
+        this.bids = bids;
+    }
+
+    public Boolean getClosed() {
+        return closed;
+    }
+
+    public void setClosed(Boolean closed) {
+        this.closed = closed;
+    }
 }
 

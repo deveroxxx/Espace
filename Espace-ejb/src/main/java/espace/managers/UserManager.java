@@ -1,20 +1,24 @@
 package espace.managers;
 
+import espace.entity.Auction;
 import espace.entity.GroupRole;
 import espace.entity.User;
 import espace.enums.Role;
 import espace.exceptions.EntityAlreadyExistException;
 import espace.template.TemplateManager;
+import espace.utils.LoggingInterceptor;
 import espace.utils.SHA256Hash;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 import java.util.HashMap;
 import java.util.List;
 
 @Stateless
 @LocalBean
+@Interceptors(LoggingInterceptor.class)
 public class UserManager extends TemplateManager {
 
     @Inject
@@ -23,13 +27,9 @@ public class UserManager extends TemplateManager {
     public UserManager() {
     }
 
+    //FIXME: enged reggelni valamiért létezőt is (debug majd)
     public User addUser(User user) throws EntityAlreadyExistException {
-
-        String querry = "select user from User user where user.userName = :userName";
-        HashMap<String, Object> params = new HashMap<String, Object>();
-        params.put("userName", user.getUserName());
-        List<User> users = listByFilter(querry, params);
-        if (users.isEmpty()) {
+        if (getUserByName(user.getUserName()) == null) {
             // Hashing password
             String password = user.getPassword();
             user.setPassword(SHA256Hash.sha256(password));
@@ -52,18 +52,24 @@ public class UserManager extends TemplateManager {
     }
 
     public User getUserByName(String userName) {
-        String querry = "select user from User user where user.userName = :userName";
+        //language=JPAQL
+        String querry = "select user from User user " +
+                        "where user.userName = :userName";
         HashMap<String, Object> params = new HashMap<String, Object>();
         params.put("userName", userName);
         return (User) getUniqueItemByFilter(querry, params);
     }
 
     public List<Role> getRoles(String userName) {
-        String querry = "select role.groupRole from GroupRole role where role.userName = :userName";
+        //language=JPAQL
+        String querry = "select role.groupRole from GroupRole role " +
+                        "where role.userName = :userName";
         HashMap<String, Object> params = new HashMap<String, Object>();
         params.put("userName", userName);
         return listByFilter(querry,params);
     }
+
+
 
 
     protected Class getMyClass() {

@@ -22,18 +22,18 @@ public class CommonLayoutController {
         routes = new ArrayList<>();
 
         // Could be read from DB but it is not in the scope of this project.
-        routes.add(new Route("/Product/listProducts", "Products"));
+        routes.add(new Route("/Items/listItems", "Products", true));
 
-        routes.add(new Route("/Admin/usersList", "Manage users", Role.ADMIN));
-        routes.add(new Route("/Admin/requestList", "Manage requests", Role.ADMIN));
-        routes.add(new Route("/Admin/addCategory", "Categories", Role.ADMIN));
+     //   routes.add(new Route("/Admin/usersList", "Manage users", Role.ADMIN));
+     //   routes.add(new Route("/Admin/requestList", "Manage requests", Role.ADMIN));
+     //   routes.add(new Route("/Admin/addCategory", "Categories", Role.ADMIN));
 
         routes.add(new Route("/Account/profile", "Profile", false, Role.ADMIN, Role.USER));
 
-        routes.add(new Route("/Account/login", "Login", false, Role.GUEST));
-        routes.add(new Route("/Account/register", "Register", false, Role.GUEST));
+        routes.add(new Route("/Account/login", "Login", false));
+        routes.add(new Route("/Account/register", "Register", false));
 
-        routes.add(new Route("/Utils/utilLinks", "Util Links", false,Role.ADMIN, Role.USER, Role.GUEST));
+        routes.add(new Route("/Utils/utilLinks", "Util Links", false));
     }
 
     /**
@@ -98,7 +98,7 @@ public class CommonLayoutController {
          * @param leftSide if the route should be displayed in the left menu
          * @return true if the route is renderable
          */
-        public boolean isRendered(boolean leftSide) {
+        public boolean isRenderAble(boolean leftSide) {
             if (leftSide != this.leftSide) {
                 return false;
             }
@@ -115,10 +115,6 @@ public class CommonLayoutController {
         public boolean isRendered() {
             // For login and signup
             if (roles.isEmpty()) {
-                return true;
-            }
-
-            if (roles.contains(Role.GUEST) && getExternalContext().getRemoteUser() == null) {
                 return true;
             }
 

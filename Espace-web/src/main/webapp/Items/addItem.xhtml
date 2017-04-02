@@ -1,0 +1,123 @@
+<ui:composition template="/Shared/commonLayout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+
+        <h2>Create new product</h2>
+
+        <h:form enctype="multipart/form-data">
+            <div class="form-horizontal">
+                <p:fileUpload value="#{fileUploadView.file}" label="Add file" mode="simple" skinSimple="true" styleClass="btn btn-default"/>
+
+
+                <p:commandButton value="Uploade image" ajax="false"
+                                 actionListener="#{fileUploadView.upload(itemController.item)}"
+                                 styleClass="btn btn-default"/>
+
+            </div>
+        </h:form>
+
+        <div class="row">
+
+            <div class="col-md-7">
+                <h:form id="glob" styleClass="form-horizontal">
+                    <div class="form-group">
+                        <label class ="col-md-3 control-label">Illustration:</label>
+                        <div class="col-md-9">
+                            <h:graphicImage value="#{productController.product.picture}" width="200" height="171" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class ="col-md-3 control-label">Product name:</label>
+                        <div class="col-md-4">
+                            <h:inputText id="name" required="true" styleClass="form-control" value="#{productController.product.name}"></h:inputText>
+                        </div>
+                        <div class="col-md-5">
+                            <p:message for="name" />
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class ="col-md-3 control-label">Price:</label>
+                        <div class="col-md-4">
+                            <h:inputText id="price" styleClass="form-control" value="#{productController.product.price}"></h:inputText>
+                        </div>
+                        <div class="col-md-5">
+                            <p:message for="price"  />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class ="col-md-3 control-label">Quantity:</label>
+                        <div class="col-md-4">
+                            <h:inputText id="quantity" styleClass="form-control" value="#{productController.product.quantity}"></h:inputText>
+                        </div>
+                        <div class="col-md-5">
+                            <p:message for="quantity" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class ="col-md-3 control-label">Description:</label>
+                        <div class="col-md-9">
+                            <h:inputTextarea styleClass="form-control" value="#{productController.product.description}"></h:inputTextarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class ="col-md-3 control-label">Category:</label>
+                        <div class="col-md-9">
+                            <p:selectOneMenu value="#{productController.productCategory}" converter="#{productCategoryConverter}">
+                                <f:selectItems value="#{productController.productCategories}" var="category" itemLabel="#{category.name}" itemValue="#{category}" />
+                            </p:selectOneMenu>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class ="col-md-3 control-label">Depot:</label>
+                        <div class="col-md-9">
+                            <p:selectOneMenu value="#{productController.depot}" converter="#{depotConverter}">
+                                <f:selectItems value="#{productController.depots}" var="depot" itemLabel="#{depot.name} (#{depot.address}) " itemValue="#{depot}" />
+                            </p:selectOneMenu>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class ="col-md-3 control-label">Manufacturer</label>
+                        <div class="col-md-9">
+                            <p:selectOneMenu value="#{productController.manufacturer}" converter="#{manufacturerConverter}">
+                                <f:selectItems value="#{productController.manufacturers}" var="manufacturer" itemLabel="#{manufacturer.name}" itemValue="#{manufacturer}" />
+                            </p:selectOneMenu>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <p:commandButton oncomplete="PF('dlg1').hide();"
+                                             update="glob"
+                                             validateClient="true"
+                                             value="Add new product"
+                                             type="submit"
+                                             action="#{productController.addProduct()}"
+                                             styleClass="btn btn-default"
+                                             onclick="PF('dlg1').show();">
+                            </p:commandButton>
+                        </div>
+                    </div>
+
+                </h:form>
+            </div>
+        </div>
+
+        <p:dialog header="Info:" widgetVar="dlg1" minHeight="40">
+            <h:outputText value="Please wait for JMS response..." />
+            <h:graphicImage value="/faces/Content/images/loading.gif" width="200" height="171" />
+        </p:dialog>
+
+    </ui:define>
+</ui:composition>

@@ -24,7 +24,6 @@ public abstract class TemplateManagerBase<T> {
     }
 
     public T selectForUpdate(Long id) {
-        //logger.trace("Select for update with id: " + id + ", class " + getMyClass());
         EntityManager em = getEntityManager();
         T t = em.find(getMyClass(), id, LockModeType.PESSIMISTIC_WRITE);
         em.flush();

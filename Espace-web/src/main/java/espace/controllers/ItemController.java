@@ -13,6 +13,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.jms.Message;
 import java.io.Serializable;
 import java.util.List;
 
@@ -45,14 +46,20 @@ public class ItemController implements Serializable {
         item.setPicture("/Content/images/defaultProduct.jpg");
     }
 
-    public String addItem(Item item) {
-        itemManager.add(item);
-        Messages.warn("Add", "Item added...");
-        return null;
+    public String addItem() {
+        try {
+            itemManager.add(item);
+            Messages.info("Add", "Item added...");
+        } catch (Exception e ) {
+            Messages.error("Error", "Something went wrong!");
+            return null;
+        }
+
+        return "/Account/profile.xhtml";
     }
 
     public String navigate() {
-        return "/Item/addItem.xhtml?faces-redirect=true";
+        return "/Items/addItem.xhtml?faces-redirect=true";
     }
 
 

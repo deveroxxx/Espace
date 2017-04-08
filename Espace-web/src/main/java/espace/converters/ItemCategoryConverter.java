@@ -11,7 +11,7 @@ import javax.faces.convert.Converter;
 import javax.inject.Inject;
 
 @ApplicationScoped
-@ManagedBean(name = "productCategoryConverter")
+@ManagedBean(name = "itemCategoryConverter")
 public class ItemCategoryConverter implements Converter {
 
     @Inject

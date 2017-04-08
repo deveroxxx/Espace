@@ -36,8 +36,8 @@ public class DatabaseInicializer implements Serializable {
         try {
             User user = new User("admin", "admin");
             userManager.addUser(user);
-            userManager.addUserRole(user, Role.ADMIN);
-            userManager.addUserRole(user, Role.USER);
+            userManager.addUserRole(user, Role.admin);
+            userManager.addUserRole(user, Role.user);
         } catch (EntityAlreadyExistException e) {
             // initnél nem érdekel ez
         }
@@ -48,7 +48,7 @@ public class DatabaseInicializer implements Serializable {
             try {
                 User user = new User("user_"+i, "user_"+i);
                 userManager.addUser(user);
-                userManager.addUserRole(user, Role.USER);
+                userManager.addUserRole(user, Role.user);
             } catch (EntityAlreadyExistException e) {
                 // initnél nem érdekel ez
             }
@@ -70,7 +70,6 @@ public class DatabaseInicializer implements Serializable {
         for (int i=1; i<=5; i++) {
             Item item = new Item();
             item.setName("Item_"+i);
-            item.setPrice(10.0);
             item.setDescription("This is a description: " + i);
             //FIXME: ez elbaszódhat ha nem létezik a user
             item.setUser(userManager.getUserByName("user_" + i));

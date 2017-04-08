@@ -69,7 +69,6 @@ public class UserController implements Serializable {
         // 1. password match check
         if (!password1.equals(password2)) {
             Messages.warn("Password mismatch!", "The passwords do not match.");
-
             return null;
         }
         // 2. create user
@@ -77,8 +76,10 @@ public class UserController implements Serializable {
             userManager.addUser(user);
         } catch (EntityAlreadyExistException e) {
             Messages.warn("Invalid name!", "Username is already used.");
+            return null;
         } catch (Exception e) {
             Messages.error("We are sorry!", "Unexpected error happened. Please try again.");
+            return null;
         }
         return "/Account/login.xhtml?faces-redirect=true&success=true";
     }

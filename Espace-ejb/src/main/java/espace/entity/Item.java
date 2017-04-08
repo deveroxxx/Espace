@@ -20,10 +20,6 @@ public class Item extends BaseEntity {
     @OneToOne
     private Auction auction;
 
-    @NotNull
-    @Min(0)
-    private Double price;
-
     @ManyToOne
     private ItemCategory category;
 
@@ -44,14 +40,6 @@ public class Item extends BaseEntity {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
     }
 
     public ItemCategory getCategory() {
@@ -84,5 +72,17 @@ public class Item extends BaseEntity {
 
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", user=" + user +
+                ", auction=" + auction +
+                ", category=" + category +
+                ", picture='" + picture + '\'' +
+                "} " + super.toString();
     }
 }

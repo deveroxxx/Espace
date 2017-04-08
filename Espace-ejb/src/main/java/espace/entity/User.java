@@ -97,4 +97,17 @@ public class User extends BaseEntity {
     public void setMyBids(List<Bid> myBids) {
         this.myBids = myBids;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "realName='" + realName + '\'' +
+                ", userName='" + userName + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", picture='" + picture + '\'' +
+                ", items=" + items +
+                ", myBids=" + myBids +
+                ", myAuctions=" + myAuctions +
+                "} " + super.toString();
+    }
 }

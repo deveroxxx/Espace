@@ -3,12 +3,14 @@ package espace.managers;
 import espace.entity.GroupRole;
 import espace.exceptions.EntityNotFoundException;
 import espace.template.TemplateManager;
+import espace.utils.Log;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 @Stateless
 @LocalBean
+@Log
 public class GroupRoleManager extends TemplateManager {
 
     public GroupRoleManager() {

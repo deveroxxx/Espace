@@ -14,6 +14,7 @@ import org.primefaces.event.TabChangeEvent;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -21,7 +22,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @ManagedBean(name = "dtProfileView")
-@SessionScoped
+@RequestScoped
 public class ProfileView implements Serializable {
 
     @Inject

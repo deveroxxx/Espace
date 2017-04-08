@@ -1,6 +1,7 @@
 package espace.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
@@ -30,6 +31,10 @@ public class Auction extends BaseEntity {
 
     @NotNull
     private Boolean closed = false;
+
+    @NotNull
+    @Min(0)
+    private Double minimumBid;
 
     /**
      * Visszaadja a legtöbbet licitáló user-t, vagy null-t
@@ -113,6 +118,29 @@ public class Auction extends BaseEntity {
 
     public void setClosed(Boolean closed) {
         this.closed = closed;
+    }
+
+    public Double getMinimumBid() {
+        return minimumBid;
+    }
+
+    public void setMinimumBid(Double minimumBid) {
+        this.minimumBid = minimumBid;
+    }
+
+    @Override
+    public String toString() {
+        return "Auction{" +
+                "header='" + header + '\'' +
+                ", owner=" + owner +
+                ", bids=" + bids +
+                ", item=" + item +
+                ", currentBid=" + currentBid +
+                ", startDate=" + startDate +
+                ", expirationDate=" + expirationDate +
+                ", closed=" + closed +
+                ", minimumBid=" + minimumBid +
+                "} " + super.toString();
     }
 }
 

@@ -3,6 +3,7 @@ package espace.managers;
 import espace.entity.Auction;
 import espace.entity.User;
 import espace.template.TemplateManager;
+import espace.utils.Log;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Stateless
 @LocalBean
+@Log
 public class AuctionManager extends TemplateManager {
 
 

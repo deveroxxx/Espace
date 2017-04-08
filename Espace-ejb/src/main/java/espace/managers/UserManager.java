@@ -6,8 +6,10 @@ import espace.entity.User;
 import espace.enums.Role;
 import espace.exceptions.EntityAlreadyExistException;
 import espace.template.TemplateManager;
+import espace.utils.Log;
 import espace.utils.LoggingInterceptor;
 import espace.utils.SHA256Hash;
+import org.apache.log4j.Logger;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -18,6 +20,7 @@ import java.util.List;
 
 @Stateless
 @LocalBean
+@Log
 @Interceptors(LoggingInterceptor.class)
 public class UserManager extends TemplateManager {
 

@@ -54,6 +54,12 @@ public class UserManager extends TemplateManager {
         }
     }
 
+    public void removeUserRole(User user, Role role) {
+        if (getRoles(user.getUserName()).contains(role)) {
+         //   groupRoleManager.deleteRole(role);
+        }
+    }
+
     public User getUserByName(String userName) {
         //language=JPAQL
         String querry = "select user from User user " +

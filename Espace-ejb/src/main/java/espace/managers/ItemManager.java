@@ -15,12 +15,12 @@ import java.util.List;
 @Stateless
 @LocalBean
 @Log
-public class ItemManager extends TemplateManager {
+public class ItemManager extends TemplateManager<Item> {
 
     public ItemManager() {
     }
 
-    public Item add(Item item) {
+    public Item addItem(Item item) {
         super.add(item);
         item.getUser().getItems().add(item);
         getEntityManager().merge(item.getUser());
@@ -28,7 +28,8 @@ public class ItemManager extends TemplateManager {
     }
 
     public void delete(Item item) throws EntityNotFoundException {
-        super.deleteById(item.getId());
+        Item lockedItem = selectForUpdate(item.getId());
+        lockedItem.setDeleted(true);
     }
 
     public List<Item> listItemsByUser(User user) {
@@ -37,7 +38,7 @@ public class ItemManager extends TemplateManager {
                 "where item.user = :user and item.deleted = false";
         HashMap<String, Object> params = new HashMap<String, Object>();
         params.put("user", user);
-        return (List<Item>) listByFilter(hql, params);
+        return listByFilter(hql, params);
     }
 
 

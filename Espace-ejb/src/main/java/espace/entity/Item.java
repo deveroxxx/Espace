@@ -79,12 +79,6 @@ public class Item extends BaseEntity {
     @Override
     public String toString() {
         return "Item{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", user=" + user +
-                ", auction=" + auction +
-                ", category=" + category +
-                ", picture='" + picture + '\'' +
-                "} " + super.toString();
+                "name='" + name + '\'' + "} " + super.toString();
     }
 }

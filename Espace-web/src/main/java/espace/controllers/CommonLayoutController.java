@@ -25,8 +25,8 @@ public class CommonLayoutController {
         routes.add(new Route("/Items/listItems", "Products", true));
 
         routes.add(new Route("/Admin/usersList", "Manage users", Role.admin));
-     //   routes.add(new Route("/Admin/requestList", "Manage requests", Role.admin));
-     //   routes.add(new Route("/Admin/addCategory", "Categories", Role.admin));
+     //   routes.addCategory(new Route("/Admin/requestList", "Manage requests", Role.admin));
+     //   routes.addCategory(new Route("/Admin/addCategory", "Categories", Role.admin));
 
         routes.add(new Route("/Account/profile", "Profile", false, Role.admin, Role.user));
 

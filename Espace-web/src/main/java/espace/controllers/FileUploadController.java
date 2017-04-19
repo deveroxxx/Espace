@@ -45,7 +45,7 @@ public class FileUploadController implements Serializable {
                 InputStream input = null;
                 try {
                     input = upFile.getInputstream();
-                    //we add this before the filename so same file can be uploaded multiple times
+                    //we addCategory this before the filename so same file can be uploaded multiple times
                     String currentTimeString = "" + System.currentTimeMillis();
 
                     ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();

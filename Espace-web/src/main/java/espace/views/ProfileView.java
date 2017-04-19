@@ -5,6 +5,7 @@ import espace.entity.Item;
 import espace.entity.User;
 import espace.enums.Role;
 import espace.managers.AuctionManager;
+import espace.managers.GroupRoleManager;
 import espace.managers.ItemManager;
 import espace.managers.UserManager;
 import espace.utils.Messages;
@@ -26,6 +27,9 @@ public class ProfileView implements Serializable {
 
     @Inject
     private UserManager userManager;
+
+    @Inject
+    GroupRoleManager roleManager;
 
     @Inject
     private ItemManager itemManager;
@@ -51,7 +55,7 @@ public class ProfileView implements Serializable {
     @PostConstruct
     public void init() {
         user = userManager.getUserByName(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
-        userRoles = userManager.getRoles(user.getUserName());
+        userRoles = roleManager.getRoles(user.getUserName());
         page = 0;
         tempUser = new User();
 
@@ -63,7 +67,7 @@ public class ProfileView implements Serializable {
 
     public void updatePage() {
         user = userManager.getUserByName(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
-        userRoles = userManager.getRoles(user.getUserName());
+        userRoles = roleManager.getRoles(user.getUserName());
         tempUser = new User();
     }
     

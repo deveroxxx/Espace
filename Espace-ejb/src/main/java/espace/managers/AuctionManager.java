@@ -13,7 +13,7 @@ import java.util.List;
 @Stateless
 @LocalBean
 @Log
-public class AuctionManager extends TemplateManager {
+public class AuctionManager extends TemplateManager<Auction> {
 
 
     public List<Auction> listAuctionsByUser(User user, boolean closed) {

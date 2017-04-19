@@ -3,6 +3,7 @@ package espace.views.admin;
 
 import espace.entity.User;
 import espace.enums.Role;
+import espace.managers.GroupRoleManager;
 import espace.managers.UserManager;
 import org.primefaces.context.RequestContext;
 
@@ -18,6 +19,9 @@ public class UserListView implements Serializable {
 
     @Inject
     private UserManager userManager;
+
+    @Inject
+    private GroupRoleManager roleManager;
 
     private List<User> users = new ArrayList<>();
 
@@ -62,11 +66,11 @@ public class UserListView implements Serializable {
     }
 
     public boolean isAdmin(User user) {
-        return userManager.getRoles(user.getUserName()).contains(Role.admin);
+        return roleManager.getRoles(user.getUserName()).contains(Role.admin);
     }
 
     public void statusSwiched(User user) {
-        if (userManager.getRoles(user.getUserName()).contains(Role.admin)) {
+        if (roleManager.getRoles(user.getUserName()).contains(Role.admin)) {
             userManager.removeUserRole(user, Role.admin);
         } else {
             userManager.addUserRole(user, Role.admin);

@@ -59,7 +59,7 @@ public class DatabaseInicializer implements Serializable {
     public void createCategories() {
         for (int i=1; i<=5; i++) {
             try {
-                itemCategoryManager.add(new ItemCategory("item_category_"+i));
+                itemCategoryManager.addCategory(new ItemCategory("item_category_"+i));
             } catch (EntityAlreadyExistException e) {
                 // initnél nem érdekel ez
             }
@@ -73,7 +73,7 @@ public class DatabaseInicializer implements Serializable {
             item.setDescription("This is a description: " + i);
             //FIXME: ez elbaszódhat ha nem létezik a user
             item.setUser(userManager.getUserByName("user_" + i));
-            itemManager.add(item);
+            itemManager.addItem(item);
         }
     }
 

@@ -131,9 +131,7 @@ public class Auction extends BaseEntity {
     @Override
     public String toString() {
         return "Auction{" +
-                "header='" + header + '\'' +
-                ", owner=" + owner +
-                ", bids=" + bids +
+                " owner=" + owner.getId() +
                 ", item=" + item +
                 ", currentBid=" + currentBid +
                 ", startDate=" + startDate +

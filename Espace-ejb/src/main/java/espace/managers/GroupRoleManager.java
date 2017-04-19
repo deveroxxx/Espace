@@ -1,5 +1,6 @@
 package espace.managers;
 
+import espace.annotations.ExcludeFromLog;
 import espace.entity.GroupRole;
 import espace.enums.Role;
 import espace.exceptions.EntityNotFoundException;
@@ -8,13 +9,15 @@ import espace.utils.Log;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Logger;
 
 @Stateless
 @LocalBean
 @Log
-public class GroupRoleManager extends TemplateManager {
+public class GroupRoleManager extends TemplateManager<GroupRole> {
     Logger logger = Logger.getLogger(GroupRoleManager.class.getCanonicalName());
 
 
@@ -43,6 +46,22 @@ public class GroupRoleManager extends TemplateManager {
                 logger.warning("Role: " + role + ", not Existing for user: " + userName);
             }
         }
+    }
+
+    @ExcludeFromLog
+    public List<Role> getRoles(String userName) {
+        //language=JPAQL
+        String querry = "select role from GroupRole role " +
+                "where role.userName = :userName";
+        HashMap<String, Object> params = new HashMap<String, Object>();
+        params.put("userName", userName);
+
+        List<GroupRole> grList = listByFilter(querry,params);
+        List<Role> roles = new ArrayList<Role>();
+        for (GroupRole gr : grList) {
+            roles.add(gr.getGroupRole());
+        }
+        return roles;
     }
 
     public GroupRole getGroupRoleByUserAndRole(String userName, Role role) {

@@ -13,15 +13,15 @@ import java.util.List;
 @Stateless
 @LocalBean
 @Log
-public class ItemCategoryManager extends TemplateManager {
+public class ItemCategoryManager extends TemplateManager<ItemCategory> {
 
     public ItemCategoryManager() {
     }
 
-    public ItemCategory add(ItemCategory itemCategory) throws EntityAlreadyExistException {
+    public ItemCategory addCategory(ItemCategory itemCategory) throws EntityAlreadyExistException {
         if (getByName(itemCategory.getName()) == null) {
             super.add(itemCategory);
-            return itemCategory;
+            return select(itemCategory.getId());
         } else {
             throw new EntityAlreadyExistException("Category already existing with this name: " + itemCategory.getName());
         }

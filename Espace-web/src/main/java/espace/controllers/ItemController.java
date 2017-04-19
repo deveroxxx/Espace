@@ -47,7 +47,7 @@ public class ItemController implements Serializable {
 
     public String addItem() {
         try {
-            itemManager.add(item);
+            itemManager.addItem(item);
             Messages.info("Add", "Item added...");
         } catch (Exception e ) {
             Messages.error("Error", "Something went wrong!");
@@ -57,7 +57,19 @@ public class ItemController implements Serializable {
         return "/Account/profile.xhtml";
     }
 
-    public String navigate() {
+    public String deleteItem(Item selectedItem) {
+        try {
+            itemManager.delete(selectedItem);
+            Messages.info("Delete", "Item deleted...");
+        } catch (Exception e ) {
+            Messages.error("Error", "Something went wrong!");
+            return null;
+        }
+
+        return "/Account/profile.xhtml";
+    }
+
+    public String navigateToAddItem() {
         return "/Items/addItem.xhtml?faces-redirect=true";
     }
 

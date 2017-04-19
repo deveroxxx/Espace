@@ -10,8 +10,9 @@ public abstract class TemplateManagerBase<T> {
    // private static final Logger logger = Logger.getLogger(TemplateManagerBase.class);
 
 
-    protected void add(T t) {
+    protected T add(T t) {
         getEntityManager().persist(t);
+        return t;
     }
 
     protected T get(Long id) {

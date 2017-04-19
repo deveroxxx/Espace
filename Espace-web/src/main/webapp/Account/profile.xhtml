@@ -198,7 +198,7 @@
                             <p:column headerText="Detalis">
                                 <h:commandButton  value="View" action="#{SelectedProductView.initialization(item.productContainer.id)}" />
                             </p:column>
-                            <p:column headerText="Return product">
+                            <p:column headerText="Delete product">
                                 <h:commandButton  value="Return" action="#{dtProfileView.returnProduct(product)}" />
                             </p:column> -->
 
@@ -207,7 +207,11 @@
                         <p:toolbar>
                             <f:facet name="right">
                                 <h:panelGrid columns="1" cellpadding="5">
-                                    <h:commandButton value="Compare" action="#{itemController.navigate()}" />
+                                    <h:commandButton value="New" action="#{itemController.navigateToAddItem()}" />
+                                    <h:commandButton value="Delete" action="#{itemController.navigate()}" />
+                                </h:panelGrid>
+                                <h:panelGrid columns="1" cellpadding="5">
+
                                 </h:panelGrid>
                             </f:facet>
                         </p:toolbar>

@@ -1,13 +1,10 @@
 package espace.template;
 
-import espace.entity.User;
 import espace.exceptions.EntityNotFoundException;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 public abstract class TemplateManagerBase<T> {
    // private static final Logger logger = Logger.getLogger(TemplateManagerBase.class);
@@ -17,15 +14,15 @@ public abstract class TemplateManagerBase<T> {
         getEntityManager().persist(t);
     }
 
-    public T get(Long id) {
+    protected T get(Long id) {
         return getEntityManager().getReference(getMyClass(), id);
     }
 
-    public T select(Long id) {
+    protected T select(Long id) {
         return getEntityManager().find(getMyClass(), id);
     }
 
-    public T selectForUpdate(Long id) {
+    protected T selectForUpdate(Long id) {
         EntityManager em = getEntityManager();
         T t = em.find(getMyClass(), id, LockModeType.PESSIMISTIC_WRITE);
         em.flush();
@@ -43,7 +40,7 @@ public abstract class TemplateManagerBase<T> {
         getEntityManager().lock(t, LockModeType.PESSIMISTIC_WRITE);
     }
 
-    public List<T> listAll() {
+    protected List<T> listAll() {
         javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(getMyClass()));
         return getEntityManager().createQuery(cq).getResultList();
@@ -96,12 +93,12 @@ public abstract class TemplateManagerBase<T> {
         }
     }
 
-    public void update(T entity) {
+    protected void update(T entity) {
         //logger.trace("Updating object: " + entity);
         getEntityManager().merge(entity);
     }
 
-    public void deleteById(Long id) throws EntityNotFoundException {
+    protected void deleteById(Long id) throws EntityNotFoundException {
         //logger.trace("Deleting object by id: " + id);
         T entity = select(id);
         if (entity == null) {

@@ -1,13 +1,8 @@
 package espace.utils;
 
-import javax.interceptor.Interceptor;
-import javax.interceptor.InterceptorBinding;
 import javax.interceptor.Interceptors;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.security.MessageDigest;
 
-@Interceptors(LoggingInterceptor.class)
 public class SHA256Hash {
     public static String sha256(String base) {
         try {

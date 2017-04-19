@@ -40,6 +40,6 @@ public class AuctionManager extends TemplateManager {
 
     @Override
     protected Class getMyClass() {
-        return this.getClass();
+        return Auction.class;
     }
 }

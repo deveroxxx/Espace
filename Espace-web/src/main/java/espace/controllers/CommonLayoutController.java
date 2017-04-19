@@ -24,7 +24,7 @@ public class CommonLayoutController {
         // Could be read from DB but it is not in the scope of this project.
         routes.add(new Route("/Items/listItems", "Products", true));
 
-     //   routes.add(new Route("/Admin/usersList", "Manage users", Role.admin));
+        routes.add(new Route("/Admin/usersList", "Manage users", Role.admin));
      //   routes.add(new Route("/Admin/requestList", "Manage requests", Role.admin));
      //   routes.add(new Route("/Admin/addCategory", "Categories", Role.admin));
 

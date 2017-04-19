@@ -1,6 +1,8 @@
 package espace.entity;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
@@ -104,10 +106,6 @@ public class User extends BaseEntity {
                 "realName='" + realName + '\'' +
                 ", userName='" + userName + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
-                ", picture='" + picture + '\'' +
-                ", items=" + items +
-                ", myBids=" + myBids +
-                ", myAuctions=" + myAuctions +
                 "} " + super.toString();
     }
 }

@@ -4,11 +4,13 @@ package espace.views.admin;
 import espace.entity.User;
 import espace.enums.Role;
 import espace.managers.UserManager;
+import org.primefaces.context.RequestContext;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.inject.Inject;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @ManagedBean(name = "userListView" )
@@ -17,7 +19,7 @@ public class UserListView implements Serializable {
     @Inject
     private UserManager userManager;
 
-    private List<User> users;
+    private List<User> users = new ArrayList<>();
 
     String name;
     private User selectedUser;
@@ -51,7 +53,7 @@ public class UserListView implements Serializable {
     }
 
     public List<User> getUserList() {
-        //users = filterQueryService.listUsersWithFilter(name, null, 0, -1);
+        users = userManager.listAll();
         return users;
     }
 
@@ -65,9 +67,9 @@ public class UserListView implements Serializable {
 
     public void statusSwiched(User user) {
         if (userManager.getRoles(user.getUserName()).contains(Role.admin)) {
-            userManager.removeRoleFromUser(user, Role.admin);
+            userManager.removeUserRole(user, Role.admin);
         } else {
-            userManager.addRoleToUser(user, Role.admin);
+            userManager.addUserRole(user, Role.admin);
         }
     }
 

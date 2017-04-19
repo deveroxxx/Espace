@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 @LocalBean
 @Log
 public class GroupRoleManager extends TemplateManager {
-    Logger logger = Logger.getLogger(getMyClass().getSimpleName());
+    Logger logger = Logger.getLogger(GroupRoleManager.class.getCanonicalName());
 
 
     public GroupRoleManager() {
@@ -45,9 +45,9 @@ public class GroupRoleManager extends TemplateManager {
         }
     }
 
-    private GroupRole getGroupRoleByUserAndRole(String userName, Role role) {
+    public GroupRole getGroupRoleByUserAndRole(String userName, Role role) {
         //language=JPAQL
-        String querry = "select role.groupRole from GroupRole role " +
+        String querry = "select role from GroupRole role " +
                         "where role.userName = :userName and role.groupRole = :role";
         HashMap<String, Object> params = new HashMap<String, Object>();
         params.put("userName", userName);
@@ -56,6 +56,6 @@ public class GroupRoleManager extends TemplateManager {
     }
 
     protected Class getMyClass() {
-        return this.getClass();
+        return GroupRole.class;
     }
 }

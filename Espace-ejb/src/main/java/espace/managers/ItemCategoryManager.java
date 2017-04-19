@@ -43,6 +43,6 @@ public class ItemCategoryManager extends TemplateManager {
 
 
     protected Class getMyClass() {
-        return this.getClass();
+        return ItemCategory.class;
     }
 }

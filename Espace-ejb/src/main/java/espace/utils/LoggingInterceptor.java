@@ -1,9 +1,9 @@
 package espace.utils;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import espace.annotations.ExcludeFromLog;
 
+import javax.annotation.Priority;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
@@ -12,10 +12,17 @@ import java.util.Calendar;
 
 @Interceptor
 @Log
+@Priority(100)
 public class LoggingInterceptor {
 
     @AroundInvoke
     public Object logMethodEntry(InvocationContext ctx) throws Exception {
+
+        //Exclude esetén nem logolunk
+        if (ctx.getMethod().getAnnotation(ExcludeFromLog.class) != null ||
+                ctx.getMethod().getDeclaringClass().getAnnotation(ExcludeFromLog.class) != null) {
+            return ctx.proceed();
+        }
 
         String cn = ctx.getMethod().getDeclaringClass().getCanonicalName();
         String mn = ctx.getMethod().getName();
@@ -43,15 +50,19 @@ public class LoggingInterceptor {
     private String paramsFormatter(InvocationContext ctx) {
         StringBuilder paramString = new StringBuilder();
         String delim = "";
-        for (Object o : ctx.getParameters()) {
-            paramString.append(delim);
-            if (o instanceof Calendar) {
-                paramString.append(((Calendar) o).getTime().toString());
-            } else {
-                paramString.append(o);
+        if (ctx.getParameters() != null) {
+            for (Object o : ctx.getParameters()) {
+                paramString.append(delim);
+                if (o instanceof Calendar) {
+                    paramString.append(((Calendar) o).getTime().toString());
+                } else {
+                    paramString.append(o);
+                }
+                delim = ", ";
             }
-            delim = ", ";
+            return paramString.toString();
+        } else {
+            return "";
         }
-        return paramString.toString();
     }
 }

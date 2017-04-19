@@ -1,5 +1,6 @@
 package espace.managers;
 
+import espace.entity.Bid;
 import espace.template.TemplateManager;
 import espace.utils.Log;
 
@@ -18,6 +19,6 @@ public class BidManager extends TemplateManager {
 
     @Override
     protected Class getMyClass() {
-        return this.getClass();
+        return Bid.class;
     }
 }

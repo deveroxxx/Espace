@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:body>
+    <ui:composition template="/Shared/commonLayout.xhtml">
+        <ui:define name="content">
+            <h:panelGroup layout="block"  rendered="#{auctionView.auction != null}">
+                <p:layout style="min-width:400px;min-height:600px;">
+                    <p:layoutUnit position="west">
+                        <h3>Basic</h3>
+                        <p:panelGrid columns="2">
+                            <f:facet name="header">
+                                <h:graphicImage value="#{auctionView.auction.item.picture}" width="200" height="200" />
+                            </f:facet>
+
+                            <h:outputText value="Header:" />
+                            <h:outputText value="#{auctionView.auction.header}" />
+
+                            <h:outputText value="Name:" />
+                            <h:outputText value="#{auctionView.auction.item.name}" />
+
+                            <h:outputText value="Description:" />
+                            <h:outputText value="#{auctionView.auction.description}" />
+
+                            <h:outputText value="Starting bid:" />
+                            <h:outputText value="#{auctionView.auction.minimumBid}" />
+
+                            <h:outputText value="Category:" />
+                            <h:outputText value="#{auctionView.auction.item.category}" converter="#{itemCategoryConverter}" />
+
+                        </p:panelGrid>
+                    </p:layoutUnit>
+
+                    <p:layoutUnit position="center" rendered="#{not empty request.remoteUser}">
+                        <h3>Request Product</h3>
+                        <h5>(write here some stuff)</h5>
+                        <!-- FIXME: licitálás ide
+                        <h:form>
+                            <p:inputTextarea rows="6" cols="33" value="#{SelectedProductView.request.description}" />
+
+                            <h:panelGrid columns="2" cellpadding="5" class="ui-grid">
+                                <h:outputLabel for="basic" value="Priority: " />
+                                <p:spinner id="basic" value="#{SelectedProductView.request.priority}" min="0" max="10"/>
+                            </h:panelGrid>
+                            <p:commandButton value="Submit Request" action="#{SelectedProductView.createRequest()}" type="submit" icon="ui-icon-disk" />
+
+                        </h:form>
+                        -->
+                    </p:layoutUnit>
+                    <p:layoutUnit position="center" rendered="#{empty request.remoteUser}">
+                        <h3>You must log in to make a deal</h3>
+                    </p:layoutUnit>
+                </p:layout>
+
+
+            </h:panelGroup>
+
+            <h:panelGroup layout="block"  rendered="#{auctionView.auction == null}">
+                <h2>
+                    Please select something!
+                </h2>
+            </h:panelGroup>
+
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>

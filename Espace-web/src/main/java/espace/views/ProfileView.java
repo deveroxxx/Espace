@@ -45,6 +45,7 @@ public class ProfileView implements Serializable {
     private List<Auction> myClosedAuctions;
     private List<Auction> myBids;
     private List<Item> myItems;
+    private Item selectedItem;
 
 
     private int page = 0;
@@ -194,5 +195,13 @@ public class ProfileView implements Serializable {
 
     public void setMyBids(List<Auction> myBids) {
         this.myBids = myBids;
+    }
+
+    public Item getSelectedItem() {
+        return selectedItem;
+    }
+
+    public void setSelectedItem(Item selectedItem) {
+        this.selectedItem = selectedItem;
     }
 }

@@ -16,34 +16,35 @@
             #{dtProfileView.updatePage()}
             <h3>Welcome #{not empty dtProfileView.user.realName ?  dtProfileView.user.realName : dtProfileView.user.userName}"</h3>
             <p:tabView id="tabview1" orientation="left" activeIndex="#{dtProfileView.page}">
-                <p:ajax event="tabChange"   listener="#{dtProfileView.changeActiveTab}" />
-                <p:tab title="My Profile" id="tab0" >
+                <p:ajax event="tabChange" listener="#{dtProfileView.changeActiveTab}"/>
+                <p:tab title="My Profile" id="tab0">
                     <h:panelGrid columns="2" cellpadding="10">
 
                         <p:panelGrid columns="2">
                             <f:facet name="header">
-                                <h:graphicImage value="#{dtProfileView.user.picture}" width="200" height="171" />
+                                <h:graphicImage value="#{dtProfileView.user.picture}" width="200" height="171"/>
                             </f:facet>
 
-                            <h:outputText value="Login Name:" />
-                            <h:outputText value="#{dtProfileView.user.userName}" />
+                            <h:outputText value="Login Name:"/>
+                            <h:outputText value="#{dtProfileView.user.userName}"/>
 
-                            <h:outputText value="Real Name:" />
-                            <h:outputText value="#{dtProfileView.user.realName}" />
+                            <h:outputText value="Real Name:"/>
+                            <h:outputText value="#{dtProfileView.user.realName}"/>
 
-                            <h:outputText value="Date of birth" />
-                            <h:outputText value="#{not empty dtProfileView.user.dateOfBirth.time ?  dtProfileView.user.dateOfBirth : 'Unknown'}" />
+                            <h:outputText value="Date of birth"/>
+                            <h:outputText
+                                    value="#{not empty dtProfileView.user.dateOfBirth.time ?  dtProfileView.user.dateOfBirth : 'Unknown'}"/>
 
-                            <h:outputText value="Roles: " />
+                            <h:outputText value="Roles: "/>
                             <ui:repeat value="#{dtProfileView.userRoles}" var="role">
-                                <h:outputText value="#{role}, " />
+                                <h:outputText value="#{role}, "/>
                             </ui:repeat>
 
                         </p:panelGrid>
 
                     </h:panelGrid>
                 </p:tab>
-                <p:tab title="Edit profile" id="tab1" >
+                <p:tab title="Edit profile" id="tab1">
                     <h:panelGrid>
 
                         <h3>Chnage profile picture</h3>
@@ -52,38 +53,42 @@
                                 <p:fileUpload value="#{fileUploadView.file}" mode="simple" skinSimple="true"/>
                             </div>
                             <div class="form-horizontal">
-                                <p:commandButton value="Uploade image" ajax="false" actionListener="#{fileUploadView.upload(dtProfileView.user)}"  >
+                                <p:commandButton value="Uploade image" ajax="false"
+                                                 actionListener="#{fileUploadView.upload(dtProfileView.user)}">
                                 </p:commandButton>
                             </div>
                         </h:form>
 
-                        <h:graphicImage value="#{dtProfileView.user.picture}" width="200" height="171" />
+                        <h:graphicImage value="#{dtProfileView.user.picture}" width="200" height="171"/>
 
                         <h:form id="glob">
 
                             <div class="form-group">
-                                <label class ="col-md-2 control-label">Real Name:</label>
+                                <label class="col-md-2 control-label">Real Name:</label>
                                 <div class="col-md-10">
-                                    <h:inputText id="name" styleClass="form-control" value="#{dtProfileView.user.realName}"></h:inputText>
-                                    <p:message for="name" />
+                                    <h:inputText id="name" styleClass="form-control"
+                                                 value="#{dtProfileView.user.realName}"></h:inputText>
+                                    <p:message for="name"/>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class ="col-md-12 control-label">DateOfBirth:</label>
+                                <label class="col-md-12 control-label">DateOfBirth:</label>
                                 <div class="col-md-10">
-                                    <h:inputText id="date" styleClass="form-control" value="#{dtProfileView.user.dateOfBirth}">
-                                        <f:convertDateTime pattern="yyyy-MM-dd" />
+                                    <h:inputText id="date" styleClass="form-control"
+                                                 value="#{dtProfileView.user.dateOfBirth}">
+                                        <f:convertDateTime pattern="yyyy-MM-dd"/>
                                     </h:inputText>
-                                    <p:message for="date" />
+                                    <p:message for="date"/>
                                 </div>
                             </div>
-
 
 
                             <div class="form-group">
                                 <div class="col-md-offset-2 col-md-10">
-                                    <p:commandButton ajax="false" validateClient="true" value="Save Changes" type="submit" action="#{dtProfileView.saveChanges()}"></p:commandButton>
+                                    <p:commandButton ajax="false" validateClient="true" value="Save Changes"
+                                                     type="submit"
+                                                     action="#{dtProfileView.saveChanges()}"></p:commandButton>
                                 </div>
                             </div>
 
@@ -93,42 +98,42 @@
                     </h:panelGrid>
                 </p:tab>
 
-                <p:tab title="My Auctions" id="tab2" >
+                <p:tab title="My Auctions" id="tab2">
 
                     <p:accordionPanel dynamic="true" cache="true" id="accPanel1">
                         <p:tab title="Active auctions">
 
-                            <p:dataTable  id="datatable1" var="singleElement" value="#{dtProfileView.myActiveAuctions}">
+                            <p:dataTable id="datatable1" var="singleElement" value="#{dtProfileView.myActiveAuctions}">
                                 <f:facet name="header">
                                     Active Auctions
                                 </f:facet>
                                 <p:column style="width:16px">
-                                    <p:rowToggler />
+                                    <p:rowToggler/>
                                 </p:column>
                                 <p:column headerText="Id">
-                                    <h:outputText value="#{singleElement.id}" />
+                                    <h:outputText value="#{singleElement.id}"/>
                                 </p:column>
                                 <p:column headerText="Item Id">
-                                    <h:outputText value="#{singleElement.item.id}" />
+                                    <h:outputText value="#{singleElement.item.id}"/>
                                 </p:column>
 
-                                <p:rowExpansion id="extension1" >
+                                <p:rowExpansion id="extension1">
                                     <h:form id="form1">
                                         <h:panelGrid columns="2" cellpadding="5">
-                                            <h:outputText value="Description: " style="font-weight: bold" />
-                                            <h:outputText value="#{singleElement.description}" />
+                                            <h:outputText value="Description: " style="font-weight: bold"/>
+                                            <h:outputText value="#{singleElement.description}"/>
                                         </h:panelGrid>
                                         <!--<div class="form-group">-->
 
-                                            <!--<p:inputTextarea id="rcomment" value="#{commentController.requestCommentMessage}" rows="6" cols="50" />-->
-                                            <!--<br/>-->
+                                        <!--<p:inputTextarea id="rcomment" value="#{commentController.requestCommentMessage}" rows="6" cols="50" />-->
+                                        <!--<br/>-->
 
-                                            <!--<p:commandButton update="@form" value="Add comment" type="submit" action="#{commentController.addCommentToRequest(singleElement)}"></p:commandButton>-->
-                                            <!--<p:commandButton-->
-                                                    <!--style="display: none"-->
-                                                    <!--widgetVar="updateButton1"-->
-                                                    <!--update="@form"-->
-                                            <!--/>-->
+                                        <!--<p:commandButton update="@form" value="Add comment" type="submit" action="#{commentController.addCommentToRequest(singleElement)}"></p:commandButton>-->
+                                        <!--<p:commandButton-->
+                                        <!--style="display: none"-->
+                                        <!--widgetVar="updateButton1"-->
+                                        <!--update="@form"-->
+                                        <!--/>-->
 
                                         <!--</div>-->
                                         <!--<br/>-->
@@ -136,25 +141,25 @@
                                         <!--<br/>-->
                                         <!---->
                                         <!--<p:outputPanel style="display:block" id="outpanel1">-->
-                                            <!--<ui:repeat value="#{singleElement.comments}" var="singleComment">-->
+                                        <!--<ui:repeat value="#{singleElement.comments}" var="singleComment">-->
 
-                                                <!--<a class="pull-left">-->
-                                                    <!--<h:graphicImage value="#{singleComment.user.picture}" width="60" height="60" />-->
-                                                <!--</a>-->
-                                                <!--<h:outputText rendered="#{not empty singleComment.previous.comment}" value="Replayed to: #{singleComment.previous.comment} " style="font-weight: bold" />-->
-                                                <!--<br/>-->
-                                                <!--<h:outputText value="Author: #{singleComment.user.name} " style="font-weight: bold" />-->
-                                                <!--<p:commandLink style="color: blue"-->
-                                                               <!--value="reply"-->
-                                                               <!--onclick="PF('dlg').show();">-->
-                                                    <!--reply-->
-                                                    <!--<f:ajax  listener="#{commentController.setParentComment(singleComment)}" />-->
-                                                <!--</p:commandLink>-->
-                                                <!--<br/>-->
-                                                <!--<h:outputText value="#{singleComment.comment}" />-->
-                                                <!--<br/>-->
+                                        <!--<a class="pull-left">-->
+                                        <!--<h:graphicImage value="#{singleComment.user.picture}" width="60" height="60" />-->
+                                        <!--</a>-->
+                                        <!--<h:outputText rendered="#{not empty singleComment.previous.comment}" value="Replayed to: #{singleComment.previous.comment} " style="font-weight: bold" />-->
+                                        <!--<br/>-->
+                                        <!--<h:outputText value="Author: #{singleComment.user.name} " style="font-weight: bold" />-->
+                                        <!--<p:commandLink style="color: blue"-->
+                                        <!--value="reply"-->
+                                        <!--onclick="PF('dlg').show();">-->
+                                        <!--reply-->
+                                        <!--<f:ajax  listener="#{commentController.setParentComment(singleComment)}" />-->
+                                        <!--</p:commandLink>-->
+                                        <!--<br/>-->
+                                        <!--<h:outputText value="#{singleComment.comment}" />-->
+                                        <!--<br/>-->
 
-                                            <!--</ui:repeat>-->
+                                        <!--</ui:repeat>-->
                                         <!--</p:outputPanel>-->
                                     </h:form>
                                 </p:rowExpansion>
@@ -164,19 +169,19 @@
                         </p:tab>
 
 
-                        <p:tab title="Expired Auctions" >
+                        <p:tab title="Expired Auctions">
                             <p:dataTable var="singleElement" value="#{dtProfileView.myClosedAuctions}">
                                 <f:facet name="header">
                                     Expired Auctions
                                 </f:facet>
                                 <p:column style="width:16px">
-                                    <p:rowToggler />
+                                    <p:rowToggler/>
                                 </p:column>
                                 <p:column headerText="Id">
-                                    <h:outputText value="#{singleElement.id}" />
+                                    <h:outputText value="#{singleElement.id}"/>
                                 </p:column>
                                 <p:column headerText="Item Id">
-                                    <h:outputText value="#{singleElement.item.id}" />
+                                    <h:outputText value="#{singleElement.item.id}"/>
                                 </p:column>
                             </p:dataTable>
                         </p:tab>
@@ -184,16 +189,25 @@
 
                 </p:tab>
 
-                <p:tab title="My items" id="tab3" >
+                <p:tab title="My items" id="tab3">
                     <h:form>
 
-                        <p:dataTable var="item" value="#{dtProfileView.myItems}">
+                        <p:dataTable var="item"
+                                     value="#{dtProfileView.myItems}"
+                                     selectionMode="single"
+                                     selection="#{dtProfileView.selectedItem}" rowKey="#{item.id}">
                             <p:column headerText="Id">
-                                <h:outputText value="#{item.id}" />
+                                <h:outputText value="#{item.id}"/>
                             </p:column>
                             <p:column headerText="Item name">
-                                <h:outputText value="#{item.name}" />
+                                <h:outputText value="#{item.name}"/>
                             </p:column>
+
+                            <p:column headerText="Item name">
+                                <h:commandButton styleClass="btn bg-info" rendered="#{empty item.auction}" value="Create Auction" action="#{createAuctionView.init(item.id)}" />
+                                <h:commandButton styleClass="btn bg-info" rendered="#{not empty item.auction}" value="View Auction" action="#{auctionView.init(item.auction.id)}" />
+                            </p:column>
+
                             <!--
                             <p:column headerText="Detalis">
                                 <h:commandButton  value="View" action="#{SelectedProductView.initialization(item.productContainer.id)}" />
@@ -207,8 +221,8 @@
                         <p:toolbar>
                             <f:facet name="right">
                                 <h:panelGrid columns="1" cellpadding="5">
-                                    <h:commandButton value="New" action="#{itemController.navigateToAddItem()}" />
-                                    <h:commandButton value="Delete" action="#{itemController.navigate()}" />
+                                    <h:commandButton value="New" action="#{itemController.navigateToAddItem()}"/>
+                                    <h:commandButton value="Delete" action="#{itemController.deleteItem(dtProfileView.selectedItem)}"/>
                                 </h:panelGrid>
                                 <h:panelGrid columns="1" cellpadding="5">
 

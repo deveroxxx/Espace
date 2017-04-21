@@ -9,7 +9,7 @@ import java.util.List;
 @Entity
 public class Auction extends BaseEntity {
 
-    @NotNull
+    @NotNull(message = "Header is requied!")
     private String header;
 
     @NotNull
@@ -26,7 +26,7 @@ public class Auction extends BaseEntity {
 
     private Date startDate;
 
-    @NotNull
+    @NotNull(message = "Expiration date is requied")
     private Date expirationDate;
 
     @NotNull
@@ -35,6 +35,8 @@ public class Auction extends BaseEntity {
     @NotNull
     @Min(0)
     private Double minimumBid;
+
+    private String description; //leírás az aukcióhoz
 
     /**
      * Visszaadja a legtöbbet licitáló user-t, vagy null-t
@@ -128,10 +130,18 @@ public class Auction extends BaseEntity {
         this.minimumBid = minimumBid;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
         return "Auction{" +
-                " owner=" + owner.getId() +
+            //    " owner=" + owner.getId() +
                 ", item=" + item +
                 ", currentBid=" + currentBid +
                 ", startDate=" + startDate +

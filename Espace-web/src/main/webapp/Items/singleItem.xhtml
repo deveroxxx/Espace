@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:body>
+    <ui:composition template="/Shared/commonLayout.xhtml">
+        <ui:define name="content">
+            <h:panelGroup layout="block"  rendered="#{SelectedProductView.product != null}">
+                <p:layout style="min-width:400px;min-height:600px;">
+                    <p:layoutUnit position="west">
+                        <h3>Basic</h3>
+                        <p:panelGrid columns="2">
+                            <f:facet name="header">
+                                <h:graphicImage value="#{SelectedProductView.product.picture}" width="200" height="171" />
+                            </f:facet>
+
+                            <h:outputText value="ID:" />
+                            <h:outputText value="#{SelectedProductView.product.id}" />
+
+                            <h:outputText value="Name:" />
+                            <h:outputText value="#{SelectedProductView.product.name}" />
+
+                            <h:outputText value="Description:" />
+                            <h:outputText value="#{SelectedProductView.product.description}" />
+
+                            <h:outputText value="Price:" />
+                            <h:outputText value="#{SelectedProductView.product.price}" />
+
+                            <h:outputText value="Quantity:" />
+                            <h:outputText value="#{SelectedProductView.product.quantity}" />
+
+                            <h:outputText value="Category:" />
+                            <h:outputText value="#{SelectedProductView.product.category}" converter="#{productCategoryConverter}" />
+
+                            <h:outputText value="Depot:" />
+                            <h:outputText value="#{SelectedProductView.product.depot}" converter="#{depotConverter}"/>
+
+                            <h:outputText value="Manufacturer:" />
+                            <h:outputText value="#{SelectedProductView.product.manufacturer}" converter="#{manufacturerConverter}"/>
+                        </p:panelGrid>
+                    </p:layoutUnit>
+
+                    <p:layoutUnit position="center" rendered="#{not empty request.remoteUser}">
+                        <h3>Request Product</h3>
+                        <h5>(write here some stuff)</h5>
+                        <h:form>
+                            <p:inputTextarea rows="6" cols="33" value="#{SelectedProductView.request.description}" />
+
+                            <h:panelGrid columns="2" cellpadding="5" class="ui-grid">
+                                <h:outputLabel for="basic" value="Priority: " />
+                                <p:spinner id="basic" value="#{SelectedProductView.request.priority}" min="0" max="10"/>
+                            </h:panelGrid>
+                            <p:commandButton value="Submit Request" action="#{SelectedProductView.createRequest()}" type="submit" icon="ui-icon-disk" />
+
+                        </h:form>
+                    </p:layoutUnit>
+                    <p:layoutUnit position="center" rendered="#{empty request.remoteUser}">
+                        <h3>You must log in to request items</h3>
+                    </p:layoutUnit>
+                </p:layout>
+
+
+            </h:panelGroup>
+
+            <h:panelGroup layout="block"  rendered="#{SelectedProductView.product == null}">
+                <h2>
+                    Please select something!
+                </h2>
+            </h:panelGroup>
+
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>

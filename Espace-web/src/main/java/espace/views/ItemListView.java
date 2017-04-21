@@ -1,6 +1,6 @@
 package espace.views;
 
-import espace.data.ItemQueryData;
+import espace.data.QueryData;
 import espace.entity.Item;
 import espace.entity.ItemCategory;
 import espace.enums.QuerySortOrder;
@@ -53,7 +53,7 @@ public class ItemListView implements Serializable {
                         order = QuerySortOrder.DESC;
                     }
 
-                    ItemQueryData qData = new ItemQueryData(start, end, sortField, order, filters);
+                    QueryData<Item> qData = new QueryData(start, end, sortField, order, filters);
                     itemManager.refreshListData(qData);
                     List<Item> empList = qData.getResult();
                     int count = qData.getTotalResultCount();

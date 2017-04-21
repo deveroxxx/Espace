@@ -1,0 +1,84 @@
+<ui:composition template="/Shared/commonLayout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+        <h2>Create new auction</h2>
+
+        <div class="row">
+            <div class="col-md-7">
+                <h:form id="glob" styleClass="form-horizontal">
+                    <div class="form-group">
+                        <label class ="col-md-4 control-label">Auction header</label>
+                        <div class="col-md-5">
+                            <h:inputText id="user" styleClass="form-control" value="#{createAuctionView.auction.header}"
+                                         required="true" requiredMessage="Header is required!"/>
+                        </div>
+                        <div class="col-md-5">
+                            <p:message for="user" display="text"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class ="col-md-4 control-label">Description</label>
+                        <div class="form-group">
+                            <div class="col-md-9">
+                                <h:inputTextarea title="Description" styleClass="form-control" value="#{createAuctionView.auction.description}"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class ="col-md-4 control-label">Starting price</label>
+                        <div class="col-md-5">
+                            <h:inputText id="startbid" styleClass="form-control" value="#{createAuctionView.auction.minimumBid}" required="true">
+                                <f:validateLongRange minimum="0"/>
+                            </h:inputText>
+                        </div>
+                        <div class="col-md-5">
+                            <p:message for="startbid" display="text"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-12 control-label">Start time:</label>
+                        <div class="col-md-10">
+                            <h:inputText id="start" styleClass="form-control"
+                                         value="#{createAuctionView.auction.startDate}">
+                                <f:convertDateTime pattern="yyyy-MM-dd"/>
+                            </h:inputText>
+                            <p:message for="start"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-12 control-label">Expire Time:</label>
+                        <div class="col-md-10">
+                            <h:inputText id="expire" styleClass="form-control"
+                                         value="#{createAuctionView.auction.expirationDate}" required="true" requiredMessage="This is needed">
+                                <f:convertDateTime pattern="yyyy-MM-dd HH:mm"/> <!--FIXME: time picker jó lenne-->
+                            </h:inputText>
+                            <p:message for="expire"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <p:commandButton update="glob"
+                                             validateClient="true"
+                                             value="Create Auction"
+                                             type="submit"
+                                             action="#{createAuctionView.createAuction()}"
+                                             styleClass="btn btn-default">
+                            </p:commandButton>
+                        </div>
+                    </div>
+
+                </h:form>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

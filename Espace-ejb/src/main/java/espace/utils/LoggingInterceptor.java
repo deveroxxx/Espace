@@ -48,9 +48,9 @@ public class LoggingInterceptor {
 
 
     private String paramsFormatter(InvocationContext ctx) {
-        StringBuilder paramString = new StringBuilder();
-        String delim = "";
         if (ctx.getParameters() != null) {
+            StringBuilder paramString = new StringBuilder();
+            String delim = "";
             for (Object o : ctx.getParameters()) {
                 paramString.append(delim);
                 if (o instanceof Calendar) {

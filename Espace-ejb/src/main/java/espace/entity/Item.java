@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "ITEM")
 public class Item extends BaseEntity {
 
-    @NotNull
+    @NotNull(message = "Item name is requied")
     private String name;
 
     private String description;

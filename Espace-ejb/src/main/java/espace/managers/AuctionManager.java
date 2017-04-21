@@ -36,6 +36,15 @@ public class AuctionManager extends TemplateManager<Auction> {
         return listByFilter(hql, params);
     }
 
+    public Auction getById(Long id) {
+        return super.select(id);
+    }
+
+    public Auction createAuction(Auction auction) {
+        auction.getItem().setAuction(auction);
+        return super.add(auction);
+    }
+
 
 
     @Override

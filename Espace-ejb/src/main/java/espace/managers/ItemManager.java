@@ -1,6 +1,6 @@
 package espace.managers;
 
-import espace.data.ItemQueryData;
+import espace.data.QueryData;
 import espace.entity.Item;
 import espace.entity.User;
 import espace.exceptions.EntityNotFoundException;
@@ -32,6 +32,10 @@ public class ItemManager extends TemplateManager<Item> {
         lockedItem.setDeleted(true);
     }
 
+    public Item getItemById(Long itemId) {
+        return super.select(itemId);
+    }
+
     public List<Item> listItemsByUser(User user) {
         //language=JPAQL
         String hql = "select item from Item item " +
@@ -42,10 +46,10 @@ public class ItemManager extends TemplateManager<Item> {
     }
 
 
-    public void refreshListData(ItemQueryData data) {
+    public void refreshListData(QueryData<Item> data) {
         //TODO: filteres query lekérdezést megcsinálni
         String hql = "select item from Item item";
-        data.setResult((List<Item>) list(hql));
+        data.setResult(list(hql));
         data.setTotalResultCount(data.getResult().size());
     }
 

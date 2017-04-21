@@ -3,6 +3,7 @@ package espace.controllers;
 import espace.entity.Item;
 import espace.entity.ItemCategory;
 import espace.entity.User;
+import espace.exceptions.EntityNotFoundException;
 import espace.managers.ItemCategoryManager;
 import espace.managers.ItemManager;
 import espace.managers.UserManager;
@@ -57,10 +58,14 @@ public class ItemController implements Serializable {
         return "/Account/profile.xhtml";
     }
 
+    //FIXME: törlésnél refresh page kéne nem redirect.
     public String deleteItem(Item selectedItem) {
         try {
             itemManager.delete(selectedItem);
             Messages.info("Delete", "Item deleted...");
+        } catch (EntityNotFoundException e) {
+            Messages.error("Error", "Entity already deleted!");
+            return null;
         } catch (Exception e ) {
             Messages.error("Error", "Something went wrong!");
             return null;

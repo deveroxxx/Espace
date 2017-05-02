@@ -4,6 +4,7 @@ import espace.data.QueryData;
 import espace.entity.Item;
 import espace.entity.User;
 import espace.exceptions.EntityNotFoundException;
+import espace.exceptions.ItemIsAssignedException;
 import espace.template.TemplateManager;
 import espace.utils.Log;
 
@@ -27,10 +28,19 @@ public class ItemManager extends TemplateManager<Item> {
         return item;
     }
 
-    public void delete(Item item) throws EntityNotFoundException {
+    public void delete(Item item) throws EntityNotFoundException, ItemIsAssignedException {
         Item lockedItem = selectForUpdate(item.getId());
+        if (lockedItem.getAuction() != null) {
+            throw new ItemIsAssignedException();
+        }
         lockedItem.setDeleted(true);
     }
+
+    public Item updateItem(Item item) {
+        Item lockedItem = selectForUpdate(item.getId());
+        return super.update(lockedItem);
+    }
+
 
     public Item getItemById(Long itemId) {
         return super.select(itemId);

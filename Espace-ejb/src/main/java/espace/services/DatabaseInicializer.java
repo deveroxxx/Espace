@@ -70,7 +70,6 @@ public class DatabaseInicializer implements Serializable {
         for (int i=1; i<=5; i++) {
             Item item = new Item();
             item.setName("Item_"+i);
-            item.setDescription("This is a description: " + i);
             //FIXME: ez elbaszódhat ha nem létezik a user
             item.setUser(userManager.getUserByName("user_" + i));
             itemManager.addItem(item);

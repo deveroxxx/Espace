@@ -28,9 +28,9 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Espace" target="1.5" />
-      <module name="Espace-ejb" target="1.5" />
-      <module name="Espace-web" target="1.7" />
+      <module name="Espace" target="1.8" />
+      <module name="Espace-ejb" target="1.8" />
+      <module name="Espace-web" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

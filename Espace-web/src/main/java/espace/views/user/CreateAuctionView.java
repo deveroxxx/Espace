@@ -45,14 +45,17 @@ public class CreateAuctionView implements Serializable{
     public String init(Long itemId) {
         user = userManager.getUserByName(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
         item = itemManager.getItemById(itemId); //FIXME: throw exception if not exist
+        item.setAuction(auction);
         auction.setOwner(user);
         auction.setItem(item);
         return "/Auctions/createAuction.xhtml?faces-redirect=true";
     }
 
+
     public String createAuction() {
         try {
             auctionManager.createAuction(auction);
+            Messages.info("Add", "Auction created...");
         } catch (Exception e) {
             Messages.error("We are sorry!", "Unexpected error happened. Please try again.");
             return null;

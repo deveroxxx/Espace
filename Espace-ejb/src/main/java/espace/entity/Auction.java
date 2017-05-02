@@ -20,9 +20,10 @@ public class Auction extends BaseEntity {
     private List<Bid> bids;
 
     @OneToOne
-    private Item item;
+    private Bid topBider;
 
-    private Double currentBid;
+    @OneToOne
+    private Item item;
 
     private Date startDate;
 
@@ -39,22 +40,22 @@ public class Auction extends BaseEntity {
     private String description; //leírás az aukcióhoz
 
     /**
-     * Visszaadja a legtöbbet licitáló user-t, vagy null-t
-     * @return User or Null
+     * Visszaadja a legnagyobb licitet
+     * @return Bid or Null
      */
     @Transient
-    private User getTopBidder() {
-        double maxBid = -1;
-        User maxBidUser = null;
+    private Bid getTopBid() {
+        double maxBidPrice = -1;
+        Bid maxBid = null;
         if (bids != null && !bids.isEmpty()) {
             for (Bid bid : bids) {
-                if (bid.getBid() > maxBid) {
-                    maxBidUser = bid.getUser();
-                    maxBid = bid.getBid();
+                if (bid.getBid() > maxBidPrice) {
+                    maxBid = bid;
+                    maxBidPrice = bid.getBid();
                 }
             }
         }
-        return maxBidUser;
+        return maxBid;
     }
 
 
@@ -80,14 +81,6 @@ public class Auction extends BaseEntity {
 
     public void setItem(Item item) {
         this.item = item;
-    }
-
-    public Double getCurrentBid() {
-        return currentBid;
-    }
-
-    public void setCurrentBid(Double currentBid) {
-        this.currentBid = currentBid;
     }
 
     public Date getStartDate() {
@@ -138,12 +131,19 @@ public class Auction extends BaseEntity {
         this.description = description;
     }
 
+    public Bid getTopBider() {
+        return topBider;
+    }
+
+    public void setTopBider(Bid topBider) {
+        this.topBider = topBider;
+    }
+
     @Override
     public String toString() {
         return "Auction{" +
             //    " owner=" + owner.getId() +
                 ", item=" + item +
-                ", currentBid=" + currentBid +
                 ", startDate=" + startDate +
                 ", expirationDate=" + expirationDate +
                 ", closed=" + closed +

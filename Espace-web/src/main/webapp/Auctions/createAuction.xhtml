@@ -7,8 +7,7 @@
 
     <ui:define name="content">
         <h2>Create new auction</h2>
-
-        <div class="row">
+        <div class="container body-content">
             <div class="col-md-7">
                 <h:form id="glob" styleClass="form-horizontal">
                     <div class="form-group">
@@ -19,15 +18,6 @@
                         </div>
                         <div class="col-md-5">
                             <p:message for="user" display="text"/>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class ="col-md-4 control-label">Description</label>
-                        <div class="form-group">
-                            <div class="col-md-9">
-                                <h:inputTextarea title="Description" styleClass="form-control" value="#{createAuctionView.auction.description}"/>
-                            </div>
                         </div>
                     </div>
 
@@ -44,8 +34,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-md-12 control-label">Start time:</label>
-                        <div class="col-md-10">
+                        <label class="col-md-4 control-label">Start time:</label>
+                        <div class="col-md-5">
                             <h:inputText id="start" styleClass="form-control"
                                          value="#{createAuctionView.auction.startDate}">
                                 <f:convertDateTime pattern="yyyy-MM-dd"/>
@@ -55,8 +45,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-md-12 control-label">Expire Time:</label>
-                        <div class="col-md-10">
+                        <label class="col-md-4 control-label">Expire Time:</label>
+                        <div class="col-md-5">
                             <h:inputText id="expire" styleClass="form-control"
                                          value="#{createAuctionView.auction.expirationDate}" required="true" requiredMessage="This is needed">
                                 <f:convertDateTime pattern="yyyy-MM-dd HH:mm"/> <!--FIXME: time picker jó lenne-->
@@ -64,6 +54,16 @@
                             <p:message for="expire"/>
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label class ="col-md-4 control-label">Description</label>
+                        <div class="form-group">
+                            <div class="col-md-5">
+                                <h:inputTextarea title="Description" styleClass="form-control" value="#{createAuctionView.auction.description}"/>
+                            </div>
+                        </div>
+                    </div>
+
 
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">

@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:body>
+
+
+
+    <ui:composition template="/Shared/commonLayout.xhtml">
+        <ui:define name="content">
+
+            <div class="col-md-2">
+                <div class="container body-content">
+
+                    <h2>Filters</h2>
+
+                    <h:form id="filters_form">
+                        <p:panelGrid columns="4" cellpadding="100">
+
+                            <p:outputLabel for="itemName" value="Item name: " />
+                            <p:inputText id="itemName" value="#{auctionListView.filters.itemName}"/>
+
+                            <p:outputLabel for="description" value="Description: " />
+                            <p:inputText id="description" value="#{auctionListView.filters.description}"/>
+
+                            <p:outputLabel for="header" value="Title: " />
+                            <p:inputText id="header" value="#{auctionListView.filters.header}"/>
+
+                            <p:outputLabel for="user" value="User: " />
+                            <p:inputText id="user" value="#{auctionListView.filters.userName}"/>
+
+                            <p:outputLabel for="minprice" value="Minimum price: " />
+                            <p:inputNumber id="minprice" value="#{auctionListView.filters.maxPrice}"/>
+
+                            <p:outputLabel for="maxprice" value="Maximum price: " />
+                            <p:inputNumber id="maxprice" value="#{auctionListView.filters.maxPrice}"/>
+
+                            <p:commandButton value="Reset" type="reset" />
+                            <p:commandButton value="Submit" update="filters_form" action="#{auctionListView.applyFilters()}"/>
+
+                            <p:outputLabel for="orderdropdown" value="Order: " />
+                            <p:selectOneMenu id="orderdropdown" value="#{auctionListView.orderDropdown}" style="width:150px">
+                                <f:selectItems value="#{auctionListView.sortOrder}" />
+                            </p:selectOneMenu>
+                        </p:panelGrid>
+                    </h:form>
+
+                    <h2>Auctions</h2>
+                    <h:form id="auction-grid">
+                        <p:dataGrid var="auction" value="#{auctionListView.lazyModel}" rows="10"
+                                     layout="grid"
+                                     columns="1"
+                                     lazy="true"
+                                     paginator="true"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="1,3,5,10,15,50">
+
+                            <p:panelGrid header="#{auction.header}" style="text-align:center">
+                                    <p:panelGrid style="width:100%">
+                                        <p:column>
+                                            <p:graphicImage value="#{auction.item.picture}" style="width:50%"/>
+                                        </p:column>
+
+                                        <p:column style="width:50%">
+                                            Desc: <h:outputText value="#{auction.description}" />  <br></br>
+                                            Min Bid: <h:outputText value="#{auction.minimumBid}" /> <br></br>
+                                            Top Bid: <h:outputText value="#{not empty auction.topBider ? auction.topBider.bid : 'Be the first Bidder'}" /> <br></br>
+                                            <p:commandButton value="View" action="#{auctionView.init(auction.id)}"/>
+                                        </p:column>
+                                    </p:panelGrid>
+
+                            </p:panelGrid>
+                        </p:dataGrid>
+                    </h:form>
+
+                </div>
+            </div>
+        </ui:define>
+    </ui:composition>
+</h:body>
+
+</html>

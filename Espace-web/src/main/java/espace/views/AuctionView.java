@@ -1,4 +1,4 @@
-package espace.views.user;
+package espace.views;
 
 import espace.entity.Auction;
 import espace.entity.User;

@@ -1,16 +1,20 @@
 package espace.template;
 
 import espace.exceptions.EntityNotFoundException;
+import espace.utils.Log;
+import espace.utils.LogLevel;
 
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 
 public abstract class TemplateManagerBase<T> {
    // private static final Logger logger = Logger.getLogger(TemplateManagerBase.class);
 
-
-    protected T add(T t) {
+    public T add(T t) {
         getEntityManager().persist(t);
         return t;
     }
@@ -58,9 +62,10 @@ public abstract class TemplateManagerBase<T> {
         return objList;
     }
 
-    protected List<T> listByFilter(String query, Map<String, Object> params, int maxResult) {
+    protected List<T> listByFilter(String query, Map<String, Object> params, int maxResult, int firstResult) {
         TypedQuery<T> qry = getEntityManager().createQuery(query, getMyClass());
         qry.setMaxResults(maxResult);
+        qry.setFirstResult(firstResult);
         setParameters(qry, params);
         return qry.getResultList();
     }
@@ -94,9 +99,10 @@ public abstract class TemplateManagerBase<T> {
         }
     }
 
-    protected void update(T entity) {
+    protected T update(T entity) {
         //logger.trace("Updating object: " + entity);
         getEntityManager().merge(entity);
+        return entity;
     }
 
     protected void deleteById(Long id) throws EntityNotFoundException {

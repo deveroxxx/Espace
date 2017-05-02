@@ -71,10 +71,8 @@ public class UserManager extends TemplateManager<User> {
         return list(hql);
     }
 
-    public void update(User user) {
-        if (user != null) {
-            super.update(user);
-        }
+    public User update(User user) {
+        return super.update(user);
     }
 
 

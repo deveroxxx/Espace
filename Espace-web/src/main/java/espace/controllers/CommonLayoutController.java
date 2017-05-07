@@ -21,18 +21,14 @@ public class CommonLayoutController {
     public CommonLayoutController() {
         routes = new ArrayList<>();
 
-        // Could be read from DB but it is not in the scope of this project.
-        routes.add(new Route("/Items/listItems", "Products", true));
+        routes.add(new Route("/Items/listItems", "Products", true, Role.admin));
+        routes.add(new Route("/Admin/usersList", "Manage users", true, Role.admin));
+        routes.add(new Route("/Auctions/listAuctions", "List auctions", true));
 
-        routes.add(new Route("/Admin/usersList", "Manage users", Role.admin));
-     //   routes.addCategory(new Route("/Admin/requestList", "Manage requests", Role.admin));
-     //   routes.addCategory(new Route("/Admin/addCategory", "Categories", Role.admin));
 
         routes.add(new Route("/Account/profile", "Profile", false, Role.admin, Role.user));
-
         routes.add(new Route("/Account/login", "Login", false));
         routes.add(new Route("/Account/register", "Register", false));
-
         routes.add(new Route("/Utils/utilLinks", "Util Links", false));
     }
 
@@ -58,7 +54,6 @@ public class CommonLayoutController {
 
     private boolean isUserInRole(Role role) {
         ExternalContext externalContext = getExternalContext();
-
         return externalContext.isUserInRole(role.name());
     }
 

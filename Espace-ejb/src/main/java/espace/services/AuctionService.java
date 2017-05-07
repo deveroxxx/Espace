@@ -45,6 +45,7 @@ public class AuctionService {
         auction.setItem(item);
         auction.setOwner(user);
         Auction result = auctionManager.add(auction);
+        item.setAuction(result);
         return result;
     }
 

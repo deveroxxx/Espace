@@ -46,14 +46,12 @@ public class LoginController implements Serializable {
 
         try {
             request.login(username, password);
-           // loginCounterService.addLoginCounter();
         } catch (ServletException e) {
             log.log(Level.SEVERE, "Failed to login user!", e);
             Messages.warn("Login failed!", "Invalid name or password!");
             return null;
         }
-
-        return "/Items/listItems.xhtml?faces-redirect=true";
+        return "/Account/profile.xhtml?faces-redirect=true";
     }
 
     public String getUsername() {

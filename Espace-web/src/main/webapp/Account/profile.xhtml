@@ -51,9 +51,13 @@
                     </p:panelGrid>
                 </p:tab>
                 <p:tab title="Edit profile" id="tab1">
-                    <h:panelGrid>
+                    <p:panelGrid columns="2" cellpadding="20">
 
-                        <h3>Chnage profile picture</h3>
+                        <f:facet name="header">
+                            <h3>Chnage profile picture</h3>
+                            <h:graphicImage value="#{dtProfileView.user.picture}" width="200" height="171"/>
+                        </f:facet>
+
                         <h:form enctype="multipart/form-data">
                             <div class="form-horizontal">
                                 <p:fileUpload value="#{fileUploadView.file}" mode="simple" skinSimple="true"/>
@@ -65,29 +69,24 @@
                             </div>
                         </h:form>
 
-                        <h:graphicImage value="#{dtProfileView.user.picture}" width="200" height="171"/>
-
                         <h:form id="glob">
+                            <label>Real Name:</label>
+                            <h:inputText id="name" styleClass="form-control" value="#{dtProfileView.user.realName}"></h:inputText>
+                            <p:message for="name"/>
 
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">Real Name:</label>
-                                <div class="col-md-10">
-                                    <h:inputText id="name" styleClass="form-control"
-                                                 value="#{dtProfileView.user.realName}"></h:inputText>
-                                    <p:message for="name"/>
-                                </div>
-                            </div>
+                            <label>Phone:</label>
+                            <h:inputText id="phone" styleClass="form-control" value="#{dtProfileView.user.phoneNumber}"></h:inputText>
+                            <p:message for="phone"/>
 
-                            <div class="form-group">
-                                <label class="col-md-12 control-label">DateOfBirth:</label>
-                                <div class="col-md-10">
-                                    <h:inputText id="date" styleClass="form-control"
-                                                 value="#{dtProfileView.user.dateOfBirth}">
-                                        <f:convertDateTime pattern="yyyy-MM-dd"/>
-                                    </h:inputText>
-                                    <p:message for="date"/>
-                                </div>
-                            </div>
+                            <label>Email adress: </label>
+                            <h:inputText id="email" styleClass="form-control" value="#{dtProfileView.user.emailAdress}"></h:inputText>
+                            <p:message for="email"/>
+
+                            <label>DateOfBirth:</label>
+                                <h:inputText id="date" styleClass="form-control" value="#{dtProfileView.user.dateOfBirth}">
+                                    <f:convertDateTime pattern="yyyy-MM-dd"/>
+                                </h:inputText>
+                            <p:message for="date"/>
 
 
                             <div class="form-group">
@@ -97,11 +96,8 @@
                                                      action="#{dtProfileView.saveChanges()}"></p:commandButton>
                                 </div>
                             </div>
-
                         </h:form>
-
-
-                    </h:panelGrid>
+                    </p:panelGrid>
                 </p:tab>
 
                 <p:tab title="My Auctions" id="tab2">

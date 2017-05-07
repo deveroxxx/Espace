@@ -4,6 +4,9 @@
     <entry_points version="2.0" />
   </component>
   <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="ejb" url="file://$PROJECT_DIR$/Espace-ejb" />
+    <file type="javaeeApplication" url="file://$PROJECT_DIR$/Espace-ejb" />
+    <file type="web" url="file://$PROJECT_DIR$/Espace-ejb" />
     <file type="web" url="file://$PROJECT_DIR$/Espace-web" />
   </component>
   <component name="MavenProjectsManager">

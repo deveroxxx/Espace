@@ -33,6 +33,13 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "owner")
     private List<Auction> myAuctions; //A felhasználó aukciói
 
+    @OneToMany(mappedBy = "recipient")
+    private List<Notification> notifications; //A felhasználó aukciói
+
+    private String phoneNumber;
+
+    private String emailAdress;
+
     public User() {
     }
 
@@ -100,12 +107,26 @@ public class User extends BaseEntity {
         this.myBids = myBids;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "realName='" + realName + '\'' +
-                ", userName='" + userName + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                "} " + super.toString();
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmailAdress() {
+        return emailAdress;
+    }
+
+    public void setEmailAdress(String emailAdress) {
+        this.emailAdress = emailAdress;
     }
 }

@@ -1,6 +1,5 @@
 package espace.managers;
 
-import espace.annotations.ExcludeFromLog;
 import espace.entity.GroupRole;
 import espace.entity.User;
 import espace.enums.Role;

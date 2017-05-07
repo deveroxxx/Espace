@@ -1,13 +1,8 @@
 package espace.template;
 
 import espace.exceptions.EntityNotFoundException;
-import espace.utils.Log;
-import espace.utils.LogLevel;
 
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 
@@ -19,15 +14,15 @@ public abstract class TemplateManagerBase<T> {
         return t;
     }
 
-    protected T get(Long id) {
+    public T get(Long id) {
         return getEntityManager().getReference(getMyClass(), id);
     }
 
-    protected T select(Long id) {
+    public T select(Long id) {
         return getEntityManager().find(getMyClass(), id);
     }
 
-    protected T selectForUpdate(Long id) {
+    public T selectForUpdate(Long id) {
         EntityManager em = getEntityManager();
         T t = em.find(getMyClass(), id, LockModeType.PESSIMISTIC_WRITE);
         em.flush();
@@ -37,32 +32,32 @@ public abstract class TemplateManagerBase<T> {
         return t;
     }
 
-    protected void readLock(T t) {
+    public void readLock(T t) {
         getEntityManager().lock(t, LockModeType.PESSIMISTIC_READ);
     }
 
-    protected void writeLock(T t) {
+    public void writeLock(T t) {
         getEntityManager().lock(t, LockModeType.PESSIMISTIC_WRITE);
     }
 
-    protected List<T> listAll() {
+    public List<T> listAll() {
         javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(getMyClass()));
         return getEntityManager().createQuery(cq).getResultList();
     }
 
-    protected List<T> list(String query) {
+    public List<T> list(String query) {
         return listByFilter(query, null);
     }
 
-    protected List<T> listByFilter(String query, Map<String, Object> params) {
+    public List<T> listByFilter(String query, Map<String, Object> params) {
         TypedQuery<T> qry = getEntityManager().createQuery(query, getMyClass());
         setParameters(qry, params);
         List<T> objList = qry.getResultList();
         return objList;
     }
 
-    protected List<T> listByFilter(String query, Map<String, Object> params, int maxResult, int firstResult) {
+    public List<T> listByFilter(String query, Map<String, Object> params, int maxResult, int firstResult) {
         TypedQuery<T> qry = getEntityManager().createQuery(query, getMyClass());
         qry.setMaxResults(maxResult);
         qry.setFirstResult(firstResult);
@@ -70,11 +65,11 @@ public abstract class TemplateManagerBase<T> {
         return qry.getResultList();
     }
 
-    protected T getUniqueItem(String query) {
+    public T getUniqueItem(String query) {
         return getUniqueItemByFilter(query, null);
     }
 
-    protected T getUniqueItemByFilter(String query, Map<String, Object> params) {
+    public T getUniqueItemByFilter(String query, Map<String, Object> params) {
         TypedQuery<T> qry = getEntityManager().createQuery(query, getMyClass());
         setParameters(qry, params);
         try {
@@ -84,14 +79,14 @@ public abstract class TemplateManagerBase<T> {
         }
     }
 
-    protected Long getCountResultByFilter(String countQuery, Map<String, Object> params) {
+    public Long getCountResultByFilter(String countQuery, Map<String, Object> params) {
         //logger.trace("Count query.");
         TypedQuery<Long> qry = getEntityManager().createQuery(countQuery, Long.class);
         setParameters(qry, params);
         return qry.getSingleResult();
     }
 
-    protected void setParameters(Query qry, Map<String, Object> params) {
+    public void setParameters(Query qry, Map<String, Object> params) {
         if (params != null && !params.isEmpty()) {
             for (String key : params.keySet()) {
                 qry.setParameter(key, params.get(key));
@@ -99,13 +94,13 @@ public abstract class TemplateManagerBase<T> {
         }
     }
 
-    protected T update(T entity) {
+    public T update(T entity) {
         //logger.trace("Updating object: " + entity);
         getEntityManager().merge(entity);
         return entity;
     }
 
-    protected void deleteById(Long id) throws EntityNotFoundException {
+    public void deleteById(Long id) throws EntityNotFoundException {
         //logger.trace("Deleting object by id: " + id);
         T entity = select(id);
         if (entity == null) {

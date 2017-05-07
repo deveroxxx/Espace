@@ -16,13 +16,13 @@ public class Auction extends BaseEntity {
     @ManyToOne
     private User owner;
 
-    @OneToMany(mappedBy = "auction")
+    @OneToMany(mappedBy = "auction", cascade = CascadeType.REMOVE)
     private List<Bid> bids;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     private Bid topBider;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     private Item item;
 
     private Date startDate;
@@ -139,16 +139,5 @@ public class Auction extends BaseEntity {
         this.topBider = topBider;
     }
 
-    @Override
-    public String toString() {
-        return "Auction{" +
-            //    " owner=" + owner.getId() +
-                ", item=" + item +
-                ", startDate=" + startDate +
-                ", expirationDate=" + expirationDate +
-                ", closed=" + closed +
-                ", minimumBid=" + minimumBid +
-                "} " + super.toString();
-    }
 }
 

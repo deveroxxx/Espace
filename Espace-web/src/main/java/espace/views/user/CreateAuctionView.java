@@ -3,10 +3,12 @@ package espace.views.user;
 import espace.entity.Auction;
 import espace.entity.Item;
 import espace.entity.User;
+import espace.enums.AuctionSortField;
 import espace.managers.AuctionManager;
 import espace.managers.ItemCategoryManager;
 import espace.managers.ItemManager;
 import espace.managers.UserManager;
+import espace.services.AuctionService;
 import espace.utils.Messages;
 
 import javax.annotation.PostConstruct;
@@ -23,6 +25,9 @@ public class CreateAuctionView implements Serializable{
 
     @Inject
     private AuctionManager auctionManager;
+
+    @Inject
+    private AuctionService auctionService;
 
     @Inject
     private ItemCategoryManager itemCategoryManager;
@@ -46,24 +51,20 @@ public class CreateAuctionView implements Serializable{
         user = userManager.getUserByName(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
         item = itemManager.getItemById(itemId); //FIXME: throw exception if not exist
         item.setAuction(auction);
-        auction.setOwner(user);
-        auction.setItem(item);
         return "/Auctions/createAuction.xhtml?faces-redirect=true";
     }
 
 
     public String createAuction() {
         try {
-            auctionManager.createAuction(auction);
+            auctionService.createAuction(auction, item.getId(), user);
             Messages.info("Add", "Auction created...");
         } catch (Exception e) {
-            Messages.error("We are sorry!", "Unexpected error happened. Please try again.");
+            Messages.error("We are sorry!", e.getMessage());
             return null;
         }
-        return null;
+        return "/Account/profile.xhtml?faces-redirect=true";
     }
-
-
 
 
     public Auction getAuction() {

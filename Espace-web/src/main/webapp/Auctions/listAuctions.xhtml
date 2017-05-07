@@ -3,19 +3,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:body>
-
-
-
     <ui:composition template="/Shared/commonLayout.xhtml">
         <ui:define name="content">
 
             <div class="col-md-2">
                 <div class="container body-content">
-
                     <h2>Filters</h2>
 
                     <h:form id="filters_form">
@@ -34,7 +29,7 @@
                             <p:inputText id="user" value="#{auctionListView.filters.userName}"/>
 
                             <p:outputLabel for="minprice" value="Minimum price: " />
-                            <p:inputNumber id="minprice" value="#{auctionListView.filters.maxPrice}"/>
+                            <p:inputNumber id="minprice" value="#{auctionListView.filters.minPrice}"/>
 
                             <p:outputLabel for="maxprice" value="Maximum price: " />
                             <p:inputNumber id="maxprice" value="#{auctionListView.filters.maxPrice}"/>
@@ -69,7 +64,7 @@
                                             Desc: <h:outputText value="#{auction.description}" />  <br></br>
                                             Min Bid: <h:outputText value="#{auction.minimumBid}" /> <br></br>
                                             Top Bid: <h:outputText value="#{not empty auction.topBider ? auction.topBider.bid : 'Be the first Bidder'}" /> <br></br>
-                                            <p:commandButton value="View" action="#{auctionView.init(auction.id)}"/>
+                                            <p:commandButton value="View" action="#{auctionView.redirect(auction.id)}"/>
                                         </p:column>
                                     </p:panelGrid>
 

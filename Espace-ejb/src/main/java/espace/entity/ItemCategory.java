@@ -1,5 +1,6 @@
 package espace.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -13,7 +14,7 @@ public class ItemCategory extends BaseEntity {
     @Column(name = "categoryName")
     private String name;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
     private List<Item> items;
 
     public ItemCategory() {
@@ -37,12 +38,5 @@ public class ItemCategory extends BaseEntity {
 
     public void setItems(List<Item> items) {
         this.items = items;
-    }
-
-    @Override
-    public String toString() {
-        return "ItemCategory{" +
-                "name='" + name + '\'' +
-                "} " + super.toString();
     }
 }

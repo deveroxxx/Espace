@@ -1,38 +1,29 @@
 package espace.managers;
 
 import espace.data.AuctionFilters;
-import espace.data.QueryData;
 import espace.entity.Auction;
 import espace.entity.User;
 import espace.enums.AuctionSortField;
-import espace.enums.QuerySortOrder;
 import espace.template.TemplateManager;
 import espace.utils.Log;
-import espace.utils.LogLevel;
-import espace.utils.LogService;
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import javax.ejb.LocalBean;
+import javax.ejb.Startup;
 import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Stateless
 @LocalBean
 @Log
 public class AuctionManager extends TemplateManager<Auction> {
 
-    Logger logger = Logger.getLogger(AuctionManager.class);
+    Logger logger = LogManager.getLogger(AuctionManager.class.getCanonicalName());
 
-    @Inject
-    private ItemManager itemManager;
 
     public List<Auction> listAuctionsByUser(User user, boolean closed) {
         //language=JPAQL
@@ -58,18 +49,13 @@ public class AuctionManager extends TemplateManager<Auction> {
         return super.select(id);
     }
 
-    public Auction createAuction(Auction auction) {
-        Auction result = super.add(auction);
-        super.getEntityManager().flush(); // persist exceptiont még itt dobja
-        return result;
+    public List<Auction> listNotClosedExpiredAuctions() {
+        HashMap<String, Object> params = new HashMap<String, Object>();
+        //language=JPAQL
+        String hql = "select auction from Auction auction where auction.closed = false and auction.expirationDate < :currentTime";
+        params.put("currentTime", Calendar.getInstance().getTime());
+        return listByFilter(hql, params);
     }
-
-
-    @Override
-    protected Class getMyClass() {
-        return Auction.class;
-    }
-
 
     public List<Auction> refreshListData(AuctionFilters filters, AuctionSortField sortField, int start, int end) {
         //TODO: filteres query lekérdezést megcsinálni
@@ -95,7 +81,7 @@ public class AuctionManager extends TemplateManager<Auction> {
             hql.append(" and auction.description = :description");
             params.put("description", filters.getDescription());
         }
-        if (filters.getMaxPrice() != null) {
+        if (filters.getMinPrice() != null) {
             hql.append(" and ((topBider is null and auction.minimumBid <= :maxPrice) or" +
                             " (topBider is not null and topBider.bid <= :maxPrice))");
             params.put("maxPrice", filters.getMaxPrice());
@@ -152,5 +138,10 @@ public class AuctionManager extends TemplateManager<Auction> {
         String hql = "select count(auction) from Auction auction";
         Query query = super.getEntityManager().createQuery(hql);
         return (long) query.getSingleResult();
+    }
+
+    @Override
+    protected Class getMyClass() {
+        return Auction.class;
     }
 }

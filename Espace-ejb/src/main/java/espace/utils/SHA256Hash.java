@@ -1,6 +1,5 @@
 package espace.utils;
 
-import javax.interceptor.Interceptors;
 import java.security.MessageDigest;
 
 public class SHA256Hash {

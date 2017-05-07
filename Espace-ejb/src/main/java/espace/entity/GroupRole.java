@@ -42,11 +42,4 @@ public class GroupRole extends BaseEntity {
         this.userName = userLoginName;
     }
 
-    @Override
-    public String toString() {
-        return "GroupRole{" +
-                "groupRole=" + groupRole +
-                ", userName='" + userName + '\'' +
-                "} " + super.toString();
-    }
 }

@@ -1,9 +1,7 @@
 package espace.data;
 
-import espace.entity.Item;
 import espace.enums.QuerySortOrder;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.Map;
 

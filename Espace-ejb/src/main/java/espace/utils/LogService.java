@@ -1,6 +1,9 @@
 package espace.utils;
 
 
+
+
+
 import org.apache.log4j.Logger;
 
 import java.util.Calendar;
@@ -10,7 +13,6 @@ public class LogService {
 
     public static void log(LogLevel level, String clazz, String message) {
         Logger logger = Logger.getLogger(clazz);
-
         switch (level) {
             case TRACE:
                 logger.trace(message);

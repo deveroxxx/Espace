@@ -43,12 +43,4 @@ public class Bid extends BaseEntity {
         this.bid = bid;
     }
 
-    @Override
-    public String toString() {
-        return "Bid{" +
-                "user=" + user.getId() +
-                ", auction=" + auction.getId() +
-                ", bid=" + bid +
-                "} " + super.toString();
-    }
 }

@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
   <artifact type="ejb-jar" name="Espace-ejb:ejb">
-    <output-path>$PROJECT_DIR$/out/artifacts/Espace_ejb_ejb</output-path>
-    <root id="archive" name="Espace-ejb_ejb.jar">
+    <output-path>$PROJECT_DIR$/Espace-ejb/target</output-path>
+    <root id="archive" name="Espace-ejb-1.0-SNAPSHOT.jar">
       <element id="artifact" artifact-name="Espace-ejb:ejb exploded" />
     </root>
   </artifact>

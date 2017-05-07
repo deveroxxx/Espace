@@ -1,9 +1,6 @@
 package espace.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -17,7 +14,7 @@ public class Item extends BaseEntity {
     @ManyToOne
     private User user;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     private Auction auction;
 
     @ManyToOne
@@ -66,9 +63,4 @@ public class Item extends BaseEntity {
         this.picture = picture;
     }
 
-    @Override
-    public String toString() {
-        return "Item{" +
-                "name='" + name + '\'' + "} " + super.toString();
-    }
 }

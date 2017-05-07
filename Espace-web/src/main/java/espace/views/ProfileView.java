@@ -1,13 +1,12 @@
 package espace.views;
 
 import espace.entity.Auction;
+import espace.entity.Bid;
 import espace.entity.Item;
 import espace.entity.User;
 import espace.enums.Role;
-import espace.managers.AuctionManager;
-import espace.managers.GroupRoleManager;
-import espace.managers.ItemManager;
-import espace.managers.UserManager;
+import espace.managers.*;
+import espace.services.AuctionService;
 import espace.utils.Messages;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.TabChangeEvent;
@@ -19,6 +18,7 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @ManagedBean(name = "dtProfileView")
@@ -36,6 +36,9 @@ public class ProfileView implements Serializable {
 
     @Inject
     private AuctionManager auctionManager;
+
+    @Inject
+    private BidManager bidManager;
 
 
 
@@ -55,21 +58,28 @@ public class ProfileView implements Serializable {
 
     @PostConstruct
     public void init() {
-        user = userManager.getUserByName(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
-        userRoles = roleManager.getRoles(user.getUserName());
-        page = 0;
-        tempUser = new User();
+        try{
+            user = userManager.getUserByName(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
+            userRoles = roleManager.getRoles(user.getUserName());
+            page = 0;
+            tempUser = new User();
 
-        myActiveAuctions = auctionManager.listAuctionsByUser(user, false);
-        myBids = auctionManager.listAuctionByUserBids(user);
-        myItems = itemManager.listItemsByUser(user);
-        
+            myActiveAuctions = auctionManager.listAuctionsByUser(user, false);
+            myBids = auctionManager.listAuctionByUserBids(user);
+            myItems = itemManager.listItemsByUser(user);
+        } catch (Exception e) {
+            Messages.error("We are sorry!", "Unexpected error happened!");
+        }
     }
 
     public void updatePage() {
-        user = userManager.getUserByName(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
-        userRoles = roleManager.getRoles(user.getUserName());
-        tempUser = new User();
+        try{
+            user = userManager.getUserByName(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
+            userRoles = roleManager.getRoles(user.getUserName());
+            tempUser = new User();
+        } catch (Exception e) {
+            Messages.error("We are sorry!", "Unexpected error happened!");
+        }
     }
     
     public String saveChanges() {
@@ -78,12 +88,24 @@ public class ProfileView implements Serializable {
             Messages.info("Save", "Operation was successful!");
             return null;
         } catch (Exception e) {
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Warning:", "Unexpeced error!");
-            RequestContext.getCurrentInstance().showMessageInDialog(message);
+            Messages.error("We are sorry!", "Unexpected error happened!");
         }
         return null;
     }
 
+    public List<Bid> myLatestBids() {
+        List<Bid> result = new ArrayList<>();
+        result = bidManager.listLatestBidsByUser(user.getId());
+        return result;
+    }
+
+    public boolean isUserTopBider(Bid bid) {
+        if (bid.getAuction().getTopBider() != null && bid.getAuction().getTopBider().equals(bid)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public String discard() {
         return null;
@@ -105,6 +127,9 @@ public class ProfileView implements Serializable {
             }
             if (id.equals("tab3")) {
                 page = 3;
+            }
+            if (id.equals("tab4")) {
+                page = 4;
             }
             updatePage();
             //page=((TabView)event.getComponent()).getActiveIndex();

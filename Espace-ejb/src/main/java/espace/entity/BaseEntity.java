@@ -1,8 +1,6 @@
 package espace.entity;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Calendar;
@@ -19,6 +17,7 @@ public class BaseEntity implements Serializable {
     private Boolean deleted = false;
 
     @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createdOn = Calendar.getInstance().getTime();
 
     public Long getId() {

@@ -25,8 +25,10 @@ public class Auction extends BaseEntity {
     @OneToOne(cascade = CascadeType.REMOVE)
     private Item item;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @NotNull(message = "Expiration date is requied")
     private Date expirationDate;
 

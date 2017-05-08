@@ -1,8 +1,6 @@
 package espace.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +15,7 @@ public class User extends BaseEntity {
     @NotNull
     private String userName; //Bejelentkező név
 
+    @Temporal(TemporalType.TIMESTAMP)
     private Date dateOfBirth; //Születési dátum
 
     private String picture; // Profilkép elérés url

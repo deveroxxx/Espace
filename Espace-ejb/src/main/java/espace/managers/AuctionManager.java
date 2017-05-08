@@ -81,12 +81,12 @@ public class AuctionManager extends TemplateManager<Auction> {
             hql.append(" and auction.description = :description");
             params.put("description", filters.getDescription());
         }
-        if (filters.getMinPrice() != null) {
+        if (filters.getMaxPrice() != null) {
             hql.append(" and ((topBider is null and auction.minimumBid <= :maxPrice) or" +
                             " (topBider is not null and topBider.bid <= :maxPrice))");
             params.put("maxPrice", filters.getMaxPrice());
         }
-        if (filters.getMaxPrice() != null) {
+        if (filters.getMinPrice() != null) {
             hql.append(" and ((topBider is null and auction.minimumBid >= :minPrice) or" +
                     " (topBider is not null and topBider.bid >= :minPrice))");
             params.put("minPrice", filters.getMinPrice());

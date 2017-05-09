@@ -1,5 +1,6 @@
 package espace.managers;
 
+import espace.data.AuctionData;
 import espace.data.AuctionFilters;
 import espace.entity.Auction;
 import espace.entity.User;
@@ -10,7 +11,6 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import javax.ejb.LocalBean;
-import javax.ejb.Startup;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 import java.util.Calendar;
@@ -57,37 +57,38 @@ public class AuctionManager extends TemplateManager<Auction> {
         return listByFilter(hql, params);
     }
 
-    public List<Auction> refreshListData(AuctionFilters filters, AuctionSortField sortField, int start, int end) {
-        //TODO: filteres query lekérdezést megcsinálni
+    public AuctionData refreshListData(AuctionFilters filters, AuctionSortField sortField, int start, int end) {
         HashMap<String, Object> params = new HashMap<String, Object>();
         //language=JPAQL
         StringBuilder hql = new StringBuilder();
+        StringBuilder criteria = new StringBuilder();
+        StringBuilder order = new StringBuilder();
         hql.append("select auction from Auction auction left join auction.item item left join auction.topBider topBider");
         //feltételek felépítése
-        hql.append(" where '1'='1'");
+        criteria.append(" where '1'='1'");
         if (filters.getHeader() != null && !filters.getHeader().isEmpty()) {
-            hql.append(" and auction.header = :header");
-            params.put("header", filters.getHeader());
+            criteria.append(" and auction.header like :header");
+            params.put("header", "%"+filters.getHeader()+"%");
         }
         if (filters.getUserName() != null && !filters.getUserName().isEmpty()) {
-            hql.append(" and auction.owner = %:owner%");
-            params.put("owner", filters.getUserName());
+            criteria.append(" and auction.owner.userName like :owner");
+            params.put("owner", "%"+filters.getUserName()+"%");
         }
         if (filters.getItemName() != null && !filters.getItemName().isEmpty()) {
-            hql.append(" and item.name like %:itemName%");
-            params.put("itemName", filters.getItemName());
+            criteria.append(" and item.name like :itemName");
+            params.put("itemName", "%"+filters.getItemName()+"%");
         }
         if (filters.getDescription() != null && !filters.getDescription().isEmpty()) {
-            hql.append(" and auction.description = :description");
-            params.put("description", filters.getDescription());
+            criteria.append(" and auction.description like :description");
+            params.put("description", "%"+filters.getDescription()+"%");
         }
         if (filters.getMaxPrice() != null) {
-            hql.append(" and ((topBider is null and auction.minimumBid <= :maxPrice) or" +
+            criteria.append(" and ((topBider is null and auction.minimumBid <= :maxPrice) or" +
                             " (topBider is not null and topBider.bid <= :maxPrice))");
             params.put("maxPrice", filters.getMaxPrice());
         }
         if (filters.getMinPrice() != null) {
-            hql.append(" and ((topBider is null and auction.minimumBid >= :minPrice) or" +
+            criteria.append(" and ((topBider is null and auction.minimumBid >= :minPrice) or" +
                     " (topBider is not null and topBider.bid >= :minPrice))");
             params.put("minPrice", filters.getMinPrice());
         }
@@ -96,41 +97,49 @@ public class AuctionManager extends TemplateManager<Auction> {
 
         //rendezés
         if (sortField != null) {
-            hql.append(" order by");
+            order.append(" order by");
             switch (sortField) {
                 case PRICE_ASC:
-                    hql.append(" auction.price asc");
+                    order.append(" case when exists(select bid from Bid bid where bid.id = topBider.id) then (select bid.bid from Bid bid where bid.id = topBider.id) else auction.minimumBid end asc");
                     break;
                 case PRICE_DESC:
-                    hql.append(" auction.price desc");
+                    order.append(" case when exists(select bid from Bid bid where bid.id = topBider.id) then (select bid.bid from Bid bid where bid.id = topBider.id) else auction.minimumBid end desc");
                     break;
                 case CLOSE_DATE_ASC:
-                    hql.append(" auction.expirationDate asc");
+                    order.append(" auction.expirationDate asc");
                     break;
                 case CLOSE_DATE_DESC:
-                    hql.append(" auction.expirationDate desc");
+                    order.append(" auction.expirationDate desc");
                     break;
                 case NAME_ASC:
-                    hql.append(" auction.expirationDate desc");
+                    order.append(" item.name desc");
                     break;
                 case NAME_DESC:
-                    hql.append(" auction.expirationDate desc");
+                    order.append(" item.name desc");
                     break;
                 case NEWEST_FIRST:
-                    hql.append(" auction.expirationDate desc");
+                    order.append(" auction.createdOn desc");
                     break;
                 case NON_SORTED:
-                    hql.append(" 1");
+                    order.append(" 1");
                     break;
             }
         }
+        AuctionData data = new AuctionData();
 
-        String querryString = hql.toString();
+        String querryString = hql.toString() + criteria.toString() + order.toString();
+        String countString = "select count(auction) from Auction auction left join auction.item item left join auction.topBider topBider" + criteria.toString();
+
         logger.debug("Running lazy querry: " + querryString);
-        List<Auction> resultList = listByFilter(querryString, params, end - start, start);
 
-        //FIXME: itt lehet még mókázni kell a result és a total result countal
-        return resultList;
+        Long count = getCountResultByFilter(countString,params);
+        data.setCount(count);
+
+        List<Auction> resultList = listByFilter(querryString, params, end - start, start);
+        data.setResult(resultList);
+
+        data.setTotalCount(getTotalResultCount());
+        return data;
     }
 
     public long getTotalResultCount() {

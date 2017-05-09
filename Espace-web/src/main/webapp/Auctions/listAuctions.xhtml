@@ -35,18 +35,22 @@
                             <p:inputNumber id="maxprice" value="#{auctionListView.filters.maxPrice}"/>
 
                             <p:commandButton value="Reset" type="reset" />
-                            <p:commandButton value="Submit" update="filters_form" action="#{auctionListView.applyFilters()}"/>
+                            <p:commandButton value="Submit" action="#{auctionListView.applyFilters}"/>
 
                             <p:outputLabel for="orderdropdown" value="Order: " />
-                            <p:selectOneMenu id="orderdropdown" value="#{auctionListView.orderDropdown}" style="width:150px">
-                                <f:selectItems value="#{auctionListView.sortOrder}" />
+                            <p:selectOneMenu id="orderdropdown" value="#{auctionListView.sortOrder}">
+                                <f:selectItems value="#{auctionListView.orderDropdown.entrySet()}" var="entry" itemValue="#{entry.key}" itemLabel="#{entry.value}" />
                             </p:selectOneMenu>
+                            <!--<p:selectOneMenu id="orderdropdown" value="#{auctionListView.orderDropdown}">-->
+                                <!--<f:selectItems  value="#{auctionListView.orderDropdown}" itemValue="#{auctionListView.sortOrder}"/>-->
+                            <!--</p:selectOneMenu>-->
                         </p:panelGrid>
                     </h:form>
 
                     <h2>Auctions</h2>
                     <h:form id="auction-grid">
-                        <p:dataGrid var="auction" value="#{auctionListView.lazyModel}" rows="10"
+                        <p:dataGrid  var="auction" value="#{auctionListView.lazyModel}" rows="10"
+                                     widgetVar="auctionTable"
                                      layout="grid"
                                      columns="1"
                                      lazy="true"
@@ -61,9 +65,11 @@
                                         </p:column>
 
                                         <p:column style="width:50%">
+                                            Title: <h:outputText value="#{auction.header}" />  <br></br>
                                             Desc: <h:outputText value="#{auction.description}" />  <br></br>
                                             Min Bid: <h:outputText value="#{auction.minimumBid}" /> <br></br>
                                             Top Bid: <h:outputText value="#{not empty auction.topBider ? auction.topBider.bid : 'Be the first Bidder'}" /> <br></br>
+                                            Min Bid: <h:outputText value="#{auction.expirationDate}" /> <br></br>
                                             <p:commandButton value="View" action="#{auctionView.redirect(auction.id)}"/>
                                         </p:column>
                                     </p:panelGrid>

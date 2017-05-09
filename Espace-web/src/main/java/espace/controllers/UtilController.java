@@ -35,5 +35,10 @@ public class UtilController implements Serializable {
         return null;
     }
 
+    public String createDumyDatatas() {
+        databaseInicializer.createDumyDatas();
+        return null;
+    }
+
 
 }

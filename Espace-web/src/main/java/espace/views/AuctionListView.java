@@ -1,5 +1,6 @@
 package espace.views;
 
+import espace.data.AuctionData;
 import espace.data.AuctionFilters;
 import espace.data.QueryData;
 import espace.entity.Auction;
@@ -21,10 +22,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @ManagedBean(name = "auctionListView")
 @SessionScoped
@@ -62,7 +60,7 @@ public class AuctionListView implements Serializable {
     private AuctionFilters filters;
 
     //order
-    private Map<AuctionSortField,String> orderDropdown;
+    private LinkedHashMap<AuctionSortField, String> orderDropdown;
     private AuctionSortField sortOrder;
 
 
@@ -72,7 +70,7 @@ public class AuctionListView implements Serializable {
         //default list
         //FIXME: order dropown nem töltődik fel
         resultList = new ArrayList<Auction>();
-        orderDropdown = new HashMap<>();
+        orderDropdown = new LinkedHashMap<>();
         //dropdown init
         orderDropdown.put(AuctionSortField.PRICE_ASC, "Price Asc");
         orderDropdown.put(AuctionSortField.PRICE_DESC, "Price Desc");
@@ -103,8 +101,9 @@ public class AuctionListView implements Serializable {
                 //log.info("first=" + first + ", pagesize=" + pageSize + ", sortfield=" + sortField + " sortorder=" + sortOrder + " filter:" + filters);
                 start = first;
                 end = first + pageSize;
-                List<Auction> resultList = auctionManager.refreshListData(filters, sortOrder, start, end);
-                long count = auctionManager.getTotalResultCount();
+                AuctionData data  = auctionManager.refreshListData(filters, sortOrder, start, end);
+                List<Auction> resultList = data.getResult();
+                long count = data.getCount();
                 this.setRowCount(Math.toIntExact(count));
                 currentListOfAuctions = resultList;
                 return resultList;
@@ -124,11 +123,11 @@ public class AuctionListView implements Serializable {
         this.sortOrder = sortOrder;
     }
 
-    public Map<AuctionSortField, String> getOrderDropdown() {
+    public LinkedHashMap<AuctionSortField, String> getOrderDropdown() {
         return orderDropdown;
     }
 
-    public void setOrderDropdown(Map<AuctionSortField, String> orderDropdown) {
+    public void setOrderDropdown(LinkedHashMap<AuctionSortField, String> orderDropdown) {
         this.orderDropdown = orderDropdown;
     }
 

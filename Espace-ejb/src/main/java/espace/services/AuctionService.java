@@ -10,7 +10,6 @@ import espace.utils.Log;
 import org.apache.log4j.Logger;
 
 import javax.ejb.LocalBean;
-import javax.ejb.Startup;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.Calendar;

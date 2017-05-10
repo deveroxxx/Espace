@@ -10,47 +10,57 @@
         <ui:define name="content">
 
             <div class="col-md-2">
-                <div class="container body-content">
+                <div class="container body-content" id="global">
                     <h2>Filters</h2>
 
                     <h:form id="filters_form">
-                        <p:panelGrid columns="4" cellpadding="100">
+                        <p:panelGrid columns="2" cellpadding="100">
+                            <p:panelGrid columns="4" cellpadding="100">
+                                <p:outputLabel for="itemName" value="Item name: " />
+                                <p:inputText id="itemName" value="#{auctionListView.filters.itemName}"/>
 
-                            <p:outputLabel for="itemName" value="Item name: " />
-                            <p:inputText id="itemName" value="#{auctionListView.filters.itemName}"/>
+                                <p:outputLabel for="description" value="Description: " />
+                                <p:inputText id="description" value="#{auctionListView.filters.description}"/>
 
-                            <p:outputLabel for="description" value="Description: " />
-                            <p:inputText id="description" value="#{auctionListView.filters.description}"/>
+                                <p:outputLabel for="header" value="Title: " />
+                                <p:inputText id="header" value="#{auctionListView.filters.header}"/>
 
-                            <p:outputLabel for="header" value="Title: " />
-                            <p:inputText id="header" value="#{auctionListView.filters.header}"/>
+                                <p:outputLabel for="user" value="User: " />
+                                <p:inputText id="user" value="#{auctionListView.filters.userName}"/>
 
-                            <p:outputLabel for="user" value="User: " />
-                            <p:inputText id="user" value="#{auctionListView.filters.userName}"/>
+                                <p:outputLabel for="minprice" value="Minimum price: " />
+                                <p:inputNumber id="minprice" value="#{auctionListView.filters.minPrice}"/>
 
-                            <p:outputLabel for="minprice" value="Minimum price: " />
-                            <p:inputNumber id="minprice" value="#{auctionListView.filters.minPrice}"/>
+                                <p:outputLabel for="maxprice" value="Maximum price: " />
+                                <p:inputNumber id="maxprice" value="#{auctionListView.filters.maxPrice}"/>
 
-                            <p:outputLabel for="maxprice" value="Maximum price: " />
-                            <p:inputNumber id="maxprice" value="#{auctionListView.filters.maxPrice}"/>
+                                <p:commandButton value="Reset" type="reset" />
+                                <p:commandButton value="Submit" action="#{auctionListView.applyFilters()}" update=":auction-grid:idAuctionTable"/>
 
-                            <p:commandButton value="Reset" type="reset" />
-                            <p:commandButton value="Submit" action="#{auctionListView.applyFilters}"/>
+                                <p:outputLabel for="orderdropdown" value="Order: " />
+                                <p:selectOneMenu id="orderdropdown" value="#{auctionListView.sortOrder}">
+                                    <f:selectItems value="#{auctionListView.orderDropdown.entrySet()}" var="entry" itemValue="#{entry.key}" itemLabel="#{entry.value}" />
+                                </p:selectOneMenu>
+                            </p:panelGrid>
 
-                            <p:outputLabel for="orderdropdown" value="Order: " />
-                            <p:selectOneMenu id="orderdropdown" value="#{auctionListView.sortOrder}">
-                                <f:selectItems value="#{auctionListView.orderDropdown.entrySet()}" var="entry" itemValue="#{entry.key}" itemLabel="#{entry.value}" />
-                            </p:selectOneMenu>
-                            <!--<p:selectOneMenu id="orderdropdown" value="#{auctionListView.orderDropdown}">-->
-                                <!--<f:selectItems  value="#{auctionListView.orderDropdown}" itemValue="#{auctionListView.sortOrder}"/>-->
-                            <!--</p:selectOneMenu>-->
+                            <p:selectManyMenu id="idCategoriSelect" value="#{auctionListView.selectedCategories}" converter="#{itemCategoryConverter}"
+                                              var="ic" filter="true" filterMatchMode="contains" showCheckbox="true">
+                                <f:selectItems value="#{auctionListView.categories}" var="category" itemLabel="#{category.name}" itemValue="#{category}" />
+
+                                <p:column>
+                                    <h:outputText value="#{ic.name}" />
+                                </p:column>
+                            </p:selectManyMenu>
+
                         </p:panelGrid>
+
                     </h:form>
 
                     <h2>Auctions</h2>
                     <h:form id="auction-grid">
                         <p:dataGrid  var="auction" value="#{auctionListView.lazyModel}" rows="10"
                                      widgetVar="auctionTable"
+                                     id="idAuctionTable"
                                      layout="grid"
                                      columns="1"
                                      lazy="true"

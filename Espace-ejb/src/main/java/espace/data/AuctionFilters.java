@@ -1,5 +1,9 @@
 package espace.data;
 
+import espace.entity.ItemCategory;
+
+import java.util.List;
+
 public class AuctionFilters {
 
     private String header;
@@ -8,6 +12,8 @@ public class AuctionFilters {
     private String userName;
     private Double minPrice;
     private Double maxPrice;
+
+    private List<ItemCategory> categories;
 
     public String getHeader() {
         return header;
@@ -55,5 +61,13 @@ public class AuctionFilters {
 
     public void setMaxPrice(Double maxPrice) {
         this.maxPrice = maxPrice;
+    }
+
+    public List<ItemCategory> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<ItemCategory> categories) {
+        this.categories = categories;
     }
 }

@@ -44,7 +44,9 @@ public class AuctionListView implements Serializable {
     private List<Auction> resultList;
 
     private List<Auction> currentListOfAuctions;
-    private List<ItemCategory> itemCategoryList;
+
+    private List<ItemCategory> selectedCategories;
+    private List<ItemCategory> categories;
 
 
     private LazyDataModel<Auction> lazyModel;
@@ -68,10 +70,9 @@ public class AuctionListView implements Serializable {
     @PostConstruct
     public void init() {
         //default list
-        //FIXME: order dropown nem töltődik fel
         resultList = new ArrayList<Auction>();
+        //order dropdown dropdown init
         orderDropdown = new LinkedHashMap<>();
-        //dropdown init
         orderDropdown.put(AuctionSortField.PRICE_ASC, "Price Asc");
         orderDropdown.put(AuctionSortField.PRICE_DESC, "Price Desc");
         orderDropdown.put(AuctionSortField.CLOSE_DATE_ASC, "Close date Asc");
@@ -83,13 +84,14 @@ public class AuctionListView implements Serializable {
         sortOrder = AuctionSortField.NEWEST_FIRST;
         //default filters
         filters = new AuctionFilters();
-
+        //category dropdown
+        selectedCategories = new ArrayList<>();
+        categories = itemCategoryManager.listAll();
     }
 
 
     public void applyFilters() {
-        lazyModel.load(start, end, null, null, null);
-        //FIXME: a flter gomb lenyomása ténylegesen frissítsen
+         getLazyModel();
     }
 
 
@@ -101,6 +103,7 @@ public class AuctionListView implements Serializable {
                 //log.info("first=" + first + ", pagesize=" + pageSize + ", sortfield=" + sortField + " sortorder=" + sortOrder + " filter:" + filters);
                 start = first;
                 end = first + pageSize;
+                filters.setCategories(selectedCategories);
                 AuctionData data  = auctionManager.refreshListData(filters, sortOrder, start, end);
                 List<Auction> resultList = data.getResult();
                 long count = data.getCount();
@@ -175,14 +178,6 @@ public class AuctionListView implements Serializable {
         this.lazyModel = lazyModel;
     }
 
-    public List<ItemCategory> getItemCategoryList() {
-        return itemCategoryList;
-    }
-
-    public void setItemCategoryList(List<ItemCategory> itemCategoryList) {
-        this.itemCategoryList = itemCategoryList;
-    }
-
     public List<Auction> getCurrentListOfAuctions() {
         return currentListOfAuctions;
     }
@@ -197,5 +192,21 @@ public class AuctionListView implements Serializable {
 
     public void setResultList(List<Auction> resultList) {
         this.resultList = resultList;
+    }
+
+    public List<ItemCategory> getSelectedCategories() {
+        return selectedCategories;
+    }
+
+    public void setSelectedCategories(List<ItemCategory> selectedCategories) {
+        this.selectedCategories = selectedCategories;
+    }
+
+    public List<ItemCategory> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<ItemCategory> categories) {
+        this.categories = categories;
     }
 }

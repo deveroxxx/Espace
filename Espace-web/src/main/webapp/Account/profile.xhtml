@@ -13,7 +13,7 @@
     <ui:composition template="/Shared/commonLayout.xhtml">
         <ui:define name="content">
 
-            #{dtProfileView.updatePage()}
+            #{dtProfileView.updatePage(dtProfileView.page)}
             <h3>Welcome #{not empty dtProfileView.user.realName ?  dtProfileView.user.realName : dtProfileView.user.userName}"</h3>
             <p:tabView id="tabview1" orientation="left" activeIndex="#{dtProfileView.page}">
                 <p:ajax event="tabChange" listener="#{dtProfileView.changeActiveTab}"/>
@@ -213,6 +213,7 @@
                                 </p:column>
                                 <p:column headerText="Auction Id">
                                     <h:outputText value="#{bid.auction.id}"/>
+                                    <h:commandButton styleClass="btn bg-info" value="View Auction" action="#{auctionView.redirect(bid.auction.id)}" />
                                 </p:column>
                                 <p:column headerText="Leading">
                                     <h:outputText value="#{dtProfileView.isUserTopBider(bid)}"/>
@@ -221,9 +222,26 @@
                             </p:dataTable>
                         </p:tab>
                         <p:tab title="Expired Auction bids">
+                            <p:dataTable id="closedBidLader" var="bid" value="#{dtProfileView.closedBids()}">
+                                <f:facet name="header">
+                                    Closed bids
+                                </f:facet>
+                                <p:column style="width:16px">
+                                    <p:rowToggler/>
+                                </p:column>
+                                <p:column headerText="Id">
+                                    <h:outputText value="#{bid.id}"/>
+                                </p:column>
+                                <p:column headerText="Auction Id">
+                                    <h:outputText value="#{bid.auction.id}"/>
+                                    <h:commandButton styleClass="btn bg-info" value="View Auction" action="#{auctionView.redirect(bid.auction.id)}" />
+                                </p:column>
+                                <p:column headerText="Winner">
+                                    <h:outputText value="#{dtProfileView.isUserTopBider(bid)}"/>
+                                </p:column>
+                            </p:dataTable>
                         </p:tab>
                     </p:accordionPanel>
-
                 </p:tab>
 
                 <p:tab title="Notifications" id="tab5">
@@ -233,43 +251,9 @@
                         <p:tab title="Readed">
                         </p:tab>
                     </p:accordionPanel>
-
                 </p:tab>
 
             </p:tabView>
-
-
-
-
-            <!--
-            <h:form>
-                <p:dialog header="Comment dialog" widgetVar="dlg" showEffect="fade" hideEffect="fade">
-                    <p:inputTextarea value="#{commentController.commentMessage}" rows="6" cols="33" />
-                    <br/>
-                    <p:commandButton
-                            onclick="PF('dlg').hide();"
-                            action="#{dtProfileView.click1()}"
-                            value="Submit"
-                            actionListener="#{commentController.addCommentToComment(commentController.parentComment)}"
-                            type="submit"/>
-                    <p:commandButton value="Discard" onclick="PF('dlg').hide();"/>
-                </p:dialog>
-            </h:form>
-            <h:form>
-                <p:dialog header="Comment dialog" widgetVar="dlg2" showEffect="fade" hideEffect="fade">
-                    <p:inputTextarea value="#{commentController.commentMessage}" rows="6" cols="33" />
-                    <br/>
-                    <p:commandButton
-                            onclick="PF('dlg2').hide();"
-                            action="#{dtProfileView.click2()}"
-                            value="Submit"
-                            actionListener="#{commentController.addCommentToComment(commentController.parentComment)}"
-                            type="submit"/>
-                    <p:commandButton value="Discard" onclick="PF('dlg2').hide();"/>
-                </p:dialog>
-            </h:form>
-            -->
-
         </ui:define>
     </ui:composition>
 </h:body>

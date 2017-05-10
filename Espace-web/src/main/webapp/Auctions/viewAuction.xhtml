@@ -12,8 +12,8 @@
     </f:metadata>
     <ui:composition template="/Shared/commonLayout.xhtml">
         <ui:define name="content">
-            #{auctionView.init()}
             <h:form id="glob" styleClass="form-horizontal">
+            #{auctionView.init()}
             <div class="container body-content">
             <h:panelGroup layout="block"  rendered="#{auctionView.auction != null}">
                         <h3>#{auctionView.auction.header}</h3>

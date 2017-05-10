@@ -3,6 +3,7 @@ package espace.managers;
 import espace.data.AuctionData;
 import espace.data.AuctionFilters;
 import espace.entity.Auction;
+import espace.entity.ItemCategory;
 import espace.entity.User;
 import espace.enums.AuctionSortField;
 import espace.template.TemplateManager;
@@ -13,9 +14,11 @@ import org.apache.log4j.Logger;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Stateless
 @LocalBean
@@ -91,6 +94,11 @@ public class AuctionManager extends TemplateManager<Auction> {
             criteria.append(" and ((topBider is null and auction.minimumBid >= :minPrice) or" +
                     " (topBider is not null and topBider.bid >= :minPrice))");
             params.put("minPrice", filters.getMinPrice());
+        }
+        if (filters.getCategories() != null && filters.getCategories().size() > 0) {
+            criteria.append(" and item.category.id in :categoriIds");
+            List<Long> categoriIds = filters.getCategories().stream().map(ItemCategory::getId).collect(Collectors.toList());
+            params.put("categoriIds", categoriIds);
         }
 
         //TODO: meddig jelenjenek meg a lezártak vagy ilyesmi.

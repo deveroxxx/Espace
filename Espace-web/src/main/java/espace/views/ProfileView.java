@@ -72,7 +72,7 @@ public class ProfileView implements Serializable {
         }
     }
 
-    public void updatePage() {
+    public void updatePage(int page) {
         try{
             user = userManager.getUserByName(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
             userRoles = roleManager.getRoles(user.getUserName());
@@ -95,7 +95,13 @@ public class ProfileView implements Serializable {
 
     public List<Bid> myLatestBids() {
         List<Bid> result = new ArrayList<>();
-        result = bidManager.listLatestBidsByUser(user.getId());
+        result = bidManager.listLatestBidsByUser(user.getId(), false);
+        return result;
+    }
+
+    public List<Bid> closedBids() {
+        List<Bid> result = new ArrayList<>();
+        result = bidManager.listLatestBidsByUser(user.getId(), true);
         return result;
     }
 
@@ -131,7 +137,7 @@ public class ProfileView implements Serializable {
             if (id.equals("tab4")) {
                 page = 4;
             }
-            updatePage();
+            updatePage(page);
             //page=((TabView)event.getComponent()).getActiveIndex();
             //System.out.println(page);
         }

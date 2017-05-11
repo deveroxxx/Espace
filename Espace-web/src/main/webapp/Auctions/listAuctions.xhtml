@@ -79,7 +79,11 @@
                                             Desc: <h:outputText value="#{auction.description}" />  <br></br>
                                             Min Bid: <h:outputText value="#{auction.minimumBid}" /> <br></br>
                                             Top Bid: <h:outputText value="#{not empty auction.topBider ? auction.topBider.bid : 'Be the first Bidder'}" /> <br></br>
-                                            Min Bid: <h:outputText value="#{auction.expirationDate}" /> <br></br>
+                                            Close:
+                                            <h:outputText value="#{auction.expirationDate}">
+                                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                                            </h:outputText>
+                                            <br></br>
                                             <p:commandButton value="View" action="#{auctionView.redirect(auction.id)}"/>
                                         </p:column>
                                     </p:panelGrid>

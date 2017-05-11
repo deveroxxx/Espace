@@ -168,7 +168,7 @@
                             </p:column>
 
                             <p:column headerText="Item name">
-                                <h:commandButton styleClass="btn bg-info" rendered="#{item.auction == null}" value="Create Auction" action="#{createAuctionView.init(item.id)}" />
+                                <h:commandButton styleClass="btn bg-info" rendered="#{item.auction == null}" value="Create Auction" action="#{createAuctionView.redirect(item.id)}" />
                                 <h:commandButton styleClass="btn bg-info" rendered="#{item.auction != null}" value="View Auction" action="#{auctionView.redirect(item.auction.id)}" />
                             </p:column>
 

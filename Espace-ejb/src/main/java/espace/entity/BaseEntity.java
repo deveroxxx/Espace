@@ -18,7 +18,7 @@ public class BaseEntity implements Serializable {
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createdOn = Calendar.getInstance().getTime();
+    private Date createdOn = Calendar.getInstance().getTime(); //létrehozás dátuma
 
     public Long getId() {
         return id;

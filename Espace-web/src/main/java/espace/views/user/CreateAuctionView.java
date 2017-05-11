@@ -3,7 +3,6 @@ package espace.views.user;
 import espace.entity.Auction;
 import espace.entity.Item;
 import espace.entity.User;
-import espace.enums.AuctionSortField;
 import espace.managers.AuctionManager;
 import espace.managers.ItemCategoryManager;
 import espace.managers.ItemManager;
@@ -13,14 +12,13 @@ import espace.utils.Messages;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import java.io.Serializable;
 
-@ManagedBean(name = "createAuctionView")
-@SessionScoped
+@ManagedBean( name = "createAuctionView")
+@ViewScoped
 public class CreateAuctionView implements Serializable{
 
     @Inject
@@ -42,15 +40,20 @@ public class CreateAuctionView implements Serializable{
     private Item item;
     private User user;
 
-    @PostConstruct
-    public void post() {
-        auction = new Auction();
+    private long itemId;
+
+    public void init() {
+        try {
+            auction = new Auction();
+            user = userManager.getUserByName(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
+            item = itemManager.getItemById(itemId); //FIXME: throw exception if not exist
+        } catch (Exception e) {
+            Messages.error("We are sorry!", "Unexpected error happened!");
+        }
     }
 
-    public String init(Long itemId) {
-        user = userManager.getUserByName(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
-        item = itemManager.getItemById(itemId); //FIXME: throw exception if not exist
-        return "/Auctions/createAuction.xhtml?faces-redirect=true";
+    public String redirect(Long itemId) {
+        return "/Auctions/createAuction.xhtml?faces-redirect=true&itemId="+itemId;
     }
 
 
@@ -80,5 +83,13 @@ public class CreateAuctionView implements Serializable{
 
     public void setItem(Item item) {
         this.item = item;
+    }
+
+    public long getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(long itemId) {
+        this.itemId = itemId;
     }
 }

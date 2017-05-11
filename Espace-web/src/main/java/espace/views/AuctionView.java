@@ -58,7 +58,6 @@ public class AuctionView implements Serializable {
 
     public String redirect(Long auctionId) {
         return "/Auctions/viewAuction.xhtml?faces-redirect=true&auctionId="+auctionId;
-
     }
 
     public String bidOnAuction(double bidValue) {

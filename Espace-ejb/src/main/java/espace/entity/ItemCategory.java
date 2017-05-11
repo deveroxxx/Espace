@@ -12,7 +12,7 @@ public class ItemCategory extends BaseEntity {
 
     @NotNull
     @Column(name = "categoryName")
-    private String name;
+    private String name; // kategória neve
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
     private List<Item> items;

@@ -7,6 +7,7 @@ import espace.exceptions.EntityNotFoundException;
 import espace.exceptions.ItemIsAssignedException;
 import espace.template.TemplateManager;
 import espace.utils.Log;
+import espace.utils.LogLevel;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -42,6 +43,7 @@ public class ItemManager extends TemplateManager<Item> {
     }
 
 
+    @Log(level = LogLevel.TRACE)
     public Item getItemById(Long itemId) {
         return super.select(itemId);
     }

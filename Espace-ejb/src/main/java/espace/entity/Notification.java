@@ -8,10 +8,10 @@ import javax.validation.constraints.NotNull;
 public class Notification extends BaseEntity {
 
     @NotNull(message = "Title name is requied")
-    private String title;
+    private String title; // értesítés fejléc
 
     @NotNull(message = "Content is requied")
-    private String content;
+    private String content; // értesítés szövege
 
     @NotNull
     @ManyToOne

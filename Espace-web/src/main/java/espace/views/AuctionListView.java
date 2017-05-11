@@ -12,6 +12,7 @@ import espace.managers.AuctionManager;
 import espace.managers.ItemCategoryManager;
 import espace.managers.ItemManager;
 import espace.managers.UserManager;
+import espace.utils.Log;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
@@ -21,11 +22,13 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.Serializable;
 import java.util.*;
 
 @ManagedBean(name = "auctionListView")
 @SessionScoped
+@Log
 public class AuctionListView implements Serializable {
 
     @Inject

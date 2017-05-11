@@ -6,10 +6,14 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="content">
+        <f:metadata>
+            <f:viewParam name="itemId" value="#{createAuctionView.itemId}" />
+        </f:metadata>
         <h2>Create new auction</h2>
         <div class="container body-content">
             <div class="col-md-7">
                 <h:form id="glob" styleClass="form-horizontal">
+                    #{createAuctionView.init()}
                     <div class="form-group">
                         <label class ="col-md-4 control-label">Auction header</label>
                         <div class="col-md-5">
@@ -34,6 +38,8 @@
                     </div>
 
                     <div class="form-group">
+                        <!--<p:outputLabel for="datetime" value="Start time:" />-->
+                        <!--<p:calendar id="datetime" value="#{createAuctionView.auction.startDate}" pattern="MM/dd/yyyy HH:mm:ss" />-->
                         <label class="col-md-4 control-label">Start time:</label>
                         <div class="col-md-5">
                             <h:inputText id="start" styleClass="form-control"
@@ -43,6 +49,7 @@
                             <p:message for="start"/>
                         </div>
                     </div>
+
 
                     <div class="form-group">
                         <label class="col-md-4 control-label">Expire Time:</label>

@@ -110,6 +110,14 @@ public abstract class TemplateManagerBase<T> {
         getEntityManager().remove(entity);
     }
 
+    public int countAll() {
+        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
+        javax.persistence.criteria.Root<T> rt = cq.from(getMyClass());
+        cq.select(getEntityManager().getCriteriaBuilder().count(rt));
+        javax.persistence.Query q = getEntityManager().createQuery(cq);
+        return ((Long) q.getSingleResult()).intValue();
+    }
+
     abstract protected EntityManager getEntityManager();
 
     abstract protected Class<T> getMyClass();

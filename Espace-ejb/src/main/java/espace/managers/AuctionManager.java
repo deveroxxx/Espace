@@ -60,6 +60,27 @@ public class AuctionManager extends TemplateManager<Auction> {
         return listByFilter(hql, params);
     }
 
+    public int countAuctionsByFilter(Boolean closed, Boolean withWinner) {
+        HashMap<String, Object> params = new HashMap<String, Object>();
+        //language=JPAQL
+        StringBuilder countString = new StringBuilder();
+        countString.append("select count(auction) from Auction auction where '1' = '1'");
+        if (closed != null) {
+            countString.append(" and auction.closed = :closed");
+            params.put("closed", closed);
+
+            if (withWinner != null && withWinner) {
+                countString.append(" and auction.topBider is not null");
+            } else if (withWinner != null && !withWinner) {
+                countString.append(" and auction.topBider is not null");
+            }
+        }
+        int count = getCountResultByFilter(countString.toString(),params).intValue();
+        return count;
+    }
+
+
+
     public AuctionData refreshListData(AuctionFilters filters, AuctionSortField sortField, int start, int end) {
         HashMap<String, Object> params = new HashMap<String, Object>();
         //language=JPAQL

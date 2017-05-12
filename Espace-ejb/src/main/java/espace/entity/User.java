@@ -35,6 +35,12 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "recipient")
     private List<Notification> notifications; //A felhasználó aukciói
 
+    @OneToMany(mappedBy = "recipient")
+    private List<UserRating> myRaitings; //A felhasználó értékelései más felhasználóktól
+
+    @OneToMany(mappedBy = "sender")
+    private List<UserRating> witedRaitings; //A felhasználó által írt értékelések
+
     private String phoneNumber;
 
     private String emailAdress;

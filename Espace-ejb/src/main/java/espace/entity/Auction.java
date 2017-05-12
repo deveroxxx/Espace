@@ -41,6 +41,9 @@ public class Auction extends BaseEntity {
 
     private String description; //leírás az aukcióhoz
 
+    @OneToOne
+    private UserRating userRating;
+
     /**
      * Visszaadja a legnagyobb licitet
      * @return Bid or Null
@@ -141,5 +144,12 @@ public class Auction extends BaseEntity {
         this.topBider = topBider;
     }
 
+    public UserRating getUserRating() {
+        return userRating;
+    }
+
+    public void setUserRating(UserRating userRating) {
+        this.userRating = userRating;
+    }
 }
 

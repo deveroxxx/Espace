@@ -12,8 +12,8 @@
     </f:metadata>
 
     <ui:composition template="/Shared/commonLayout.xhtml">
-        #{notificationView.init()}
         <ui:define name="content">
+            #{notificationView.init()}
             <div class="container body-content">
                 <p:panelGrid columns="2">
 
@@ -22,6 +22,10 @@
 
                     <h:outputText value="Message:" />
                     <h:outputText value="#{notificationView.notification.content}" />
+
+                    <h:outputText value="Date:" />
+                    <h:outputText value="#{notificationView.notification.createdOn}" />
+
 
                 </p:panelGrid>
             </div>

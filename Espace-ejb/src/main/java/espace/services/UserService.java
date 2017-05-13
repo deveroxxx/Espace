@@ -12,6 +12,7 @@ import espace.utils.Log;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.List;
 
 @Stateless
 @LocalBean
@@ -55,4 +56,17 @@ public class UserService {
         userRatingManager.add(userRating);
         auction.setUserRating(userRating);
     }
+
+    public double avarageUserRating(User user) {
+        double summ = 0;
+        List<UserRating> ratings = user.getMyRaitings();
+        for (UserRating rating : ratings) {
+            summ = summ + rating.getRating();
+        }
+        double total = ratings.size();
+        double avrg = summ / total;
+        return avrg;
+    }
+
+
 }

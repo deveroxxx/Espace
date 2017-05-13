@@ -134,4 +134,20 @@ public class User extends BaseEntity {
     public void setEmailAdress(String emailAdress) {
         this.emailAdress = emailAdress;
     }
+
+    public List<UserRating> getMyRaitings() {
+        return myRaitings;
+    }
+
+    public void setMyRaitings(List<UserRating> myRaitings) {
+        this.myRaitings = myRaitings;
+    }
+
+    public List<UserRating> getWitedRaitings() {
+        return witedRaitings;
+    }
+
+    public void setWitedRaitings(List<UserRating> witedRaitings) {
+        this.witedRaitings = witedRaitings;
+    }
 }

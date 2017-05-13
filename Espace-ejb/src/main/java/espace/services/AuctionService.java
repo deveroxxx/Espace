@@ -1,6 +1,7 @@
 package espace.services;
 
 import espace.entity.*;
+import espace.exceptions.BusinessException;
 import espace.exceptions.InvalidBidException;
 import espace.managers.AuctionManager;
 import espace.managers.BidManager;
@@ -35,8 +36,11 @@ public class AuctionService {
     private NotificationManager notificationManager;
 
 
-    public Auction createAuction(Auction auction, Long itemId, User user) {
+    public Auction createAuction(Auction auction, Long itemId, User user) throws BusinessException {
         Item item = itemManager.getItemById(itemId);
+        if (item.getAuction() != null) {
+            throw new BusinessException("Item has already been assigned to an auction!");
+        }
 
         if (auction.getStartDate() == null) {
             auction.setStartDate(Calendar.getInstance().getTime());

@@ -40,5 +40,10 @@ public class UtilController implements Serializable {
         return null;
     }
 
+    public String createNotificationsForAdmin() {
+        databaseInicializer.createAdminNotifications();
+        return null;
+    }
+
 
 }

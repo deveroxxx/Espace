@@ -24,7 +24,7 @@ public class CoreSchedulers {
         try {
             auctionService.closeExpiredAuctions();
         } catch (Throwable th) {
-            logger.error("Error happend during doAuctionEndCheck scheduled Task");
+            logger.error("Error happend during doAuctionEndCheck scheduled Task", th);
         }
 
     }

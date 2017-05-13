@@ -1,10 +1,7 @@
 package espace.services;
 
 
-import espace.entity.Auction;
-import espace.entity.Item;
-import espace.entity.ItemCategory;
-import espace.entity.User;
+import espace.entity.*;
 import espace.enums.Role;
 import espace.exceptions.EntityAlreadyExistException;
 import espace.managers.*;
@@ -50,6 +47,9 @@ public class DatabaseInicializer implements Serializable {
     @Inject
     AuctionManager auctionManager;
 
+    @Inject
+    NotificationManager notificationManager;
+
     public void createAdminUser() {
         try {
             User user = new User("admin", "admin");
@@ -91,6 +91,25 @@ public class DatabaseInicializer implements Serializable {
             //FIXME: ez elbaszódhat ha nem létezik a user
             item.setUser(userManager.getUserByName("user_" + i));
             itemManager.addItem(item);
+        }
+    }
+
+
+    public void createAdminNotifications() {
+        try {
+            User user = userManager.getUserByName("admin");
+            for (int i = 1; i<3; i++) {
+                Notification notification = new Notification();
+                notification.setReaded(false);
+                notification.setDeleted(false);
+                notification.setTitle("This is a title with timepam " + Calendar.getInstance().getTime());
+                notification.setContent("This is a test content for admin user notifications, time: " + Calendar.getInstance().getTime());
+                notification.setSender("Demo sender");
+                notification.setRecipient(user);
+                notificationManager.add(notification);
+            }
+        } catch (Throwable th) {
+            logger.error(th);
         }
     }
 

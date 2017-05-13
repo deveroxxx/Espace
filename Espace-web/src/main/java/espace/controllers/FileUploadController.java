@@ -3,12 +3,14 @@ package espace.controllers;
 import espace.entity.Item;
 import espace.entity.User;
 import espace.managers.UserManager;
+import espace.utils.Messages;
 import org.primefaces.component.fileupload.FileUpload;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.UploadedFile;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -22,7 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @ManagedBean(name = "fileUploadView", eager = true)
-@ViewScoped
+@RequestScoped
 public class FileUploadController implements Serializable {
 
         private UploadedFile upFile;
@@ -41,7 +43,10 @@ public class FileUploadController implements Serializable {
         public String upload(Object object) {
 
             if (upFile != null) {
-
+                if (upFile.getFileName().isEmpty()) {
+                    Messages.warn("Warning!", "Select a picture before press the button");
+                    return null;
+                }
                 InputStream input = null;
                 try {
                     input = upFile.getInputstream();

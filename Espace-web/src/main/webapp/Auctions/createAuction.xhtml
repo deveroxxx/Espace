@@ -19,8 +19,6 @@
                         <div class="col-md-5">
                             <h:inputText id="user" styleClass="form-control" value="#{createAuctionView.auction.header}"
                                          required="true" requiredMessage="Header is required!"/>
-                        </div>
-                        <div class="col-md-5">
                             <p:message for="user" display="text"/>
                         </div>
                     </div>
@@ -31,33 +29,22 @@
                             <h:inputText id="startbid" styleClass="form-control" value="#{createAuctionView.auction.minimumBid}" required="true">
                                 <f:validateLongRange minimum="0"/>
                             </h:inputText>
-                        </div>
-                        <div class="col-md-5">
                             <p:message for="startbid" display="text"/>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <!--<p:outputLabel for="datetime" value="Start time:" />-->
-                        <!--<p:calendar id="datetime" value="#{createAuctionView.auction.startDate}" pattern="MM/dd/yyyy HH:mm:ss" />-->
                         <label class="col-md-4 control-label">Start time:</label>
                         <div class="col-md-5">
-                            <h:inputText id="start" styleClass="form-control"
-                                         value="#{createAuctionView.auction.startDate}">
-                                <f:convertDateTime pattern="yyyy-MM-dd"/>
-                            </h:inputText>
+                            <p:calendar id="start" value="#{createAuctionView.auction.startDate}" pattern="MM/dd/yyyy HH:mm" />
                             <p:message for="start"/>
                         </div>
                     </div>
 
-
                     <div class="form-group">
                         <label class="col-md-4 control-label">Expire Time:</label>
                         <div class="col-md-5">
-                            <h:inputText id="expire" styleClass="form-control"
-                                         value="#{createAuctionView.auction.expirationDate}" required="true" requiredMessage="This is needed">
-                                <f:convertDateTime pattern="yyyy-MM-dd HH:mm"/> <!--FIXME: time picker jó lenne-->
-                            </h:inputText>
+                            <p:calendar id="expire" value="#{createAuctionView.auction.expirationDate}" pattern="MM/dd/yyyy HH:mm" />
                             <p:message for="expire"/>
                         </div>
                     </div>

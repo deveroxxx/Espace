@@ -1,9 +1,6 @@
 package espace.views;
 
-import espace.entity.Auction;
-import espace.entity.Bid;
-import espace.entity.Item;
-import espace.entity.User;
+import espace.entity.*;
 import espace.enums.Role;
 import espace.managers.*;
 import espace.services.AuctionService;
@@ -40,6 +37,9 @@ public class ProfileView implements Serializable {
     @Inject
     private BidManager bidManager;
 
+    @Inject
+    private NotificationManager notificationManager;
+
 
 
     private User user;
@@ -55,6 +55,9 @@ public class ProfileView implements Serializable {
     private User tempUser;
     private String reason;
 
+    //notifications
+    private List<Notification> selectedNotifications;
+
 
     @PostConstruct
     public void init() {
@@ -64,6 +67,7 @@ public class ProfileView implements Serializable {
             page = 0;
             tempUser = new User();
 
+            selectedNotifications = new ArrayList<>();
             myActiveAuctions = auctionManager.listAuctionsByUser(user, false);
             myBids = auctionManager.listAuctionByUserBids(user);
             myItems = itemManager.listItemsByUser(user);
@@ -113,6 +117,15 @@ public class ProfileView implements Serializable {
         }
     }
 
+    public List<Notification> getNotifications(boolean readed) {
+        return notificationManager.listByUserWithFilters(user, readed);
+    }
+
+    public void deleteSelectedNotifications() {
+
+    }
+
+
     public String discard() {
         return null;
     }
@@ -136,6 +149,9 @@ public class ProfileView implements Serializable {
             }
             if (id.equals("tab4")) {
                 page = 4;
+            }
+            if (id.equals("tab5")) {
+                page = 5;
             }
             updatePage(page);
             //page=((TabView)event.getComponent()).getActiveIndex();
@@ -234,5 +250,13 @@ public class ProfileView implements Serializable {
 
     public void setSelectedItem(Item selectedItem) {
         this.selectedItem = selectedItem;
+    }
+
+    public List<Notification> getSelectedNotifications() {
+        return selectedNotifications;
+    }
+
+    public void setSelectedNotifications(List<Notification> selectedNotifications) {
+        this.selectedNotifications = selectedNotifications;
     }
 }

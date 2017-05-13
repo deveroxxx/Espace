@@ -82,12 +82,12 @@
                             <h:inputText id="email" styleClass="form-control" value="#{dtProfileView.user.emailAdress}"></h:inputText>
                             <p:message for="email"/>
 
-                            <label>DateOfBirth:</label>
-                                <h:inputText id="date" styleClass="form-control" value="#{dtProfileView.user.dateOfBirth}">
-                                    <f:convertDateTime pattern="yyyy-MM-dd"/>
-                                </h:inputText>
-                            <p:message for="date"/>
 
+                            <label>Date of Birth:</label>
+                            <div>
+                                <p:calendar id="birthDate" value="#{dtProfileView.user.dateOfBirth}" pattern="MM/dd/yyyy" />
+                                <p:message for="birthDate"/>
+                            </div>
 
                             <div class="form-group">
                                 <div class="col-md-offset-2 col-md-10">
@@ -199,6 +199,7 @@
                 </p:tab>
 
                 <p:tab title="My Bids" id="tab4">
+                    <h:form>
                     <p:accordionPanel dynamic="true" cache="true" id="bidPanel">
                         <p:tab title="Active bids">
                             <p:dataTable id="activeBidLeader" var="bid" value="#{dtProfileView.myLatestBids()}">
@@ -208,12 +209,12 @@
                                 <p:column style="width:16px">
                                     <p:rowToggler/>
                                 </p:column>
-                                <p:column headerText="Id">
+                                <p:column headerText="Bid Id">
                                     <h:outputText value="#{bid.id}"/>
                                 </p:column>
                                 <p:column headerText="Auction Id">
                                     <h:outputText value="#{bid.auction.id}"/>
-                                    <h:commandButton styleClass="btn bg-info" value="View Auction" action="#{auctionView.redirect(bid.auction.id)}" />
+                                    <h:commandButton styleClass="btn bg-info" value="View Auction" action="#{auctionView.redirect(bid.auction.id)}"/>
                                 </p:column>
                                 <p:column headerText="Leading">
                                     <h:outputText value="#{dtProfileView.isUserTopBider(bid)}"/>
@@ -221,6 +222,7 @@
 
                             </p:dataTable>
                         </p:tab>
+
                         <p:tab title="Expired Auction bids">
                             <p:dataTable id="closedBidLader" var="bid" value="#{dtProfileView.closedBids()}">
                                 <f:facet name="header">
@@ -229,28 +231,77 @@
                                 <p:column style="width:16px">
                                     <p:rowToggler/>
                                 </p:column>
-                                <p:column headerText="Id">
+                                <p:column headerText="Bid Id">
                                     <h:outputText value="#{bid.id}"/>
                                 </p:column>
                                 <p:column headerText="Auction Id">
                                     <h:outputText value="#{bid.auction.id}"/>
-                                    <h:commandButton styleClass="btn bg-info" value="View Auction" action="#{auctionView.redirect(bid.auction.id)}" />
+                                    <h:commandButton styleClass="btn bg-info" value="View Auction" action="#{auctionView.redirect(bid.auction.id)}"/>
                                 </p:column>
                                 <p:column headerText="Winner">
                                     <h:outputText value="#{dtProfileView.isUserTopBider(bid)}"/>
+                                    <h:link styleClass="btn bg-info" rendered="#{dtProfileView.isUserTopBider(bid)}" value="Rate User" onclick="PF('rateUserdlg').show(); return false;"/>
+
+                                    <p:dialog header="Rate User" widgetVar="rateUserdlg" resizable="true">
+                                        <h:panelGrid columns="2" cellpadding="5">
+
+                                            <h:outputText value="rate:" />
+                                            <p:rating value="#{userRaitingController.rating}" required="true"/>
+
+                                            <h:outputLabel for="text" value="Text:" />
+                                            <p:inputTextarea id="text" value="#{userRaitingController.text}" required="true" label="username" />
+
+                                            <f:facet name="footer">
+                                                <p:commandButton value="Send" actionListener="#{userRaitingController.createUserRating(bid.auction.id)}"
+                                                                 oncomplete="handleUserRating(xhr, status, args)" />
+                                            </f:facet>
+                                        </h:panelGrid>
+                                    </p:dialog>
+
+                                    <script type="text/javascript">
+                                        function handleUserRating(xhr, status, args) {
+                                            if(args.validationFailed) {
+                                                PF('rateUserdlg').jq.effect("shake", {times:5}, 100);
+                                            }
+                                            else {
+                                                PF('rateUserdlg').hide();
+                                                $('#loginLink').fadeOut();
+                                            }
+                                        }
+                                    </script>
+
                                 </p:column>
                             </p:dataTable>
                         </p:tab>
                     </p:accordionPanel>
-                </p:tab>
+                </h:form>
+            </p:tab>
 
                 <p:tab title="Notifications" id="tab5">
+
+                    <h:form>
                     <p:accordionPanel dynamic="true" cache="true" id="notificationPanel">
                         <p:tab title="New">
+                            <p:dataTable id="notTanbe" var="notification" value="#{dtProfileView.getNotifications(false)}" style="margin-bottom:0">
+                                <p:column headerText="Id">
+                                    <h:outputText value="#{notification.id}" />
+                                </p:column>
+                                <p:column headerText="Title">
+                                    <h:outputText value="#{notification.title}" />
+                                </p:column>
+                                <p:column headerText="Sender">
+                                    <h:outputText value="#{notification.sender}" />
+                                </p:column>
+                                <p:column headerText="Read">
+                                    <h:commandButton styleClass="btn bg-info" value="Read" action="#{notificationView.redirect(notification.id)}" />
+                                </p:column>
+                            </p:dataTable>
                         </p:tab>
                         <p:tab title="Readed">
+
                         </p:tab>
                     </p:accordionPanel>
+                    </h:form>
                 </p:tab>
 
             </p:tabView>

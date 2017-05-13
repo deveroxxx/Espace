@@ -21,7 +21,7 @@ public class CommonLayoutController {
     public CommonLayoutController() {
         routes = new ArrayList<>();
 
-        routes.add(new Route("/Items/listItems", "Products", true, Role.admin));
+        routes.add(new Route("/Admin/statistics", "Statistics", true, Role.admin));
         routes.add(new Route("/Admin/usersList", "Manage users", true, Role.admin));
         routes.add(new Route("/Auctions/listAuctions", "List auctions", true));
 

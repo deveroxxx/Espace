@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:body>
+    <f:metadata>
+        <f:viewParam name="notificationId" value="#{notificationView.notificationId}" />
+    </f:metadata>
+
+    <ui:composition template="/Shared/commonLayout.xhtml">
+        #{notificationView.init()}
+        <ui:define name="content">
+            <div class="container body-content">
+                <p:panelGrid columns="2">
+
+                    <h:outputText value="Sender:" />
+                    <h:outputText value="#{notificationView.notification.sender}" />
+
+                    <h:outputText value="Message:" />
+                    <h:outputText value="#{notificationView.notification.content}" />
+
+                </p:panelGrid>
+            </div>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>

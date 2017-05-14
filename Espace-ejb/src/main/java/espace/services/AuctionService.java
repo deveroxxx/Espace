@@ -41,10 +41,14 @@ public class AuctionService {
         if (item.getAuction() != null) {
             throw new BusinessException("Item has already been assigned to an auction!");
         }
-
         if (auction.getStartDate() == null) {
             auction.setStartDate(Calendar.getInstance().getTime());
         }
+
+        if (auction.getExpirationDate().before(auction.getStartDate())) {
+            throw new BusinessException("StartDate cannot be after ExpireDate!");
+        }
+
         auction.setItem(item);
         auction.setOwner(user);
         Auction result = auctionManager.add(auction);
@@ -58,6 +62,10 @@ public class AuctionService {
         if (auction.getExpirationDate().before(Calendar.getInstance().getTime()) || auction.getClosed()) {
             throw new InvalidBidException("This auction is already closed!");
         }
+        if (auction.getStartDate().after(Calendar.getInstance().getTime())) {
+            throw new InvalidBidException("This auction is not started yet!");
+        }
+
         if (user == null) {
             throw new InvalidBidException("Please log in for bidding");
         }
@@ -87,19 +95,31 @@ public class AuctionService {
     }
 
     private void generateNotificationFromExpiredAuction(Auction auction) {
-        Notification notification = new Notification();
-        notification.setSender("ESPACE noreply");
+        String sender = "ESPACE noreply";
+        //értékesítőnek szóló értesítés
+        Notification notificationForOwner = new Notification();
+        notificationForOwner.setSender(sender);
+        notificationForOwner.setTitle("Auction Expired");
+        notificationForOwner.setRecipient(auction.getOwner());
         if (auction.getTopBider() != null) {
-            logger.info("Auction: " + auction.getId() + " closed with winner: " + auction.getTopBider().getUser().getUserName());
+            notificationForOwner.setContent("Your auction expired (id: " + auction.getId() + "! The winner is: "
+                                             + auction.getTopBider().getUser().getUserName());
+        } else {
+            notificationForOwner.setContent("Your auction expired without bids! id: " + auction.getId());
+        }
+        notificationManager.createNotification(notificationForOwner);
+
+        //nyertes felhasználónak szókó értesítése
+        if (auction.getTopBider() != null) {
+            Notification notification = new Notification();
+            notification.setSender(sender);
             notification.setTitle("Auction Won");
             notification.setRecipient(auction.getTopBider().getUser());
             notification.setContent("You have won this auction: " + auction.getId() + ", please contact with the seller!");
+            notificationManager.createNotification(notification);
+            logger.info("Auction: " + auction.getId() + " closed with winner: " + auction.getTopBider().getUser().getUserName());
         } else {
             logger.info("Auction: " + auction.getId() + " closed without bidder!");
-            notification.setTitle("Auction Expired");
-            notification.setRecipient(auction.getOwner());
-            notification.setContent("Your auction expired without bids! id: " + auction.getId());
         }
-        notificationManager.add(notification);
     }
 }

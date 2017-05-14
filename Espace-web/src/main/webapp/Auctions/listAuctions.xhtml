@@ -75,14 +75,34 @@
                                         </p:column>
 
                                         <p:column style="width:50%">
-                                            Title: <h:outputText value="#{auction.header}" />  <br></br>
-                                            Desc: <h:outputText value="#{auction.description}" />  <br></br>
-                                            Min Bid: <h:outputText value="#{auction.minimumBid}" /> <br></br>
-                                            Top Bid: <h:outputText value="#{not empty auction.topBider ? auction.topBider.bid : 'Be the first Bidder'}" /> <br></br>
-                                            Close:
-                                            <h:outputText value="#{auction.expirationDate}">
-                                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                                            </h:outputText>
+                                            <p:panelGrid columns="2">
+                                                <h:outputText value="Title:"/>
+                                                <h:outputText value="#{auction.header}"/>
+
+                                                <h:outputText value="Description:"/>
+                                                <h:outputText value="#{auction.description}"/>
+
+                                                <h:outputText value="ItemName:"/>
+                                                <h:outputText value="#{auction.item.name}"/>
+
+                                                <h:outputText value="Category:"/>
+                                                <h:outputText value="#{auction.item.category.name}"/>
+
+                                                <h:outputText value="MinBid:"/>
+                                                <h:outputText value="#{auction.minimumBid}"/>
+
+                                                <h:outputText value="TopBider:"/>
+                                                <h:outputText value="#{not empty auction.topBider ? auction.topBider.bid : 'Be the first Bidder'}" />
+
+                                                <h:outputText value="Expire:"/>
+                                                <h:outputText value="#{auction.expirationDate}">
+                                                    <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                                                </h:outputText>
+
+                                                <h:outputText value="User:"/>
+                                                <h:commandLink value="#{auction.item.user.userName}" action="#{userView.redirect(auction.item.user.id)}" />
+
+                                            </p:panelGrid>
                                             <br></br>
                                             <p:commandButton value="View" action="#{auctionView.redirect(auction.id)}"/>
                                         </p:column>

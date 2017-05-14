@@ -7,15 +7,16 @@
 
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-
-
 <h:body>
     <ui:composition template="/Shared/commonLayout.xhtml">
         <ui:define name="content">
+            <f:metadata>
+                <f:viewParam name="page" value="#{page}" />
+            </f:metadata>
 
-            #{dtProfileView.updatePage(dtProfileView.page)}
+            <h:panelGroup layout="block" rendered="#{dtProfileView.user != null}">
             <h3>Welcome #{not empty dtProfileView.user.realName ?  dtProfileView.user.realName : dtProfileView.user.userName}"</h3>
-            <p:tabView id="tabview1" orientation="left" activeIndex="#{dtProfileView.page}">
+            <p:tabView id="tabview1" orientation="left" activeIndex="#{dtProfileView.page}" dynamic="true">
                 <p:ajax event="tabChange" listener="#{dtProfileView.changeActiveTab}"/>
                 <p:tab title="My Profile" id="tab0">
                     <p:panelGrid columns="2" cellpadding="20">
@@ -46,9 +47,17 @@
                             <h:outputText value="Phone number:"/>
                             <h:outputText value="#{dtProfileView.user.phoneNumber}"/>
 
-                        </p:panelGrid>
+                            <h:outputText value="My rates count:"/>
+                            <h:outputText value="#{dtProfileView.countRate}"/>
 
+                            <h:outputText value="My AvrgRate:"/>
+                            <h:outputText value="#{dtProfileView.avrgRate == -1.0 ? '-' : dtProfileView.avrgRate}"/>
+                        </p:panelGrid>
                     </p:panelGrid>
+
+                    <h:form>
+                        <h:commandLink value="View My Ratings" action="#{userView.redirect(dtProfileView.user.id)}" />
+                    </h:form>
                 </p:tab>
                 <p:tab title="Edit profile" id="tab1">
                     <p:panelGrid columns="2" cellpadding="20">
@@ -298,13 +307,34 @@
                             </p:dataTable>
                         </p:tab>
                         <p:tab title="Readed">
-
+                            <p:dataTable id="redTable" var="notification" value="#{dtProfileView.getNotifications(true)}" style="margin-bottom:0" selection="#{dtProfileView.selectedNotifications}" rowKey="#{notification.id}">
+                                <f:facet name="header">
+                                    Checkbox
+                                </f:facet>
+                                <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                                <p:column headerText="Id">
+                                    <h:outputText value="#{notification.id}" />
+                                </p:column>
+                                <p:column headerText="Title">
+                                    <h:outputText value="#{notification.title}" />
+                                </p:column>
+                                <p:column headerText="Sender">
+                                    <h:outputText value="#{notification.sender}" />
+                                </p:column>
+                                <p:column headerText="Read">
+                                    <h:commandButton styleClass="btn bg-info" value="Read" action="#{notificationView.redirect(notification.id)}" />
+                                </p:column>
+                            </p:dataTable>
+                            <h:commandButton styleClass="btn bg-info" value="DeleteSelected" action="#{dtProfileView.deleteSelectedNotifications()}" />
                         </p:tab>
                     </p:accordionPanel>
                     </h:form>
                 </p:tab>
-
             </p:tabView>
+            </h:panelGroup>
+            <h:panelGroup layout="block" rendered="#{dtProfileView.user == null}">
+                <h2>Please log in</h2>
+            </h:panelGroup>
         </ui:define>
     </ui:composition>
 </h:body>

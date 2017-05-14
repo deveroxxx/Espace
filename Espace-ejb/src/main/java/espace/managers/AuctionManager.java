@@ -121,8 +121,10 @@ public class AuctionManager extends TemplateManager<Auction> {
             List<Long> categoriIds = filters.getCategories().stream().map(ItemCategory::getId).collect(Collectors.toList());
             params.put("categoriIds", categoriIds);
         }
-
         //TODO: meddig jelenjenek meg a lezártak vagy ilyesmi.
+        criteria.append(" and auction.startDate < :currentTime");
+        params.put("currentTime", Calendar.getInstance().getTime());
+
 
         //rendezés
         if (sortField != null) {

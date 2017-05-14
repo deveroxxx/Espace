@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:body>
+    <f:metadata>
+        <f:viewParam name="userId" value="#{userView.userId}"/>
+    </f:metadata>
+
+    <ui:composition template="/Shared/commonLayout.xhtml">
+        <ui:define name="content">
+            #{userView.init()}
+            <h:panelGroup layout="block" rendered="#{userView.viewedUser != null}">
+                <!-- Ha a felhasználó nem saját maga akkor megjelenítjük az adatait is -->
+                <p:panelGrid columns="2">
+                    <p:panelGrid columns="2"  rendered="#{!userView.currentUserIsViewedUser()}">
+                        <f:facet name="header">
+                            <h:graphicImage value="#{userView.viewedUser.picture}" width="200" height="171"/>
+                        </f:facet>
+
+                        <h:outputText value="User Name:"/>
+                        <h:outputText value="#{userView.viewedUser.userName}"/>
+
+                        <h:outputText value="Real Name:"/>
+                        <h:outputText value="#{userView.viewedUser.realName}"/>
+
+                        <h:outputText value="Email:"/>
+                        <h:outputText value="#{userView.viewedUser.emailAdress}"/>
+
+                        <h:outputText value="Phone number:"/>
+                        <h:outputText value="#{userView.viewedUser.phoneNumber}"/>
+
+                        <h:outputText value="Number of rates:"/>
+                        <h:outputText value="#{userView.numberOfRatings}"/>
+
+                        <h:outputText value="AvrgRate:"/>
+                        <h:outputText value="#{userView.avrgRating == -1.0 ? '-' : userView.avrgRating}"/>
+                    </p:panelGrid>
+
+                    <p:dataTable var="singleElement" value="#{userView.ratingsList}">
+                        <f:facet name="header">
+                            Ratings
+                        </f:facet>
+                        <p:column headerText="Date">
+                            <h:outputText value="#{singleElement.createdOn}"/>
+                        </p:column>
+                        <p:column headerText="Rate">
+                            <h:outputText value="#{singleElement.rating}"/>
+                        </p:column>
+                        <p:column headerText="Writer">
+                            <h:outputText value="#{singleElement.sender.userName}"/>
+                        </p:column>
+                        <p:column headerText="Text">
+                            <h:outputText value="#{singleElement.text}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:panelGrid>
+            </h:panelGroup>
+
+            <h:panelGroup layout="block" rendered="#{userView.viewedUser == null}">
+                <h3>The user is not exist</h3>
+            </h:panelGroup>
+
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>

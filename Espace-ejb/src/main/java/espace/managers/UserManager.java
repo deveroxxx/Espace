@@ -35,8 +35,8 @@ public class UserManager extends TemplateManager<User> {
             if (user.getPicture() == null || user.getPicture() == "") {
                 user.setPicture("/Content/images/defaultUser.jpg");
             }
-
             super.add(user);
+            addUserRole(user, Role.user);
             return user;
         } else {
             throw new EntityAlreadyExistException("User is already exist");

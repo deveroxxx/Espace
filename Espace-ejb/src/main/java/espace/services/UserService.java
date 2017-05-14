@@ -57,6 +57,11 @@ public class UserService {
         auction.setUserRating(userRating);
     }
 
+    /**
+     * Retruns -1 if there are no ratins on the user
+     * @param user
+     * @return
+     */
     public double avarageUserRating(User user) {
         double summ = 0;
         List<UserRating> ratings = user.getMyRaitings();
@@ -64,9 +69,11 @@ public class UserService {
             summ = summ + rating.getRating();
         }
         double total = ratings.size();
-        double avrg = summ / total;
+        double avrg = -1;
+        if (total > 0) {
+            avrg = summ / total;
+        }
         return avrg;
     }
-
 
 }

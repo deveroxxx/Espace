@@ -2,8 +2,10 @@ package espace.views;
 
 import espace.entity.*;
 import espace.enums.Role;
+import espace.exceptions.EntityNotFoundException;
 import espace.managers.*;
 import espace.services.AuctionService;
+import espace.services.UserService;
 import espace.utils.Messages;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.TabChangeEvent;
@@ -12,6 +14,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import java.io.Serializable;
@@ -40,20 +43,22 @@ public class ProfileView implements Serializable {
     @Inject
     private NotificationManager notificationManager;
 
+    @Inject
+    private UserService userService;
+
 
 
     private User user;
     private List<Role> userRoles;
     private List<Auction> myActiveAuctions;
     private List<Auction> myClosedAuctions;
-    private List<Auction> myBids;
     private List<Item> myItems;
     private Item selectedItem;
 
+    private double avrgRate;
+    private int countRate;
 
     private int page = 0;
-    private User tempUser;
-    private String reason;
 
     //notifications
     private List<Notification> selectedNotifications;
@@ -64,28 +69,18 @@ public class ProfileView implements Serializable {
         try{
             user = userManager.getUserByName(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
             userRoles = roleManager.getRoles(user.getUserName());
-            page = 0;
-            tempUser = new User();
-
-            selectedNotifications = new ArrayList<>();
-            myActiveAuctions = auctionManager.listAuctionsByUser(user, false);
-            myBids = auctionManager.listAuctionByUserBids(user);
+            avrgRate = userService.avarageUserRating(user);
+            countRate = user.getMyRaitings().size();
             myItems = itemManager.listItemsByUser(user);
+            avrgRate = userService.avarageUserRating(user);
+            countRate = user.getMyRaitings().size();
+            myActiveAuctions = auctionManager.listAuctionsByUser(user, false);
+            selectedNotifications = new ArrayList<>();
         } catch (Exception e) {
             Messages.error("We are sorry!", "Unexpected error happened!");
         }
     }
 
-    public void updatePage(int page) {
-        try{
-            user = userManager.getUserByName(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
-            userRoles = roleManager.getRoles(user.getUserName());
-            tempUser = new User();
-        } catch (Exception e) {
-            Messages.error("We are sorry!", "Unexpected error happened!");
-        }
-    }
-    
     public String saveChanges() {
         try {
             userManager.update(user);
@@ -122,40 +117,43 @@ public class ProfileView implements Serializable {
     }
 
     public void deleteSelectedNotifications() {
-
+        if (selectedNotifications != null && selectedNotifications.size() > 0) {
+            for (Notification not : selectedNotifications)
+                try {
+                    notificationManager.deleteById(not.getId());
+                } catch (EntityNotFoundException e) {
+                    Messages.error("We are sorry!", "Entity is alreadyDeleted! :" + (not.getId()));
+                }
+        }
+        Messages.info("Delete Successfull!", ":)");
     }
-
 
     public String discard() {
         return null;
     }
 
     public void changeActiveTab(TabChangeEvent event) {
-        // TabView tabview= (TabView)event.getComponent();
-        // page=tabview.getActiveIndex();
         if (event != null) {
             String id = event.getTab().getId();
-            if (id.equals("tab0")) {
+            if (id.equals("tab0")) { //profile
+
                 page = 0;
             }
-            if (id.equals("tab1")) {
+            if (id.equals("tab1")) { // edit profile
                 page = 1;
             }
-            if (id.equals("tab2")) {
+            if (id.equals("tab2")) { // auctions
                 page = 2;
             }
-            if (id.equals("tab3")) {
+            if (id.equals("tab3")) { // items
                 page = 3;
             }
-            if (id.equals("tab4")) {
+            if (id.equals("tab4")) { // bids
                 page = 4;
             }
-            if (id.equals("tab5")) {
+            if (id.equals("tab5")) { // notifications
                 page = 5;
             }
-            updatePage(page);
-            //page=((TabView)event.getComponent()).getActiveIndex();
-            //System.out.println(page);
         }
     }
     
@@ -220,30 +218,6 @@ public class ProfileView implements Serializable {
         this.page = page;
     }
 
-    public User getTempUser() {
-        return tempUser;
-    }
-
-    public void setTempUser(User tempUser) {
-        this.tempUser = tempUser;
-    }
-
-    public String getReason() {
-        return reason;
-    }
-
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
-
-    public List<Auction> getMyBids() {
-        return myBids;
-    }
-
-    public void setMyBids(List<Auction> myBids) {
-        this.myBids = myBids;
-    }
-
     public Item getSelectedItem() {
         return selectedItem;
     }
@@ -258,5 +232,21 @@ public class ProfileView implements Serializable {
 
     public void setSelectedNotifications(List<Notification> selectedNotifications) {
         this.selectedNotifications = selectedNotifications;
+    }
+
+    public double getAvrgRate() {
+        return avrgRate;
+    }
+
+    public void setAvrgRate(double avrgRate) {
+        this.avrgRate = avrgRate;
+    }
+
+    public int getCountRate() {
+        return countRate;
+    }
+
+    public void setCountRate(int countRate) {
+        this.countRate = countRate;
     }
 }

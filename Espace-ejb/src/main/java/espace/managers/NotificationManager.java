@@ -20,7 +20,7 @@ public class NotificationManager extends TemplateManager<Notification> {
         HashMap<String, Object> params = new HashMap<String, Object>();
         //language=JPAQL
         StringBuilder querry = new StringBuilder();
-        querry.append("select notification from Notification notification where notification.recipient = :user");
+        querry.append("select notification from Notification notification where notification.recipient = :user and notification.deleted = false");
         params.put("user", user);
         if (readed != null) {
             querry.append(" and notification.readed = :readed");
@@ -48,6 +48,10 @@ public class NotificationManager extends TemplateManager<Notification> {
         } else {
             throw new EntityNotFoundException("Notification not exist with the given id: " + notificationId);
         }
+    }
+
+    public void createNotification(Notification notification) {
+        super.add(notification);
     }
 
 

@@ -32,6 +32,8 @@ public class NotificationView implements Serializable {
         try {
             user = userManager.getUserByName(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
             notification = notificationManager.select(notificationId);
+            notification.setReaded(true);
+            notificationManager.update(notification);
         } catch (Exception e) {
             Messages.error("We are sorry!", "Unexpected error happened!");
         }

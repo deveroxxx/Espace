@@ -1,4 +1,4 @@
 # Espace
-My thesis for the bsc degree (Elte)
+My thesis (Elte)
 
 Java EE application based on 1 year experience
